@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.kh.ourwork" />
+	
+	<!-- 
+		만약 MXL 파일에 bean을 등록하는 방식으로 구현한다면
+		HandlerMapping과 Controller를 명식적으로 bean으로 등록해야 함
+	 -->
+	 <!-- <beans:bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<beans:property name="mapping">
+			<beans:props>
+				<beans:prop key="login.do">login</beans:props>
+				<beans:prop key="logout.do">logout</beans:props>
+			</beans:props>
+		</beans:property>
+	 </beans:bean> -->
+	 <!-- 위의 HandlerMapping에 해당하는 Controller 등록 -->
+	 <!-- <beans:bean id="login" class="com.kh.spring.member.controller.LoginController"/>
+	 <beans:bean id="logout" class="com.kh.spring.member.controller.LoginController"/> -->
+	 
+	 <!-- 
+	 	위와같이 작업하면 해당 설정 파일에서 등록 된 bean을 한 눈에 볼 수 있어 관리의 편의성이 높지만
+	 	bean의 갯수가 많아질 경우 관리의 어려움이 발생할 수 있음
+	 	또한 여러 개발자가 같은 설정파일을 사용할 경우 수정하면서 충돌이 발생하기 쉬움
+	 	
+	 	우리는 XML 방식이 아닌 Annotation 방식을 통해 작업할 것
+	 	
+	 	내가 작업하는 클래스 위에 @Controller, 메소드 위에 @RequestMapping("url-pattern")
+	 	
+	 	<annotation-driven />
+	 	<context.component-scan base-package="com.kh.spring" />
+	 	이 자동으로 어노테이션이 붙어 있는 클래스를 스캔해서 빈으로 등록해준다
+		각 기능에 맞는 controller 클래스를 따로 만들 필요 없이 하나의 controller로 통합하고
+		메소드별로 각 기능이 실행 되도록 작업할 예정
+	  -->
+	  
+	  <!-- ajax에서 ModelAndView 방식을 사용하기 위해서는 다음과 같은 두개의
+	빈을 등록해야 함 -->
+	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView"/>
+	
+	<!-- ViewResolver라 하면 viewName과 실제 view단을 연결해주는 역할을 하는데
+	BeanNameViewResolver는 요청한 viewName과 실제 bean 이름을 매핑해주는 역할을 함 -->
+	<beans:bean id="viewResilver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<beans:property name="order" value="0"/>
+		<!-- 현재 2개의 ViewResolver를 가지고 있으므로 어떤 ViewResolver를 먼저 사용할 것인지
+		order라는 속성을 통해 순서를 지정
+		0으로 지정하지 않으면 beanName으로 매핑되지 못함 -->
+	</beans:bean>
+	
+	<!-- interceptor 등록 -->
+	<!-- <interceptors> -->
+		<!-- <interceptor>
+			<mapping path="/*"/>
+			<beans:bean id="loggerInterceptor"
+			class="com.kh.spring.common.interceptor.LoggerInterceptor"/>
+		</interceptor> -->
+		<!-- <interceptor>
+			<mapping path="/*list.do"/>
+			<beans:bean id="loginInterceptor"
+			class="com.kh.spring.common.interceptor.LoginInterceptor"/>
+		</interceptor>
+	</interceptors> -->
+	
+	<!-- 어노테이션을 통한 AOP 적용을 위한 설정 -->
+	<aop:aspectj-autoproxy/>
+	
+	<!-- 해당 기능 관련 어노테이션이 붙은 메소드를 자동으로 읽어오는 기능 -->
+	<task:annotation-driven/>
+	
+</beans:beans>
