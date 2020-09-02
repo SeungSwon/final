@@ -1,6 +1,9 @@
 package com.kh.ourwork.common;
 
+
 import java.sql.Date;
+import java.util.Date;
+
 
 public class Attachment {
 	private int fId;			// 첨부파일 식별번호
@@ -47,6 +50,33 @@ public class Attachment {
 		this.fileLevel = fileLevel;
 		this.fStatus = fStatus;
 	}
+
+	
+
+
+	public Attachment(String filePath, String originName, String changeName, Date fUploadDate, int fileLevel) {
+		super();
+		this.filePath = filePath;
+		this.originName = originName;
+		this.changeName = changeName;
+		this.fUploadDate = fUploadDate;
+		this.fileLevel = fileLevel;
+	}
+	
+	public Attachment(int cId, String filePath, String originName, String changeName) {
+		super();
+		this.cId = cId;
+		this.filePath = filePath;
+		this.originName = originName;
+		this.changeName = changeName;
+	}
+	
+
+	public Attachment(int cId) {
+		super();
+		this.cId = cId;
+	}
+
 
 	public int getfId() {
 		return fId;
@@ -170,3 +200,6 @@ public class Attachment {
 	
 	
 }
+
+}
+

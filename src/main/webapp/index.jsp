@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>OurWork!!!</h1>
+	<jsp:include page="WEB-INF/views/common/menubar.jsp"/>
+	<br><br><br><br><br>
+	<button onclick="location.href='home.do'">click me!</button>
 </body>
 </html>

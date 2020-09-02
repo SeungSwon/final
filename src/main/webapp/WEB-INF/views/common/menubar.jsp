@@ -17,9 +17,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
 <meta charset="UTF-8">
-<title></title>
-<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
-<link rel="stylesheet" href="${ contextPath }/resources/css/menubar-style.css" type="text/css">
+
+<title>메뉴바</title>
+<!-- 메뉴바는 어떤 페이지는 포함하고 있을 것이므로 여기에서 contextPath 변수값을 선언한다. -->
+<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }"
+scope="application"/>
+<link rel="stylesheet" href="${ contextPath }/resources/css/menubar-style.css"
+type="text/css">
+
 </head>
 <body>
 	<div class="header">
@@ -33,7 +38,9 @@
                 <a class="dropdown-item" href="#">로그아웃</a>
             </div>
         </div>
-        <img src="resources/images/common/profile_1.jpg" class="profile">
+
+        <img src="${ contextPath }/resources/images/common/profile_1.jpg" class="profile">
+
     </div>
 </body>
 </html>

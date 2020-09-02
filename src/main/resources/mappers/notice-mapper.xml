@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="noticeMapper">
+	<resultMap type="Notice" id="noticeResultSet">
+		<id property="nNo" column="NNO"/>
+		<result property="eId" column="EID"/>
+		<result property="no" column="NO"/>
+		<result property="nTitle" column="NTITLE"/>
+		<result property="nContent" column="NCONTENT"/>
+		<result property="nCount" column="NCOUNT"/>
+		<result property="nDate" column="NDATE"/>
+		<result property="modifyDate" column="MODIFYDATE"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM NOTICE
+		WHERE STATUS='Y'
+        AND NO='1'
+	</select>
+	
+	<select id="selectList" resultMap="noticeResultSet">
+		SELECT *
+		FROM NOTICE
+		WHERE STATUS='Y'
+        AND NO='1'
+		ORDER BY NNO DESC
+	</select>
+	
+	<update id="updateCount" parameterType="_int">
+		UPDATE NOTICE
+		SET NCOUNT = NCOUNT+1
+		WHERE EID=#{eId}
+	</update>
+	
+	<select id="selectOne" parameterType="_int" resultMap="noticeResultSet">
+		SELECT *
+		FROM NOTICE
+		WHERE NNO=#{nNo}
+		AND STATUS='Y'
+	</select>
+	
+</mapper>
