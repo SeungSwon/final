@@ -6,20 +6,24 @@
 	</settings>
 	
 	<typeAliases>
-		<!-- <typeAlias type="com.kh.spring.member.model.vo.Member" alias="Member"/>
-		<typeAlias type="com.kh.spring.board.model.vo.Board" alias="Board"/>
-		<typeAlias type="com.kh.spring.board.model.vo.Reply" alias="Reply"/>
-		<typeAlias type="com.kh.spring.notice.model.vo.Notice" alias="Notice"/>
-		<typeAlias type="com.kh.spring.notice.model.vo.Search" alias="Search"/> -->
-		
 		<typeAlias type="com.kh.ourwork.notice.model.vo.Notice" alias="Notice"/>
+		<typeAlias type="com.kh.ourwork.client.model.vo.Client" alias="Client"/>
+		<typeAlias type="com.kh.ourwork.client.model.vo.updateClient" alias="updateClient"/>
+		<typeAlias type="com.kh.ourwork.common.Attachment" alias="Attachment"/>
+		<typeAlias type="com.kh.ourwork.client.model.vo.Search" alias="Search"/>
+		<typeAlias type="com.kh.ourwork.note.model.vo.Note" alias="Note"/>
+		<typeAlias type="com.kh.ourwork.note.model.vo.NoteReceiver" alias="NoteReceiver"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.Email" alias="Email"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.Ereceiver" alias="Ereceiver"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.ReceiveEmail" alias="ReceiveEmail"/>
+		<typeAlias type="com.kh.ourwork.employee.model.vo.Employee" alias="Employee"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.EmailAddr" alias="EmailAddr"/>
+
 	</typeAliases>
-	
 	<mappers>
-		<!-- <mapper resource="mappers/member-mapper.xml"/>
-		<mapper resource="mappers/board-mapper.xml"/>
-		<mapper resource="mappers/notice-mapper.xml"/> -->
-		
 		<mapper resource="mappers/notice-mapper.xml"/>
+		<mapper resource="mappers/client-mapper.xml"/>
+		<mapper resource="mappers/note-mapper.xml"/>
+		<mapper resource="mappers/email-mapper.xml"/>
 	</mappers>
 </configuration>
