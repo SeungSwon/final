@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="approvalMapper">
+  <resultMap type="LineList" id="lListResultSet">
+  	<id property="eId" column="EID"/>
+  	<result property="eName" column="ENAME"/>
+  	<result property="rName" column="RNAME"/>
+  	<result property="dName" column="DNAME"/>
+  	<result property="rNum" column="RNUM"/>
+  </resultMap>
+  
+  <select id="selectLineList" resultMap="lListResultSet">
+	  SELECT E.EID, E.ENAME, R.RNAME, D.DNAME,
+	         row_number() over(partition by d.dname order by e.ename) as RNUM
+      FROM EMPLOYEE E
+      JOIN DEPARTMENT D ON(E.DID = D.DID)
+      JOIN RANK R ON(E.RID = R.RID)
+      WHERE STATUS='Y'
+  </select>
+</mapper>

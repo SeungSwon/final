@@ -6,6 +6,8 @@
 	</settings>
 	
 	<typeAliases>
+
+		<typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
 		<typeAlias type="com.kh.ourwork.notice.model.vo.Notice" alias="Notice"/>
 		<typeAlias type="com.kh.ourwork.client.model.vo.Client" alias="Client"/>
 		<typeAlias type="com.kh.ourwork.client.model.vo.updateClient" alias="updateClient"/>
@@ -18,12 +20,14 @@
 		<typeAlias type="com.kh.ourwork.email.model.vo.ReceiveEmail" alias="ReceiveEmail"/>
 		<typeAlias type="com.kh.ourwork.employee.model.vo.Employee" alias="Employee"/>
 		<typeAlias type="com.kh.ourwork.email.model.vo.EmailAddr" alias="EmailAddr"/>
-
+    <typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
+    
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/notice-mapper.xml"/>
 		<mapper resource="mappers/client-mapper.xml"/>
 		<mapper resource="mappers/note-mapper.xml"/>
 		<mapper resource="mappers/email-mapper.xml"/>
+  	<mapper resource="mappers/approval-mapper.xml"/>
 	</mappers>
 </configuration>
