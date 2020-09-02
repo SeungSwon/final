@@ -6,16 +6,14 @@
 	</settings>
 	
 	<typeAliases>
-		<!-- <typeAlias type="com.kh.spring.member.model.vo.Member" alias="Member"/>
-		<typeAlias type="com.kh.spring.board.model.vo.Board" alias="Board"/>
-		<typeAlias type="com.kh.spring.board.model.vo.Reply" alias="Reply"/>
-		<typeAlias type="com.kh.spring.notice.model.vo.Notice" alias="Notice"/>
-		<typeAlias type="com.kh.spring.notice.model.vo.Search" alias="Search"/> -->
+		<typeAlias type="com.kh.ourwork.email.model.vo.Email" alias="Email"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.Ereceiver" alias="Ereceiver"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.ReceiveEmail" alias="ReceiveEmail"/>
+		<typeAlias type="com.kh.ourwork.employee.model.vo.Employee" alias="Employee"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.EmailAddr" alias="EmailAddr"/>
 	</typeAliases>
 	
 	<mappers>
-		<!-- <mapper resource="mappers/member-mapper.xml"/>
-		<mapper resource="mappers/board-mapper.xml"/>
-		<mapper resource="mappers/notice-mapper.xml"/> -->
+		<mapper resource="mappers/email-mapper.xml"/>
 	</mappers>
 </configuration>
