@@ -1,37 +1,32 @@
 package com.kh.ourwork.common;
 
-
-import java.sql.Date;
 import java.util.Date;
 
-
 public class Attachment {
-	private int fId;			// 첨부파일 식별번호
-	private int mId;			// 메일
-	private int nNo;			// 게시판
-	private int cId;			// 거래처
-	private String aId;			// 결재
-	private int sbId;			// SNS게시글
-	private String eId;			// 직원ID
-	private int gId;			// SNS 그룹
-	private String filePath;	// 파일경로
-	private String originName;	// 업로드명
-	private String changeName;	// 변경명
-	private Date fUploadDate;	// 업로드일
-	private int fileLevel;		// 참조구분
-	
-	/*  10. 직원 프로필사진
-	    20. 직원 자격증 첨부파일
-	    30. 메일 첨부파일
-		40. 결재 첨부파일
-		50. 거래처 사업자등록증 사진
-		60. 게시판 첨부파일
-		70. SNS그룹 대표사진 */
-	
-	private String fStatus;		// 상태
-	
-	public Attachment() {}
-	
+	private int fId; // 첨부파일 식별번호
+	private int mId; // 메일
+	private int nNo; // 게시판
+	private int cId; // 거래처
+	private String aId; // 결재
+	private int sbId; // SNS게시글
+	private String eId; // 직원ID
+	private int gId; // SNS 그룹
+	private String filePath; // 파일경로
+	private String originName; // 업로드명
+	private String changeName; // 변경명
+	private Date fUploadDate; // 업로드일
+	private int fileLevel; // 참조구분
+
+	/*
+	 * 10. 직원 프로필사진 20. 직원 자격증 첨부파일 30. 메일 첨부파일 40. 결재 첨부파일 50. 거래처 사업자등록증 사진 60.
+	 * 게시판 첨부파일 70. SNS그룹 대표사진
+	 */
+
+	private String fStatus; // 상태
+
+	public Attachment() {
+	}
+
 	public Attachment(int fId, int mId, int nNo, int cId, String aId, int sbId, String eId, int gId, String filePath,
 			String originName, String changeName, Date fUploadDate, int fileLevel, String fStatus) {
 		super();
@@ -51,9 +46,6 @@ public class Attachment {
 		this.fStatus = fStatus;
 	}
 
-	
-
-
 	public Attachment(String filePath, String originName, String changeName, Date fUploadDate, int fileLevel) {
 		super();
 		this.filePath = filePath;
@@ -62,7 +54,7 @@ public class Attachment {
 		this.fUploadDate = fUploadDate;
 		this.fileLevel = fileLevel;
 	}
-	
+
 	public Attachment(int cId, String filePath, String originName, String changeName) {
 		super();
 		this.cId = cId;
@@ -70,13 +62,11 @@ public class Attachment {
 		this.originName = originName;
 		this.changeName = changeName;
 	}
-	
 
 	public Attachment(int cId) {
 		super();
 		this.cId = cId;
 	}
-
 
 	public int getfId() {
 		return fId;
@@ -197,9 +187,5 @@ public class Attachment {
 				+ ", changeName=" + changeName + ", fUploadDate=" + fUploadDate + ", fileLevel=" + fileLevel
 				+ ", fStatus=" + fStatus + "]";
 	}
-	
-	
-}
 
 }
-

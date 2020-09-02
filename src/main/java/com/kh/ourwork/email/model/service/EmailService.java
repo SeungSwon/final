@@ -2,8 +2,8 @@ package com.kh.ourwork.email.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.email.model.vo.EmailAddr;
-import com.kh.ourwork.email.model.vo.PageInfo;
 import com.kh.ourwork.email.model.vo.ReceiveEmail;
 
 public interface EmailService {
