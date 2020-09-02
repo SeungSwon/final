@@ -1,6 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-
-   pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
@@ -66,6 +64,11 @@
    color: gray;
 }
 
+#homename{
+	text-align: center;
+}
+
+
 #procompany {
    margin: 0px 30px;
    color: gray;
@@ -120,19 +123,23 @@
    <div class="section">
       <br>
       <div class="aside">
+
          <button><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
             <button onclick="location.href='ahome.do'"><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
             <button><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
             <button><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
             <button onclick="location.href='ntInboxList.do'"><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
-            <button onclick="location.href='clist.do'"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
+            <button onclick="location.href='eAddress.do'"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
+
             <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
             <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
       </div>
       <div class="section1">
          <div id="profilediv">
-            <img id="mainpro" src="resources/images/common/profile_1.jpg">
-            <p id="proname">여진구 과장</p>
+            <img id="mainpro" src="resources/images/common/profile_1.JPG">
+            <br><p id="homename"><c:out value="${ loginUser.eName }님 "/></p>            
+
+
             <p id="procompany">(주) Samsung Company</p>
             <div id="buttongroup">
                <button><img src="resources/images/common/mail2.png">메일쓰기</button>
