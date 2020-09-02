@@ -22,7 +22,7 @@
 		<property name="defaultAutoCommit" value="false"/> </bean> -->
 
 	<!-- log4j : 기존 dataSource id 변경 후 참조하는 proxyDataSource 만들기 -->
-	<bean id="dataSourceSpied"
+	<!-- <bean id="dataSourceSpied"
 		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName"
 			value="oracle.jdbc.driver.OracleDriver" />
@@ -41,6 +41,14 @@
 				<property name="sqlPrefix" value="[SQL] " />
 			</bean>
 		</property>
+	</bean> -->
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> 
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/> 
+		<property name="username" value="ourwork"/> 
+		<property name="password" value="ourwork"/> 
+		<property name="defaultAutoCommit" value="false"/> 
 	</bean>
 
 	<!-- 트랜잭션 처리 (commit/rollback) 트랜잭션 처리를 위한 트랜잭션 매니저 추가 -->
