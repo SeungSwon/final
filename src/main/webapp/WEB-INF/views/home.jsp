@@ -13,6 +13,7 @@
    box-sizing: border-box;
    display: inline-block;
 }
+
 /*--------------------------------------main--------------------------------------------*/
 .content {
    width: 96%;

@@ -12,9 +12,15 @@
 		<typeAlias type="com.kh.ourwork.client.model.vo.Search" alias="Search"/>
 		<typeAlias type="com.kh.ourwork.note.model.vo.Note" alias="Note"/>
 		<typeAlias type="com.kh.ourwork.note.model.vo.NoteReceiver" alias="NoteReceiver"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.Email" alias="Email"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.Ereceiver" alias="Ereceiver"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.ReceiveEmail" alias="ReceiveEmail"/>
+		<typeAlias type="com.kh.ourwork.employee.model.vo.Employee" alias="Employee"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.EmailAddr" alias="EmailAddr"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/client-mapper.xml"/>
 		<mapper resource="mappers/note-mapper.xml"/>
+		<mapper resource="mappers/email-mapper.xml"/>
 	</mappers>
 </configuration>

@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -10,20 +11,23 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
         crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
 <meta charset="UTF-8">
-<title>거래처 목록 조회</title>
-<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
-<link rel="stylesheet" type="text/css" href="${ contextPath }/resources/css/menubar-style.css"/>
+<title>메뉴바</title>
+<!-- 메뉴바는 어떤 페이지는 포함하고 있을 것이므로 여기에서 contextPath 변수값을 선언한다. -->
+<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }"
+scope="application"/>
+<link rel="stylesheet" href="${ contextPath }/resources/css/menubar-style.css"
+type="text/css">
 </head>
 <body>
 	<div class="header">
-        <img class="logo" src="resources/images/common/main_logo.png">
+        <a onclick="location.href='home.do'"><img class="logo" src="resources/images/common/main_logo.png" ></a>
         <div class="top_profile" align="right">
             <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">여진구님</button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -33,7 +37,7 @@
                 <a class="dropdown-item" href="#">로그아웃</a>
             </div>
         </div>
-        <img src="resources/images/common/profile_1.jpg" class="profile">
+        <img src="${ contextPath }/resources/images/common/profile_1.jpg" class="profile">
     </div>
 </body>
 </html>
