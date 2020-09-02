@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="clientMapper">
+	<resultMap id="clientResultSet" type="Client">
+		<id property="clId" column="CLID"/>
+		<result property="cSort" column="CSORT"/>
+		<result property="cName" column="CNAME"/>
+		<result property="bNum" column="BNUM"/>
+		<result property="cAddress" column="C_ADDRESS"/>
+		<result property="represent" column="REPRESENT"/>
+		<result property="cPhone" column="C_PHONE"/>
+		<result property="fax" column="FAX"/>
+		<result property="business" column="BUSINESS"/>
+		<result property="manager" column="MANAGER"/>
+		<result property="mDepartment" column="M_DEPARTMENT"/>
+		<result property="mPhone" column="M_PHONE"/>
+		<result property="mEmail" column="M_EMAIL"/>
+		<result property="status" column="STATUS"/>
+		<result property="createDate" column="CREATE_DATE"/>
+	</resultMap>
+	
+	<resultMap id="historyResultSet" type="updateClient">
+		<result property="ucId" column="UCID"/>
+		<result property="clId" column="CLID"/>
+		<result property="eId" column="EID"/>
+		<result property="reason" column="REASON"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+	</resultMap>
+	
+	<!-- 리스트 조회 -->
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CLIENT
+		WHERE STATUS='Y'
+	</select>
+	
+	<select id="selectList" resultMap="clientResultSet">
+		SELECT *
+		FROM CLIENT
+		WHERE STATUS='Y'
+		ORDER BY CLID DESC
+	</select>
+	
+	<!-- 거래처 상세조회 -->
+	<select id="selectClient" parameterType="_int" resultMap="clientResultSet">
+		SELECT *
+		FROM CLIENT
+		WHERE STATUS='Y'
+		AND CLID=#{clId}
+	</select>
+	
+	<!-- 거래처 수정내역 조회 -->
+	<select id="selectUpdateHistory" parameterType="_int" resultMap="historyResultSet">
+		SELECT *
+		FROM UPDATE_CLIENT
+		WHERE CLID=#{clId}
+		ORDER BY MODIFY_DATE DESC
+	</select>
+	
+	<!-- 거래처 등록 -->
+	<insert id="insertClient" parameterType="Client" >
+		INSERT INTO CLIENT
+		VALUES(SEQ_CLID.NEXTVAL, #{cSort}, #{cName}, #{bNum}, #{cAddress}, #{represent}, 
+				#{cPhone}, #{fax}, #{business}, #{manager}, #{mDepartment}, #{mPhone}, #{mEmail}, DEFAULT, SYSDATE)
+	</insert>
+	
+	<!-- 거래처 등록하면서 수정내역에 1.0 기본값 등록 -->
+	<insert id="insertUpdateClient" parameterType="updateClient">
+		INSERT INTO UPDATE_CLIENT
+		VALUES('1.0', SEQ_CLID.CURRVAL, 'user01', '최초등록', SYSDATE)
+	</insert>
+	
+	<!-- 파일 저장 -->
+	<insert id="insertAttachment" parameterType="Attachment">
+		INSERT INTO ATTACHMENT
+		VALUES(SEQ_FID.NEXTVAL, NULL, NULL, (SELECT LAST_NUMBER-1 FROM USER_SEQUENCES WHERE SEQUENCE_NAME='SEQ_CLID'), 
+				NULL, NULL, NULL, NULL, #{filePath}, #{originName}, #{changeName}, SYSDATE, 60, DEFAULT)
+	</insert>
+	
+	<!-- 거래처 삭제 -->
+	<update id="deleteClient" parameterType="_int">
+		UPDATE CLIENT
+		SET STATUS='N'
+		WHERE CLID=#{clId}
+	</update>
+	
+	<!-- 거래처 수정내역도 함께 삭제 -->
+	<update id="deleteUpdateClient" parameterType="_int">
+		DELETE FROM UPDATE_CLIENT
+		WHERE CLID=#{clId}
+	</update>
+	
+	<!-- 거래처 수정 -->
+	<update id="updateClient" parameterType="Client">
+		UPDATE CLIENT
+		SET CSORT=#{cSort}, 
+			CNAME=#{cName},
+			BNUM=#{bNum},
+			C_ADDRESS=#{cAddress},
+			REPRESENT=#{represent},
+			C_PHONE=#{cPhone},
+			FAX=#{fax},
+			BUSINESS=#{business},
+			MANAGER=#{manager},
+			M_DEPARTMENT=#{mDepartment},
+			M_PHONE=#{mPhone},
+			M_EMAIL=#{mEmail}
+		WHERE CLID=#{clId}
+		AND STATUS='Y'
+	</update>
+	
+	<!-- 거래처 수정 시 수정내역 추가 -->
+	<insert id="updateUpdateClient" parameterType="updateClient">
+		INSERT INTO UPDATE_CLIENT
+		VALUES('2.5', #{clId}, #{eId}, #{reason}, SYSDATE)
+	</insert>
+	
+	<!-- 거래처 검색 -->
+	<select id="searchList" parameterType="Search" resultMap="clientResultSet">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT *
+		FROM CLIENT
+		<where>
+			<choose>
+				<when test="searchCondition == 'name'">
+					AND CNAME LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'num'">
+					AND BNUM LIKE #{sv}
+				</when>
+			</choose>
+		</where>
+		ORDER BY CLID DESC
+	</select>
+	
+	<!-- 첨부파일 조회 -->
+	<select id="selectAttachment" resultType="Attachment">
+		SELECT *
+		FROM ATTACHMENT
+		WHERE CID=#{cId}
+		AND FSTATUS='Y'
+	</select>
+	
+	<!-- 첨부파일 수정 -->
+	<update id="updateAttachment" parameterType="Attachment">
+		UPDATE ATTACHMENT
+		SET FILEPATH=#{filePath},
+			ORIGINNAME=#{originName},
+			CHANGENAME=#{changeName}
+		WHERE CID=#{cId}
+	</update>
+	
+	<!-- 첨부파일 삭제 -->
+	<update id="deleteAttachment" parameterType="Attachment">
+		DELETE FROM ATTACHMENT
+		WHERE CID=#{cId}
+	</update>
+	
+	<!-- 수정 시 첨부파일 없을 때 INSERT -->
+	<insert id="insertAttachment2" parameterType="Attachment">
+		INSERT INTO ATTACHMENT
+		VALUES(SEQ_FID.NEXTVAL, NULL, NULL, #{cId}, NULL, NULL, NULL, NULL, #{filePath}, #{originName}, #{changeName}, SYSDATE, 60, DEFAULT)
+	</insert>
+	
+	<!-- 검색한 거래처 개수 조회 -->
+	<select id="selectSearchCount" resultType="_int">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT COUNT(*)
+		FROM CLIENT
+		<where>
+			<choose>
+				<when test="searchCondition == 'name'">
+					AND CNAME LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'num'">
+					AND BNUM LIKE #{sv}
+				</when>
+			</choose>
+		</where>
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
