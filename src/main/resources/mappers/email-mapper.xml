@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="emailMapper">
+	<resultMap type="ReceiveEmail" id="emailResultSet">
+		<id property="mId" column="MID"/>
+		<result property="eeId" column="EEID"/>
+		<result property="mTitle" column="MTITLE"/>
+		<result property="mContent" column="MCONTENT"/>
+		<result property="mReceipt" column="MRECEIPT"/>
+		<result property="sendDate" column="SENDDATE"/>
+		<result property="mStatus" column="MSTATUS"/>
+		<result property="sendStatus" column="SENDSTATUS"/>
+		<result property="mLevel" column="MLEVEL"/>
+		<result property="reId" column="REID"/>
+		<result property="erLevel" column="ERLEVEL"/>
+		<result property="receiveDate" column="RECEIVE_DATE"/>
+		<result property="eName" column="ENAME"/>
+		<result property="dName" column="DNAME"/>
+	</resultMap>
+	
+	<resultMap type="EmailAddr" id="empResultSet">
+		<id property="eId" column="EID"/>
+		<result property="dId" column="DID"/>
+		<result property="rId" column="RID"/>
+		<result property="ePwd" column="EPWD"/>
+		<result property="eName" column="ENAME"/>
+		<result property="email" column="EMAIL"/>
+		<result property="phone" column="PHONE"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="salary" column="SALARY"/>
+		<result property="joinDate" column="JOIN_DATE"/>
+		<result property="leaveDate" column="LEAVE_DATE"/>
+		<result property="status" column="STATUS"/>
+		<result property="holiday" column="HOLIDAY"/>
+		<result property="eBirth" column="EBIRTH"/>
+		<result property="rName" column="RNAME"/>
+		<result property="dName" column="DNAME"/>
+		<result property="rNum" column="rnum"/>
+	</resultMap>
+	
+	<!-- 받은메일리스트 개수 -->
+	<select id="selectReceiveListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMAIL E
+		JOIN ERECEIVER R ON(E.MID = R.MID)
+		WHERE R.EID = 'user02'
+		AND SENDSTATUS = 'Y'
+		AND MSTATUS = 'Y'
+	</select>
+	
+	<!-- 보낸메일리스트 개수 -->
+	<select id="selectSendListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMAIL E
+		JOIN ERECEIVER R ON(E.MID = R.MID)
+		WHERE E.EID = 'user01'
+		AND SENDSTATUS = 'Y'
+		AND MSTATUS = 'Y'
+	</select>
+	
+	<!-- 임시저장리스트 개수 -->
+	<select id="selectTempListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMAIL E
+		JOIN ERECEIVER R ON(E.MID = R.MID)
+		WHERE E.EID = 'user01'
+		AND SENDSTATUS = 'N'
+		AND MSTATUS = 'Y'
+	</select>
+	
+	<!-- 받은메일리스트 목록 셀렉트 -->
+	<select id="selectReceiveList" resultMap = "emailResultSet">
+		SELECT E.MID, E.EID AS EEID, E.MTITLE, E.MCONTENT, E.MRECEIPT, E.SENDDATE, E.MSTATUS, E.SENDSTATUS, E.MLEVEL,
+				R.MID, R.EID AS REID, R.ERLEVEL, R.RECEIVE_DATE, L.ENAME, D.DNAME
+		FROM EMAIL E
+		JOIN ERECEIVER R ON(E.MID = R.MID)
+		JOIN EMPLOYEE L ON(E.EID = L.EID)
+		JOIN DEPARTMENT D ON(L.DID = D.DID)
+		WHERE R.EID = 'user02'
+		AND SENDSTATUS = 'Y'
+		AND E.MSTATUS = 'Y'
+		ORDER BY E.MID DESC
+	</select>
+	
+	<!-- 보낸메일리스트 목록 셀렉트 -->
+	<select id="selectSendList" resultMap = "emailResultSet">
+		SELECT E.MID, E.EID AS EEID, E.MTITLE, E.MCONTENT, E.MRECEIPT, E.SENDDATE, E.MSTATUS, E.SENDSTATUS, E.MLEVEL,
+				R.MID, R.EID AS REID, R.ERLEVEL, R.RECEIVE_DATE, L.ENAME, D.DNAME
+		FROM EMAIL E
+		JOIN ERECEIVER R ON(E.MID = R.MID)
+		JOIN EMPLOYEE L ON(R.EID = L.EID)
+		JOIN DEPARTMENT D ON(L.DID = D.DID)
+		WHERE E.EID = 'user01'
+		AND SENDSTATUS = 'Y'
+		AND E.MSTATUS = 'Y'
+		ORDER BY E.MID DESC
+	</select>
+	
+	<!-- 임시저장메일리스트 목록 셀렉트 -->
+	<select id="selectTempList" resultMap = "emailResultSet">
+		SELECT E.MID, E.EID AS EEID, E.MTITLE, E.MCONTENT, E.MRECEIPT, E.SENDDATE, E.MSTATUS, E.SENDSTATUS, E.MLEVEL,
+				R.MID, R.EID AS REID, R.ERLEVEL, R.RECEIVE_DATE, L.ENAME, D.DNAME
+		FROM EMAIL E
+		JOIN ERECEIVER R ON(E.MID = R.MID)
+		LEFT JOIN EMPLOYEE L ON(R.EID = L.EID)
+		LEFT JOIN DEPARTMENT D ON(L.DID = D.DID)
+		WHERE E.EID = 'user01'
+		AND SENDSTATUS = 'N'
+		AND E.MSTATUS = 'Y'
+		ORDER BY E.MID DESC
+	</select>
+	
+	<select id="selectEmpListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE STATUS='Y'
+	</select>
+	
+	<select id="selectEmpAddrList" resultMap="empResultSet">
+		SELECT E.EID, E.DID, E.RID, E.EPWD, E.ENAME, E.EMAIL, E.PHONE, E.ADDRESS, E.SALARY, E.JOIN_DATE, E.LEAVE_DATE,
+				E.STATUS, E.HOLIDAY, E.EBIRTH, R.RNAME, D.DNAME,
+                row_number() over(partition by d.dname order by e.ename) as rnum
+		FROM EMPLOYEE E
+		JOIN DEPARTMENT D ON(E.DID = D.DID)
+		JOIN RANK R ON(E.RID = R.RID)
+		WHERE STATUS='Y'
+	</select>
+</mapper>
