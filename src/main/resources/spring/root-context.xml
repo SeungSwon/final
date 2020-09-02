@@ -15,14 +15,16 @@
 		dataSource.setUrl("..."); 위와 같은 코드를 작성하는 것이 아니라 XML 설정 파일에 bean을 등록하여 객체에 
 		대한 설정을 제공하면 spring framework가 구동되며 객체를 생성하고 사용하고 소멸시킴 설정을 등록하는 것 => DI(의존성 
 		주입) -->
-	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
-		destroy-method="close"> <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> 
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/> <property 
-		name="username" value="spring"/> <property name="password" value="spring"/> 
-		<property name="defaultAutoCommit" value="false"/> </bean> -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> 
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/> 
+		<property name="username" value="ourwork"/> 
+		<property name="password" value="ourwork"/> 
+		<property name="defaultAutoCommit" value="false"/> 
+	</bean>
 
 	<!-- log4j : 기존 dataSource id 변경 후 참조하는 proxyDataSource 만들기 -->
-	<bean id="dataSourceSpied"
+	<!-- <bean id="dataSourceSpied"
 		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName"
 			value="oracle.jdbc.driver.OracleDriver" />
@@ -41,7 +43,7 @@
 				<property name="sqlPrefix" value="[SQL] " />
 			</bean>
 		</property>
-	</bean>
+	</bean> -->
 
 	<!-- 트랜잭션 처리 (commit/rollback) 트랜잭션 처리를 위한 트랜잭션 매니저 추가 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
