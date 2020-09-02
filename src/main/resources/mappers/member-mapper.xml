@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberMapper">
+	<resultMap id="employeeResultSet" type="Employee">
+		<id property="eId" column="EID"/>
+ 		<result property="dId" column="DID"/>
+		<result property="rId" column="RID"/> 
+		<result property="ePwd" column="EPWD"/>
+		<result property="eName" column="ENAME"/>
+		<result property="email" column="EMAIL"/>
+		<result property="phone" column="PHONE"/>
+		<result property="address" column="ADDRESS"/>
+ 		<result property="salary" column="SALARY"/> 
+		<result property="join_date" column="JOIN_DATE"/>
+ 		<result property="leave_date" column="LEAVE_DATE"/> 
+		<result property="status" column="STATUS"/>
+ 		<result property="holiday" column="HOLIDAY"/> 
+ 		<result property="eBirth" column="EBIRTH"/>
+		
+	</resultMap>
+	<select id="selectOne" parameterType="Employee" resultMap="employeeResultSet">		
+		SELECT *
+		FROM EMPLOYEE
+		WHERE EID= #{eId}
+		AND STATUS='I'
+	</select> 
+	
+	<insert id="insertEmployee" parameterType="Employee">
+		INSERT INTO EMPLOYEE
+		VALUES(#{eId}, 1, 1, #{ePwd}, #{eName}, #{email}, #{phone}, #{address}, null, #{join_date}, null, DEFAULT, DEFAULT, #{eBirth})
+	</insert>
+	
+	<update id="updateEmployee" parameterType="Employee">
+		UPDATE EMPLOYEE
+		SET ENAME=#{eName}, EID=#{eId}, EMAIL=#{email}, PHONE=#{phone}, ADDRESS=#{address}, JOIN_DATE=#{join_date}, #{eBirth}
+		WHERE EID=#{eId}
+	</update>
+	
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE EID=#{eId}
+	</select>
+	
+	<select id="emailCheck" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE EMAIL=#{email}
+	</select>
+	
+</mapper>
+
+
+
+
+
