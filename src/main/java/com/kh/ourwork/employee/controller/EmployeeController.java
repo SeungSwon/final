@@ -1,4 +1,4 @@
-package com.kh.ourwork.member.controller;
+package com.kh.ourwork.employee.controller;
 
 import java.io.File;
 import java.util.HashMap;
@@ -20,9 +20,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.ourwork.member.model.exception.EmployeeException;
-import com.kh.ourwork.member.model.service.EmployeeService;
-import com.kh.ourwork.member.model.vo.Employee;
+import com.kh.ourwork.employee.model.exception.EmployeeException;
+import com.kh.ourwork.employee.model.service.EmployeeService;
+import com.kh.ourwork.employee.model.vo.Employee;
+
+
 
 @SessionAttributes({ "loginUser", "msg" })
 @Controller // Controller 타입의 어노테이션을 붙여주면 빈 스캐닝을 통해 자동으로 빈으로 등록 된다

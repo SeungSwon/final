@@ -37,8 +37,4 @@ public class HomeController {
 		return "home";
 	}
 	
-	  @RequestMapping("/index.do") 
-	  public String loginView() { 
-		  return "index"; 
-	 }
 }

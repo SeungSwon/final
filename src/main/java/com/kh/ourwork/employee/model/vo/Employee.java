@@ -1,4 +1,4 @@
-package com.kh.ourwork.member.model.vo;
+package com.kh.ourwork.employee.model.vo;
 
 import java.sql.Date;
 

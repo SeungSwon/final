@@ -1,11 +1,12 @@
-package com.kh.ourwork.member.model.service;
+package com.kh.ourwork.employee.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.kh.ourwork.member.model.dao.EmployeeDao;
-import com.kh.ourwork.member.model.vo.Employee;
+import com.kh.ourwork.employee.model.dao.EmployeeDao;
+import com.kh.ourwork.employee.model.vo.Employee;
+
 
 
 // @Component는 단순한 빈으로 등록하기 위한 어노테이션이라면

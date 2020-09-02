@@ -1,6 +1,6 @@
-package com.kh.ourwork.member.model.service;
+package com.kh.ourwork.employee.model.service;
 
-import com.kh.ourwork.member.model.vo.Employee;
+import com.kh.ourwork.employee.model.vo.Employee;
 
 public interface EmployeeService {
 	// Controller에서 서비스를 수행하기 위한 메소드의 이름을 정의하여 프로젝트에 규칙을 부여함
