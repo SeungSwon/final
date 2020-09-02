@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>OurWork!!!</h1>
+	<div align="center">
+		<button onclick="location.href='home.do'">Click me!</button>
+	</div>
 </body>
 </html>
