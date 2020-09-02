@@ -1,5 +1,6 @@
 package com.kh.ourwork.employee.model.vo;
 
+
 import java.sql.Date;
 
 public class Employee {
@@ -38,6 +39,7 @@ public class Employee {
 		this.holiday = holiday;
 		this.eBirth = eBirth;
 	}
+
 
 	public String geteId() {
 		return eId;
@@ -162,3 +164,4 @@ public class Employee {
 	
 
 }
+
