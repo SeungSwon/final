@@ -2,8 +2,8 @@ package com.kh.ourwork.notice.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.notice.model.vo.Notice;
-import com.kh.ourwork.notice.model.vo.PageInfo;
 
 public interface NoticeService {
 

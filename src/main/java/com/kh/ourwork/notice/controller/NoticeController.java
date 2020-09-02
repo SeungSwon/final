@@ -2,7 +2,6 @@ package com.kh.ourwork.notice.controller;
 
 import java.util.ArrayList;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.ourwork.common.PageInfo;
+import com.kh.ourwork.common.Pagination;
 import com.kh.ourwork.notice.model.exception.NoticeException;
 import com.kh.ourwork.notice.model.service.NoticeService;
 import com.kh.ourwork.notice.model.vo.Notice;
-import com.kh.ourwork.notice.model.vo.PageInfo;
-import com.kh.ourwork.common.Pagination;
 
 @Controller
 public class NoticeController {

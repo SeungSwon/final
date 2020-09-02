@@ -9,7 +9,7 @@ import com.kh.ourwork.client.model.dao.ClientDao;
 import com.kh.ourwork.client.model.vo.Client;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.client.model.vo.Search;
-import com.kh.ourwork.client.model.vo.updateClient;
+import com.kh.ourwork.client.model.vo.UpdateClient;
 import com.kh.ourwork.common.Attachment;
 
 @Service("cService")
@@ -36,7 +36,7 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public ArrayList<updateClient> selectUpdateHistory(int clId) {
+	public ArrayList<UpdateClient> selectUpdateHistory(int clId) {
 		
 		return cDao.selectUpdateHistory(clId);
 	}
@@ -79,7 +79,7 @@ public class ClientServiceImpl implements ClientService{
 
 	
 	@Override
-	public int updateUpdateClient(updateClient uc) {
+	public int updateUpdateClient(UpdateClient uc) {
 		
 		return cDao.updateUpdateClient(uc);
 	}

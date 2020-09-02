@@ -4,16 +4,16 @@ import java.sql.Date;
 
 import lombok.Data;
 
-public class updateClient {
+public class UpdateClient {
 	private String ucId;
 	private int clId;
 	private String eId;
 	private String reason;
 	private Date modifyDate;
 	
-	public updateClient() {}
+	public UpdateClient() {}
 
-	public updateClient(String ucId, int clId, String eId, String reason, Date modifyDate) {
+	public UpdateClient(String ucId, int clId, String eId, String reason, Date modifyDate) {
 		super();
 		this.ucId = ucId;
 		this.clId = clId;
@@ -22,7 +22,7 @@ public class updateClient {
 		this.modifyDate = modifyDate;
 	}
 	
-	public updateClient(int clId, String eId, String reason) {
+	public UpdateClient(int clId, String eId, String reason) {
 		super();
 		this.clId = clId;
 		this.eId = eId;
