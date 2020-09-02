@@ -15,6 +15,7 @@
 		dataSource.setUrl("..."); 위와 같은 코드를 작성하는 것이 아니라 XML 설정 파일에 bean을 등록하여 객체에 
 		대한 설정을 제공하면 spring framework가 구동되며 객체를 생성하고 사용하고 소멸시킴 설정을 등록하는 것 => DI(의존성 
 		주입) -->
+
 	<!-- ourwork 파이널 프로젝트 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> 
