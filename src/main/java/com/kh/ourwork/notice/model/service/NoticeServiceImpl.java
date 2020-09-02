@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.notice.model.dao.NoticeDao;
 import com.kh.ourwork.notice.model.vo.Notice;
-import com.kh.ourwork.notice.model.vo.PageInfo;
 
 @Service("nService")
 public class NoticeServiceImpl implements NoticeService {

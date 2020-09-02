@@ -7,8 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.notice.model.vo.Notice;
-import com.kh.ourwork.notice.model.vo.PageInfo;
 
 @Repository("nDao")
 public class NoticeDao {

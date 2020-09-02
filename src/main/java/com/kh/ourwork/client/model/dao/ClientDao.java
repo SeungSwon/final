@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.client.model.vo.Client;
 import com.kh.ourwork.client.model.vo.Search;
-import com.kh.ourwork.client.model.vo.updateClient;
+import com.kh.ourwork.client.model.vo.UpdateClient;
 import com.kh.ourwork.common.Attachment;
 
 @Repository("cDao")
@@ -36,7 +36,7 @@ public class ClientDao {
 		return sqlSession.selectOne("clientMapper.selectClient", clId);
 	}
 
-	public ArrayList<updateClient> selectUpdateHistory(int clId) {
+	public ArrayList<UpdateClient> selectUpdateHistory(int clId) {
 		
 		return (ArrayList)sqlSession.selectList("clientMapper.selectUpdateHistory", clId);
 	}
@@ -71,7 +71,7 @@ public class ClientDao {
 		return sqlSession.update("clientMapper.updateClient", c);
 	}
 
-	public int updateUpdateClient(com.kh.ourwork.client.model.vo.updateClient uc) {
+	public int updateUpdateClient(UpdateClient uc) {
 		
 		return sqlSession.insert("clientMapper.updateUpdateClient", uc);
 	}

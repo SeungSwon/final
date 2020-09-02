@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.kh.ourwork.client.model.vo.Client;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.client.model.vo.Search;
-import com.kh.ourwork.client.model.vo.updateClient;
+import com.kh.ourwork.client.model.vo.UpdateClient;
 import com.kh.ourwork.common.Attachment;
 
 public interface ClientService {
@@ -16,7 +16,7 @@ public interface ClientService {
 
 	Client selectClient(int clId);
 
-	ArrayList<updateClient> selectUpdateHistory(int clId);
+	ArrayList<UpdateClient> selectUpdateHistory(int clId);
 
 	int insertClient(Client c);
 
@@ -30,7 +30,7 @@ public interface ClientService {
 
 	int updateClient(Client c);
 
-	int updateUpdateClient(updateClient uc);
+	int updateUpdateClient(UpdateClient uc);
 
 	ArrayList<Client> searchList(Search search);
 

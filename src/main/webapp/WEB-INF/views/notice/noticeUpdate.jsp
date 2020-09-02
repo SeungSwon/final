@@ -90,7 +90,7 @@
 <body>
     <jsp:include page="../common/menubar.jsp" />
     <div class="section"><br>
-        <jsp:include page="../common/aside.jsp" />
+        <jsp:include page="../common/noticemenu.jsp" />
         <div class="section1">
             <div class="menubar">
                     <div class="menubar">

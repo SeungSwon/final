@@ -1,7 +1,5 @@
 package com.kh.ourwork.common;
 
-import com.kh.ourwork.email.model.vo.PageInfo;
-
 public class AddrPagination {
 	// PageInfo 객체를 리턴하는 static 메소드
 	public static PageInfo getPageInfo(int currentPage, int listCount) {

@@ -118,7 +118,7 @@
 <body>
 	<jsp:include page="../common/menubar.jsp" />
     <div class="section"><br>
-       <jsp:include page="../common/aside.jsp" />
+       <jsp:include page="../common/noticemenu.jsp" />
         <div class="section1">
             <div class="menubar">
                     <button id="selected">사내 게시판</button>

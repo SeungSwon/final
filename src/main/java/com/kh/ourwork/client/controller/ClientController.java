@@ -21,7 +21,7 @@ import com.kh.ourwork.client.exception.ClientException;
 import com.kh.ourwork.client.model.service.ClientService;
 import com.kh.ourwork.client.model.vo.Client;
 import com.kh.ourwork.client.model.vo.Search;
-import com.kh.ourwork.client.model.vo.updateClient;
+import com.kh.ourwork.client.model.vo.UpdateClient;
 import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Pagination;
@@ -62,7 +62,7 @@ public class ClientController {
 		
 		Attachment at = cService.selectAttachment(clId);
 				
-		ArrayList<updateClient> list = cService.selectUpdateHistory(clId);
+		ArrayList<UpdateClient> list = cService.selectUpdateHistory(clId);
 		
 		if(c != null) {
 			mv.addObject("c", c).addObject("list", list).addObject("at", at).addObject("currentPage", currentPage).setViewName("client/clientDetailView");
@@ -218,7 +218,7 @@ public class ClientController {
 		}
         
 		int result = cService.updateClient(c);
-		updateClient uc = new updateClient(c.getClId(), "user01", reason);
+		UpdateClient uc = new UpdateClient(c.getClId(), "user01", reason);
 		int result2 = cService.updateUpdateClient(uc);
 		int result3 = cService.updateAttachment(at);
 
