@@ -20,7 +20,12 @@ public class Employee {
 	private String eBirth;
 	
 	public Employee() {}
-
+	
+	public Employee(String eId) {
+		super();
+		this.eId = eId;
+	}
+	
 	public Employee(String eId, int dId, int rId, String ePwd, String eName, String email, String phone, String address,
 			int salary, Date join_date, Date leave_date, String status, int holiday, String eBirth) {
 		super();
