@@ -12,11 +12,13 @@ public class Note {
 	private Date receiveDate;
 	private String recDel;		// 받은 사람이 삭제했는지 여부
 	private String sentDel;		// 보낸 사람이 삭제했는지 여부
+	private String recSave;		// 받은 사람이 보관했는지 여부
+	private String sentSave;	// 보낸 사람이 보관했는지 여부
 	
 	public Note() {}
 
 	public Note(int ntId, String eId, String ntContent, Date ntDate, String status, String receiver, Date receiveDate,
-			String recDel, String sentDel) {
+			String recDel, String sentDel, String recSave, String sentSave) {
 		super();
 		this.ntId = ntId;
 		this.eId = eId;
@@ -27,6 +29,8 @@ public class Note {
 		this.receiveDate = receiveDate;
 		this.recDel = recDel;
 		this.sentDel = sentDel;
+		this.recSave = recSave;
+		this.sentSave = sentSave;
 	}
 	
 	public Note(String eId, String ntContent, String receiver) {
@@ -35,7 +39,6 @@ public class Note {
 		this.ntContent = ntContent;
 		this.receiver = receiver;
 	}
-
 	public int getNtId() {
 		return ntId;
 	}
@@ -108,11 +111,27 @@ public class Note {
 		this.sentDel = sentDel;
 	}
 
+	public String getRecSave() {
+		return recSave;
+	}
+
+	public void setRecSave(String recSave) {
+		this.recSave = recSave;
+	}
+
+	public String getSentSave() {
+		return sentSave;
+	}
+
+	public void setSentSave(String sentSave) {
+		this.sentSave = sentSave;
+	}
+
 	@Override
 	public String toString() {
 		return "Note [ntId=" + ntId + ", eId=" + eId + ", ntContent=" + ntContent + ", ntDate=" + ntDate + ", status="
 				+ status + ", receiver=" + receiver + ", receiveDate=" + receiveDate + ", recDel=" + recDel
-				+ ", sentDel=" + sentDel + "]";
+				+ ", sentDel=" + sentDel + ", recSave=" + recSave + ", sentSave=" + sentSave + "]";
 	}
 	
 	

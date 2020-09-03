@@ -145,6 +145,34 @@ public class NoteDao {
 		
 	}
 
+	public int returnNote(int ntId) {
+		
+		return sqlSession.update("noteMapper.returnNote", ntId);
+	}
+
+	public int noteInSave(int ntId) {
+		
+		return sqlSession.update("noteMapper.noteInSave", ntId);
+	}
+
+	public int noteOutSave(int ntId) {
+		
+		return sqlSession.update("noteMapper.noteOutSave", ntId);
+	}
+
+	public int selectSaveListCount(Employee m) {
+		
+		return sqlSession.selectOne("noteMapper.selectSaveListCount", m);
+	}
+
+	public ArrayList<Note> selectSaveList(PageInfo pi, Employee m) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("noteMapper.selectSaveList", m, rowBounds);
+	}
+
+
 	
 }
 

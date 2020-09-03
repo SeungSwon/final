@@ -5,26 +5,6 @@
 <html lang="en">
 <head>
     <style>
-        .icons{
-            width: 50%;
-            height: 50%;
-            
-        }
-        .aside button{
-            width: 100%;
-            height: 11%;
-            background: none;
-            border: none;
-            color: white;
-            float: left;
-            margin-bottom: 4px;
-        }
-        .aside button:hover{
-            background: #1e87e4;
-        }
-        #selectedMenu{
-            background: #1e87e4;  
-        }
         
         .menubar button{
             border: none;
@@ -151,16 +131,7 @@
 <body>
     <c:import url="../common/menubar.jsp"/>
     <div class="section"><br>
-        <div class="aside">
-            <button><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
-            <button><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
-            <button onclick="location.href='calview.do'"><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
-            <button><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
-            <button onclick="location.href='ntInboxList.do'"><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
-            <button id="selectedMenu"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
-            <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
-            <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
-        </div>
+    <c:import url="../common/clientmenu.jsp"/>
         <div class="section1">
             <div class="menubar">
                 <button>주소록 조회</button>

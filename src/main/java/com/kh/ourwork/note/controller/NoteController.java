@@ -2,6 +2,8 @@ package com.kh.ourwork.note.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,23 +18,23 @@ import com.kh.ourwork.note.exception.NoteException;
 import com.kh.ourwork.note.model.service.NoteService;
 import com.kh.ourwork.note.model.vo.Note;
 import com.kh.ourwork.note.model.vo.NoteReceiver;
-
 @Controller
 public class NoteController {
 	@Autowired
 	private NoteService ntService;
 	
 	@RequestMapping("ntInboxList.do")
-	public ModelAndView noteInboxList(ModelAndView mv, @RequestParam(value="page", required=false) Integer page) {
+	public ModelAndView noteInboxList(ModelAndView mv, @RequestParam(value="page", required=false) Integer page, HttpSession session) {
 		int currentPage = page != null ? page : 1;
 		
-		Employee m = new Employee("user02");	// 나중에 로그인유저로 변경
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
-		int listCount = ntService.selectInboxListCount(m);
+		
+		int listCount = ntService.selectInboxListCount(loginUser);
 	
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		ArrayList<Note> list = ntService.selectInboxList(pi, m);
+		ArrayList<Note> list = ntService.selectInboxList(pi, loginUser);
 	
 		if(list != null) {
 			mv.addObject("list", list).addObject("pi", pi).setViewName("note/noteInboxView");
@@ -61,16 +63,9 @@ public class NoteController {
 		return mv;
 	}
 	
-	
-	
 	@RequestMapping("ntwriteView.do")
 	public String noteWriteView() {
 		return "note/noteWriteForm";
-	}
-	
-	@RequestMapping("ntwrite.do")
-	public String noteWrite(Note nt) {
-		return null;
 	}
 	
 	@RequestMapping("ntreceiverView.do")
@@ -110,17 +105,17 @@ public class NoteController {
 	public ModelAndView selectReceiver(String eId, ModelAndView mv) {
 		
 		NoteReceiver rcv = ntService.selectReceiver(eId);
-		
-		System.out.println(rcv);
-		
+				
 		mv.addObject("eId", rcv.geteId()).addObject("eName", rcv.geteName()).setViewName("note/noteWriteForm");
 		return mv;
 	}
 
 	@RequestMapping("ntsend.do")
-	public ModelAndView sendNote(String addReceiver, String ntContent, ModelAndView mv) {
+	public ModelAndView sendNote(String addReceiver, String ntContent, ModelAndView mv,HttpSession session) {
+	
+	Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
-	Note nt = new Note("user01", ntContent, addReceiver);
+	Note nt = new Note(loginUser.geteId(), ntContent, addReceiver);
 	
 	int result = ntService.sendNote(nt);
 	
@@ -134,12 +129,12 @@ public class NoteController {
 	}
 	
 	@RequestMapping("ntreply.do")
-	public ModelAndView replyNote(String eId, @RequestParam(value="page", required=false) Integer page, ModelAndView mv) {
+	public ModelAndView replyNote(String eId, @RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session) {
 		
 		int currentPage = page != null ? page : 1;
-		Employee m = new Employee("user02");
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
-		int listCount = ntService.selectInboxListCount(m);
+		int listCount = ntService.selectInboxListCount(loginUser);
 	
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
@@ -150,16 +145,15 @@ public class NoteController {
 	}
 	
 	@RequestMapping("replysend.do")
-	public ModelAndView replySend(String addReceiver, String ntContent, Integer page, ModelAndView mv) {
+	public ModelAndView replySend(String addReceiver, String ntContent, Integer page, ModelAndView mv, HttpSession session) {
 		
 		int currentPage = page != null ? page : 1;
-		Employee m = new Employee("user02");
-		
-		int listCount = ntService.selectInboxListCount(m);
+		Employee loginUser = (Employee)session.getAttribute("loginUser");		
+		int listCount = ntService.selectInboxListCount(loginUser);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		Note nt = new Note("user01", ntContent, addReceiver);
+		Note nt = new Note(loginUser.geteId(), ntContent, addReceiver);
 		
 		int result = ntService.sendNote(nt);
 		
@@ -173,13 +167,11 @@ public class NoteController {
 		}
 	
 	@RequestMapping("ntInDelete.do")
-	public ModelAndView ntInDelete(int ntId, @RequestParam(value="page", required=false) Integer page, ModelAndView mv) {
+	public ModelAndView ntInDelete(int ntId, @RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session) {
 		int currentPage = page != null ? page : 1;
-		Employee m = new Employee("user02");
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
-		System.out.println("ntId="+ntId);
-		
-		int listCount = ntService.selectInboxListCount(m);
+		int listCount = ntService.selectInboxListCount(loginUser);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
@@ -194,17 +186,17 @@ public class NoteController {
 	}
 	
 	@RequestMapping("ntOutboxList.do")
-	public ModelAndView noteOutboxList(ModelAndView mv, @RequestParam(value="page", required=false) Integer page) {
+	public ModelAndView noteOutboxList(ModelAndView mv, @RequestParam(value="page", required=false) Integer page, HttpSession session) {
 
 		int currentPage = page != null ? page : 1;
-		Employee m = new Employee("user01");	// 나중에 로그인유저로 변경
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
-		int listCount = ntService.selectOutboxListCount(m);
+		int listCount = ntService.selectOutboxListCount(loginUser);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		ArrayList<Note> list = ntService.selectOutboxList(pi, m);
-		
+		ArrayList<Note> list = ntService.selectOutboxList(pi, loginUser);
+				
 		if(list != null) {
 			mv.addObject("list", list).addObject("pi", pi).setViewName("note/noteOutboxView");
 		}else {
@@ -219,8 +211,6 @@ public class NoteController {
 		
 		Note nt = ntService.selectNote(ntId);
 		
-		System.out.println(nt);
-		
 		if(nt != null) {
 			mv.addObject("nt", nt).addObject("currentPage", currentPage).setViewName("note/noteOutDetailView");
 		}else {
@@ -230,12 +220,11 @@ public class NoteController {
 	}
 	
 	@RequestMapping("ntOutDelete.do")
-	public ModelAndView ntOutDelete(int ntId, @RequestParam(value="page",required=false) Integer page, ModelAndView mv) {
+	public ModelAndView ntOutDelete(int ntId, @RequestParam(value="page",required=false) Integer page, ModelAndView mv, HttpSession session) {
 		int currentPage = page != null ? page : 1;
 		
-		Employee m = new Employee("user01");
-		
-		int listCount = ntService.selectOutboxListCount(m);
+		Employee loginUser = (Employee)session.getAttribute("loginUser");		
+		int listCount = ntService.selectOutboxListCount(loginUser);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
@@ -249,12 +238,15 @@ public class NoteController {
 		return mv;
 	}
 	
+	
+	//----------------------------------
+	/* 수정하기 */
 	@RequestMapping("ntInsearch.do")
-	public ModelAndView noteInboxSearch(Search search, ModelAndView mv, @RequestParam(value="page", required=false) Integer page) {
+	public ModelAndView noteInboxSearch(Search search, ModelAndView mv, @RequestParam(value="page", required=false) Integer page, HttpSession session) {
 		
 		int currentPage = page != null ? page : 1;
-		Employee m = new Employee("user02");	// 나중에 로그인유저로 변경
-
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
 		int listCount = ntService.inboxSearchListCount(search);
 	
 		
@@ -265,25 +257,153 @@ public class NoteController {
 		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).setViewName("note/noteInboxView");
 		return mv;
 	}
-	
+	//----------------------------------
 	@RequestMapping("deleteInSelected.do")
-	public String deleteInSelected(@RequestParam(value="check") Integer[] check) {
+	public ModelAndView deleteInSelected(@RequestParam(value="check") Integer[] check, ModelAndView mv) {
+		
+		int result = 0;
 		
 		for(int ntId : check) {
-			int result = ntService.ntInDelete(ntId);
+			result = ntService.ntInDelete(ntId);
+			result++;
 		}
-		return "redirect:ntInboxList.do";
+
+		String msg = result+"개의 쪽지가 삭제되었습니다.";
+		mv.addObject("msg", msg).setViewName("note/noteInboxView");
+		return mv;
 		
 	}
 	@RequestMapping("deleteOutSelected.do")
-	public String deleteOutSelected(@RequestParam(value="check") Integer[] check) {
+	public ModelAndView deleteOutSelected(@RequestParam(value="check") Integer[] check, ModelAndView mv) {
+		
+		int result = 0;
 		
 		for(int ntId : check) {
-			int result = ntService.ntOutDelete(ntId);
+			result = ntService.ntOutDelete(ntId);
+			result++;
 		}
-		return "redirect:ntOutboxList.do";
+		String msg = result+"개의 쪽지가 삭제되었습니다.";
+		mv.addObject("msg", msg).setViewName("note/noteOutboxView");
+		return mv;
 		
 	}
+	
+	
+	
+	@RequestMapping("returnNote.do")
+	public ModelAndView returnNote(int ntId, ModelAndView mv) {
+		
+		int result = ntService.returnNote(ntId);
+		if(result>0) {
+			mv.setViewName("redirect:ntOutboxList.do");
+		}else {
+			throw new NoteException("쪽지 발송 취소에 실패하였습니다.");
+		}
+		return mv;
+	}
+	
+	@RequestMapping("ntInsave.do")
+	public ModelAndView noteInSave(int ntId, ModelAndView mv) {
+		int result = ntService.noteInSave(ntId);
+		
+		if(result>0) {
+			mv.setViewName("redirect:ntInboxList.do");
+		}else {
+			throw new NoteException("쪽지 보관에 실패하였습니다.");
+		}
+		return mv;
+	}
+	
+	@RequestMapping("ntOutsave.do")
+	public ModelAndView noteOutSave(int ntId, ModelAndView mv) {
+		int result = ntService.noteOutSave(ntId);
+		
+		if(result>0) {
+			mv.setViewName("redirect:ntOutboxList.do");
+		}else {
+			throw new NoteException("쪽지 보관에 실패하였습니다.");
+		}
+		return mv;
+	}
+	
+
+	@RequestMapping("ntsaveList.do")
+	public ModelAndView noteSaveList(ModelAndView mv, @RequestParam(value="page", required=false) Integer page, HttpSession session) {
+		int currentPage = page != null ? page : 1;
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
+		int listCount = ntService.selectSaveListCount(loginUser);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Note> list = ntService.selectSaveList(pi, loginUser);
+		
+		if(list != null) {
+			mv.addObject("list", list).addObject("pi", pi).setViewName("note/noteSaveView");
+		}else {
+			throw new NoteException("쪽지 보관함 조회에 실패하였습니다.");
+		}
+		return mv;
+	}
+	
+	@RequestMapping("ntSavedetail.do")
+	public ModelAndView noteSaveDetail(ModelAndView mv, int ntId, @RequestParam("page") Integer page) {
+		int currentPage = page != null ? page : 1;
+		Note nt = ntService.selectNote(ntId);
+		
+		if(nt != null) {
+			mv.addObject("nt", nt).addObject("currentPage", currentPage).setViewName("note/noteSaveDetailView");
+		}else { 
+			 throw new NoteException("받은 쪽지 상세조회에 실패하였습니다."); 
+		 }
+		return mv;
+	}
+	
+	// 보관한 쪽지 삭제
+	@RequestMapping("ntSaveDelete.do")
+	public ModelAndView ntSaveDelete(int ntId, @RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session) {
+		int currentPage = page != null ? page : 1;
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
+		int listCount = ntService.selectSaveListCount(loginUser);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		Note nt = ntService.selectNote(ntId);
+		
+		System.out.println("발신자="+nt.geteId()+", 수신자="+nt.getReceiver());
+		int result = 0;
+		if(nt.geteId().equals(loginUser.geteId())) {
+			result = ntService.ntOutDelete(ntId);
+		}else if(nt.getReceiver().equals(loginUser.geteId())) {
+			result = ntService.ntInDelete(ntId);
+		}
+		
+		if(result > 0) {
+			mv.addObject("pi", pi).setViewName("redirect:ntsaveList.do");
+		}else {
+			throw new NoteException("쪽지 삭제에 실패하였습니다.");
+		}
+		return mv;
+	}
+	@RequestMapping("deleteSaveSelected.do")
+	public ModelAndView deleteSaveSelected(@RequestParam(value="check") Integer[] check, HttpSession session, ModelAndView mv) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+
+		int result = 0;
+		for(int ntId : check) {
+			Note nt = ntService.selectNote(ntId);
+			
+			if(nt.geteId().equals(loginUser.geteId())) {
+				result = ntService.ntOutDelete(ntId);
+			}else if(nt.getReceiver().equals(loginUser.geteId())) {
+				result = ntService.ntInDelete(ntId);
+			}
+		}
+		return mv;
+
+	}
+	
+	
 	
 }
 

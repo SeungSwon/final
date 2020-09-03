@@ -14,47 +14,28 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+     <script>
+		$(function(){
+	        var msg = "<c:out value='${msg}'/>";
+	        if(msg != ""){
+	            alert(msg);
+	        }
+	    }) 
+	</script>
     <style>
-        .icons{
-            width: 50%;
-            height: 50%;
-            
-        }
-        .aside button{
-            width: 100%;
-            height: 11%;
-            background: none;
-            border: none;
-            color: white;
-            float: left;
-            margin-bottom: 4px;
-        }
-        .aside button:hover{
-            background: #1e87e4;
-        }
-        #selectedMenu{
-            background: #1e87e4;  
-        }
-        .top_profile button{
-            margin-top: 30px;
-            margin-right: 20px;
-        }
-        .dropdown-toggle{
-            border: none;
-            background: none;
-        }
-        .menubar button{
-            border: none;
-            background: none;
-            width: 100%;
-            height: 50px;
-            margin-top: 20px;
-        }
-        .menubar button:hover{
-            font-weight: bold;  
-            color:#1e87e4;
-           
-        }
+       .menubar button {
+		   border: none;
+		   background: none;
+		   width: 100%;
+		   height: 50px;
+		   margin-top: 20px;
+		}
+		
+		.menubar button:hover {
+		   color: #1e87e4;
+		   font-weight: bold;
+		}
+		
         /* sidebar 버튼 선택되었을 때 */
         #selected{
             font-weight: bold;  
@@ -73,7 +54,7 @@
             text-align: center;
             margin: 0px 2%;
         }
-        #searchCondition{
+        #searchMenu{
             margin: 20px 2%;
             padding: 0px 0px;
         }
@@ -160,33 +141,30 @@
             font-weight: bold;
             float: left;
         }
+        #return{
+        	color: red;
+        }
+        #toDetail{
+        	color: black;
+        }
     </style>
 </head>
 
 <body>
 	<c:import url="../common/menubar.jsp"/>
     <div class="section"><br>
-        <div class="aside">
-            <button><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
-            <button><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
-            <button onclick="location.href='calview.do'"><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
-            <button><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
-            <button id="selectedMenu" onclick="location.href='ntInboxList.do'"><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
-            <button onclick="location.href='clist.do'"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
-            <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
-            <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
-        </div>
+        <c:import url="../common/notemenu.jsp"/>
         <div class="section1">
             <div class="menubar">
                 <button>채팅</button>
                 <button onclick="location.href='ntwriteView.do'">쪽지 쓰기</button>
                 <button onclick="location.href='ntInboxList.do'">받은 쪽지함</button>
                 <button id="selected" onclick="location.href='ntOutboxList.do'">보낸 쪽지함</button>
-                <button>쪽지 보관함</button>
+                <button onclick="location.href='ntsaveList.do'">쪽지 보관함</button>
             </div>
         </div>
         <div class="section2">
-                <div id="searchCondition" align="right">
+                <div id="searchMenu" align="right">
                     <p class="title">보낸 쪽지함</p>
                     	<form action="ntsearch.do" name="searchForm" method="get">
 	                        <select id="searchCondition" name="searchCondition">
@@ -211,6 +189,12 @@
 	                            </thead>
 	                            <tbody>
 	                            	<c:forEach var="nt" items="${ list }">
+	                            		
+	                            		<c:if test="${ list.size() eq 0 }">
+		                            		<tr>
+		                            			<td colspan="4">보낸 쪽지가 없습니다.</td>
+		                            		</tr>
+	                            		</c:if>
 		                                <tr>
 		                                    <td><input name="check" type="checkbox" value="${ nt.ntId }"></td>
 		                                    <td>${ nt.receiver }</td>
@@ -219,14 +203,21 @@
 		                                    		<c:param name="ntId" value="${ nt.ntId }"/>
 		                                    		<c:param name="page" value="${ pi.currentPage }"/>
 		                                    	</c:url>
-		                                    	<a href="${ ntdetail }" id="toDetail">${ nt.ntContent }</a>
+		                                    	<c:if test="${ nt.status eq 'N'}">
+		                                    		<a id="return">[발송취소]</a><a href="${ ntdetail }" id="toDetail">${ nt.ntContent }</a>
+		                                    	</c:if>
+		                                    	<c:if test="${ nt.status eq 'Y' }">
+		                                    		<a href="${ ntdetail }" id="toDetail">${ nt.ntContent }</a>
+		                                    	</c:if>
 		                                    </td>
 		                                    <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${ nt.ntDate }"/></td>
 		                                </tr>
 	                                </c:forEach>
 	                            </tbody>
 	                        </table>
-	                        <button type="submit" class="btn btn-secondary btn-sm" id="deleteSelected">선택삭제</button>	                        
+	                        
+	                        <button type="submit" class="btn btn-secondary btn-sm" id="deleteSelected">선택삭제</button>	   
+                  
 	                        </form>
                     	</div>
                     	<hr>
