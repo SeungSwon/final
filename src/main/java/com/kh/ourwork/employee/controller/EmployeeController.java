@@ -62,7 +62,7 @@ public class EmployeeController {
 	public String employeeInsert(Employee e, RedirectAttributes rd, @RequestParam("post") String post,
 			@RequestParam("address1") String address1, @RequestParam("address2") String address2) {
 
-		System.out.println("emplyee : " + e);
+		
 
 		e.setAddress(post + "," + address1 + "," + address2);
 

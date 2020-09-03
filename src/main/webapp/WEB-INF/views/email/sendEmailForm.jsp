@@ -251,7 +251,7 @@ ul {
 	            	if(isEmail(textarea.value)){
 	                var $li = $("<li>");
 	                var $div = $("<div id='addMail' class='mgr'>");
-	                var str = $("#ra1").val().substring(0, $("#ra1").val().length - 1);
+	                var str = $("#ra1").val();
 	                var $span = $("<span>").text(str);
 	                var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
 	                var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
@@ -338,7 +338,7 @@ ul {
             	} else {
             		var $li = $("<li>");
                     var $div = $("<div id='failMail' class='mgr'>");
-                    var str = $("#ra2").val().substring(0, $("#ra2").val().length - 1);
+                    var str = $("#ra2").val();
                     var $span = $("<span>").text(str);
                     var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                     var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
@@ -411,7 +411,7 @@ ul {
             } else{
             	var $li = $("<li>");
                 var $div = $("<div id='failMail' class='mgr'>");
-                var str = $("#ra3").val().substring(0, $("#ra3").val().length - 1);
+                var str = $("#ra3").val();
                 var $span = $("<span>").text(str);
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");

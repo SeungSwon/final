@@ -10,7 +10,7 @@
 		<typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
 		<typeAlias type="com.kh.ourwork.notice.model.vo.Notice" alias="Notice"/>
 		<typeAlias type="com.kh.ourwork.client.model.vo.Client" alias="Client"/>
-		<typeAlias type="com.kh.ourwork.client.model.vo.updateClient" alias="updateClient"/>
+		<typeAlias type="com.kh.ourwork.client.model.vo.UpdateClient" alias="UpdateClient"/>
 		<typeAlias type="com.kh.ourwork.common.Attachment" alias="Attachment"/>
 		<typeAlias type="com.kh.ourwork.client.model.vo.Search" alias="Search"/>
 		<typeAlias type="com.kh.ourwork.note.model.vo.Note" alias="Note"/>
