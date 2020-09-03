@@ -129,13 +129,23 @@
         <div class="section2">
             <div id="test" align="right">
                 <p class="title">사내 게시판</p>
-                <select>
-                    <option>------</option>
-                    <option>작성자</option>
-                    <option>내용</option>
+                <from action="nsearch.do" name="searchForm" method="get">
+                
+                <select id="searchCondition" name="searchCondition">
+                    <option value="all"
+						<c:if test="${search.searchCondition == 'all' }">selected
+						</c:if>>전체</option>
+                    <option value="writer"
+					<c:if test="${search.searchCondition == 'writer'}">selected
+						</c:if>>작성자</option>
+					<option value="title"
+						<c:if test="${search.searchCondition == 'title'}">selected
+					</c:if>>제목</option>
                 </select>
-                <input type="text">
-                <button type="button" class="btn btn-secondary btn-sm">검색</button>
+                <input type="search" name="searchValue" value="${ search.searchValue }">
+                <!-- 검색이 sumbit안됩니다.. 이유가 뭘까요. -->
+                <button type="submit" class="btn btn-secondary btn-sm">검색</button>
+                </from>
                 
                 <!-- 여기 if문으로 짜름 만약 did 1(인사) 이면 보여주고 -->
                 <%-- <c:if test="${ loginUser.dId == 1 }"> --%>

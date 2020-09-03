@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="noteMapper">
+
+	<resultMap id="noteResultSet" type="Note">
+		<id property="ntId" column="NTID"/>
+		<result property="eId" column="EID"/>
+		<result property="ntContent" column="NTCONTENT"/>
+		<result property="ntDate" column="NTDATE"/>
+		<result property="status" column="STATUS"/>
+		<result property="receiver" column="RECEIVER"/>
+		<result property="receiveDate" column="RECEIVE_DATE"/>
+		<result property="recDel" column="REC_DEL"/>
+		<result property="sentDel" column="SENT_DEL"/>
+	</resultMap>
+	
+	<resultMap id="employeeResultSet" type="NoteReceiver">
+		<id property="eId" column="EID"/>
+		<result property="eName" column="ENAME"/>
+		<result property="dName" column="DNAME"/>
+		<result property="rName" column="RNAME"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+	
+	<!-- 받은 쪽지함 개수 -->
+	<select id="selectInboxListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM NOTE
+		WHERE RECEIVER=#{eId}
+		AND REC_DEL='N'
+	</select>
+	
+	<!-- 받은 쪽지함 리스트 조회 -->
+	<select id="selectInboxList" resultMap="noteResultSet">
+		SELECT *
+		FROM NOTE
+		WHERE RECEIVER=#{eId}
+		AND REC_DEL='N'
+		ORDER BY NTDATE DESC
+	</select>
+	
+	<!-- 쪽지 상세조회 -->
+	<select id="selectNote" resultType="Note">
+		SELECT *
+		FROM NOTE
+		WHERE NTID=#{ntId}
+	</select>
+	
+	<!-- 쪽지 읽은 시간 추가 -->
+	<update id="addReceiveDate" parameterType="_int">
+		UPDATE NOTE
+		SET RECEIVE_DATE=SYSDATE
+		WHERE NTID=#{ntId}
+	</update>
+	
+	<!-- 모든 직원 -->
+	<select id="selectAllMemberCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE STATUS='Y'
+	</select>
+	
+	<select id="selectAllMember" resultMap="employeeResultSet">
+		SELECT EID, DNAME, RNAME, ENAME
+		FROM EMPLOYEE
+		JOIN DEPARTMENT USING(DID)
+		JOIN RANK USING(RID)
+		WHERE STATUS='Y'
+	</select>
+	
+	<!-- 직원 검색 -->
+	<select id="receiverSearchCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE ENAME LIKE '%' || #{searchValue} || '%'
+		AND STATUS='Y'
+	</select>
+	
+	<select id="receiverSearch" resultMap="employeeResultSet">
+		SELECT EID, DNAME, RNAME, ENAME
+		FROM EMPLOYEE
+		JOIN DEPARTMENT USING(DID)
+		JOIN RANK USING(RID)
+		WHERE ENAME LIKE '%' || #{searchValue} || '%'
+	</select>
+	
+	<!-- 직원 선택 -->
+	<select id="selectReceiver" resultType="NoteReceiver">
+		SELECT *
+		FROM EMPLOYEE
+		WHERE EID=#{eId}
+	</select>
+	
+	<!-- 쪽지 보내기 -->
+	<insert id="sendNote" parameterType="Note">
+		INSERT INTO NOTE
+		VALUES(SEQ_NTID.NEXTVAL, 'user01', #{ntContent}, SYSDATE, DEFAULT, #{receiver}, NULL, DEFAULT, DEFAULT)
+	</insert>
+	
+	<!-- 받은 쪽지함에서 쪽지 삭제 -->
+	<update id="ntInDelete" parameterType="_int">
+		UPDATE NOTE
+		SET REC_DEL='Y'
+		WHERE NTID=#{ntId}
+	</update>
+	
+	<!-- 보낸 쪽지함 -->
+	<select id="selectOutboxListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM NOTE
+		WHERE EID=#{eId}
+		AND SENT_DEL='N'
+	</select>
+	
+	<select id="selectOutboxList" resultMap="noteResultSet">
+		SELECT *
+		FROM NOTE
+		WHERE EID=#{eId}
+		AND SENT_DEL='N'
+		ORDER BY NTDATE DESC
+	</select>
+	
+	<!-- 보낸 쪽지함에서 쪽지 삭제 -->
+	<update id="ntOutDelete" parameterType="_int">
+		UPDATE NOTE
+		SET SENT_DEL='Y'
+		WHERE NTID=#{ntId}
+	</update>
+	
+	<select id="inboxSearchListCount" resultType="_int">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT COUNT(*)
+		FROM NOTE
+		<where>
+			<choose>
+				<when test="searchCondition == 'sender'">
+					AND EID LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'content'">
+					AND NTCONTENT LIKE #{sv}
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	<select id="inboxSearchList" resultMap="noteResultSet">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT *
+		FROM NOTE
+		<where>
+			<choose>
+				<when test="searchCondition == 'sender'">
+					AND EID LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'content'">
+					AND NTCONTENT LIKE #{sv}
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
