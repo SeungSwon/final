@@ -13,7 +13,11 @@
 #approval {
 	background-color: #1e87e4;
 }
-
+.menubar{
+	background:white;
+	border-top:1px solid black;
+	height:950px;
+}
 .title {
 	font-size: 20px;
 	color: rgba(78, 78, 78, 0.952);
@@ -39,6 +43,10 @@
 	background: none;
 	width: 100%;
 	height: 50px;
+}
+
+#selectedAmenu{
+	background: #1e87e4;
 }
 
 /*-----------------modal------------------------*/
@@ -77,11 +85,10 @@
 </head>
 <body>
 	<div class="aside">
-		<button onclick="location.href='receiveMailList.do'"><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
-            <button onclick="location.href='ahome.do'"><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
+			<button id="selectedEmenu" onclick="location.href='receiveMailList.do'"><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
+            <button id ="selectedAmenu" onclick="location.href='ahome.do'"><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
             <button><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
-            <c:url var="noticeMain" value="noticeMain.do"/>
-            <button onclick="location.href='${ noticeMain }'"><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
+            <button onclick="location.href='noticeMain.do'"><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
             <button onclick="location.href='ntInboxList.do'"><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
             <button onclick="location.href='eAddress.do'"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
             <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
@@ -99,9 +106,8 @@
                     </svg>
 			</button>
 			<div class="dropdown-container">
-				<button data-toggle="modal" data-target="#exampleModal">기안문
-					작성</button>
-				<button id="menu1">기안문서함</button>
+				<button id="menu1" data-toggle="modal" data-target="#exampleModal">기안문작성</button>
+				<button id="menu2">기안문서함</button>
 				<button>임시저장함</button>
 			</div>
 			<button class="dropdown-btn" style="font-weight: bold">
