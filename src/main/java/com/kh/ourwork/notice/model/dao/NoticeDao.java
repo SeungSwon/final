@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.notice.model.vo.Notice;
 
@@ -44,6 +45,21 @@ public class NoticeDao {
 
 	public int deleteNotice(int nNo) {
 		return sqlSession.update("noticeMapper.deleteNotice", nNo);
+	}
+
+
+	public int insertNotice(Notice n) {
+		return sqlSession.insert("noticeMapper.insertNotice", n);
+	}
+
+
+	public int insertAttachment(Attachment at) {
+		return sqlSession.insert("noticeMapper.insertAttachment", at);
+	}
+
+
+	public Attachment selectAttachment(int nNo) {
+		return sqlSession.selectOne("noticeMapper.selectAttachment", nNo);
 	}
 
 

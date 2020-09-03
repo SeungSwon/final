@@ -2,6 +2,7 @@ package com.kh.ourwork.notice.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.notice.model.vo.Notice;
 
@@ -22,6 +23,13 @@ public interface NoticeService {
 
 	// 게시글 삭제
 	int deleteNotice(int nNo);
+
+	// 게시글 추가
+	int insertNotice(Notice n);
+
+	int insertAttachment(Attachment at);
+
+	Attachment selectAttachment(int nNo);
 	
 
 	

@@ -30,6 +30,6 @@
 		<mapper resource="mappers/email-mapper.xml"/>
   	<mapper resource="mappers/approval-mapper.xml"/>
     <mapper resource="mappers/member-mapper.xml"/>
-	</mappers>
+	</mappers>	
 </configuration>
 

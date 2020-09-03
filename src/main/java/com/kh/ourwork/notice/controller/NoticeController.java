@@ -1,6 +1,10 @@
 package com.kh.ourwork.notice.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,12 +13,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Pagination;
+import com.kh.ourwork.common.Search;
 import com.kh.ourwork.notice.model.exception.NoticeException;
 import com.kh.ourwork.notice.model.service.NoticeService;
 import com.kh.ourwork.notice.model.vo.Notice;
@@ -45,6 +53,7 @@ public class NoticeController {
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
+//			여기에 loginUser담아가야함
 			mv.setViewName("notice/noticeMain");
 		} else {
 			mv.addObject("msg", "공지사항 목록 조회에 실패하였습니다.");
@@ -84,8 +93,10 @@ public class NoticeController {
 		
 		notice = nService.selectNotice(nNo, flag);
 		
+		Attachment at = nService.selectAttachment(nNo);
+		
 		if(notice != null) {
-			mv.addObject("notice", notice)
+			mv.addObject("notice", notice).addObject("at", at)
 			  .addObject("currentPage", currentPage)
 			  .setViewName("notice/noticeDetail");
 		}else {
@@ -114,6 +125,69 @@ public class NoticeController {
 		
 		return mv;
 	}
+	
+	// 게시판 등록
+	@RequestMapping("ninsert.do")
+	public String noticeInsert(Notice n, HttpServletRequest request,
+							   @RequestParam(value="uploadFile", required=false) MultipartFile file) {
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "/images/clientUploadFiles";
+		File folder = new File(savePath);
+		
+		int result1 = nService.insertNotice(n);
+		
+		
+		if(!file.getOriginalFilename().equals("")&& result1 >0) {
+			String renameFileName = saveFile(file, request);
+			String renamePath = folder + "/" + renameFileName;
+			
+			
+			if(renameFileName != null) {
+				Attachment at = new Attachment(renamePath, file.getOriginalFilename(), renameFileName, new Date(), 70);
+				int result2 = nService.insertAttachment(at);
+				
+			}
+		}
+		
+		if(result1>0) {
+			return "redirect:noticeMain.do";
+		}else {
+			throw new NoticeException("게시물 등록에 실패하였습니다.");
+		}
+		
+	}
+	
+	
+	// 파일 저장 메소드
+	private String saveFile(MultipartFile file, HttpServletRequest request) {
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		
+		String savePath = root + "/images/clientUploadFiles";
+		
+		File folder = new File(savePath);
+		
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String originFileName = file.getOriginalFilename();
+		String renameFileName = sdf.format(new Date()) + originFileName.substring(originFileName.lastIndexOf("."));
+	
+		String renamePath = folder + "/" + renameFileName;
+		
+		try {
+			file.transferTo(new File(renamePath));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		return renameFileName;
+	}
+	
+	
+	
 	
 	// 수정페이지에서 수정을 눌럿을때
 	@RequestMapping("updateno.do")
@@ -147,6 +221,19 @@ public class NoticeController {
 		}else {
 			throw new NoticeException("게시물 삭제에 실패하였습니다.");
 		}
+	}
+	
+	
+	// 검색 기능
+	@RequestMapping("nsearch.do")
+	public String noticeSearch(Search search, Model model) {
+		System.out.println("들어는 왔냐?");
+		System.out.println(search.getSearchCondition());
+		System.out.println(search.getSearchValue());
+		
+//		ArrayList<Notice> searchList = nService.searchList(search);
+		
+		return null;
 	}
 	
 	

@@ -12,6 +12,8 @@
 		<result property="receiveDate" column="RECEIVE_DATE"/>
 		<result property="recDel" column="REC_DEL"/>
 		<result property="sentDel" column="SENT_DEL"/>
+		<result property="recSave" column="REC_SAVE"/>
+		<result property="sentSave" column="SENT_SAVE"/>
 	</resultMap>
 	
 	<resultMap id="employeeResultSet" type="NoteReceiver">
@@ -28,6 +30,8 @@
 		FROM NOTE
 		WHERE RECEIVER=#{eId}
 		AND REC_DEL='N'
+		AND STATUS='Y'
+		AND REC_SAVE='N'
 	</select>
 	
 	<!-- 받은 쪽지함 리스트 조회 -->
@@ -36,6 +40,8 @@
 		FROM NOTE
 		WHERE RECEIVER=#{eId}
 		AND REC_DEL='N'
+		AND STATUS='Y'
+		AND REC_SAVE='N'		
 		ORDER BY NTDATE DESC
 	</select>
 	
@@ -53,7 +59,7 @@
 		WHERE NTID=#{ntId}
 	</update>
 	
-	<!-- 모든 직원 -->
+	<!-- 모든 직원 조회 -->
 	<select id="selectAllMemberCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM EMPLOYEE
@@ -94,7 +100,7 @@
 	<!-- 쪽지 보내기 -->
 	<insert id="sendNote" parameterType="Note">
 		INSERT INTO NOTE
-		VALUES(SEQ_NTID.NEXTVAL, 'user01', #{ntContent}, SYSDATE, DEFAULT, #{receiver}, NULL, DEFAULT, DEFAULT)
+		VALUES(SEQ_NTID.NEXTVAL, #{eId}, #{ntContent}, SYSDATE, DEFAULT, #{receiver}, NULL, DEFAULT, DEFAULT)
 	</insert>
 	
 	<!-- 받은 쪽지함에서 쪽지 삭제 -->
@@ -110,6 +116,7 @@
 		FROM NOTE
 		WHERE EID=#{eId}
 		AND SENT_DEL='N'
+		AND SENT_SAVE='N'
 	</select>
 	
 	<select id="selectOutboxList" resultMap="noteResultSet">
@@ -117,6 +124,7 @@
 		FROM NOTE
 		WHERE EID=#{eId}
 		AND SENT_DEL='N'
+		AND SENT_SAVE='N'
 		ORDER BY NTDATE DESC
 	</select>
 	
@@ -141,6 +149,7 @@
 				</when>
 			</choose>
 		</where>
+		AND REC_SAVE='N'
 	</select>
 	
 	<select id="inboxSearchList" resultMap="noteResultSet">
@@ -157,8 +166,44 @@
 				</when>
 			</choose>
 		</where>
+		AND SENT_SAVE='N'
 	</select>
 	
+	<!-- 보낸 쪽지 발송 취소 -->
+	<update id="returnNote" parameterType="_int">
+		UPDATE NOTE
+		SET STATUS='N'
+		WHERE NTID=#{ntId}
+	</update>
+	
+	<!-- 받은 쪽지함에서 보관함으로 이동 -->
+	<update id="noteInSave" parameterType="_int">
+		UPDATE NOTE
+		SET REC_SAVE='Y'
+		WHERE NTID=#{ntId}
+	</update>
+	
+	<!-- 보낸 쪽지함에서 보관함으로 이동 -->
+	<update id="noteOutSave" parameterType="_int">
+		UPDATE NOTE
+		SET SENT_SAVE='Y'
+		WHERE NTID=#{ntId}
+	</update>
+	
+	<!-- 쪽지 보관함 개수 조회 -->
+	<select id="selectSaveListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM NOTE
+		WHERE (EID=#{eId} AND SENT_SAVE='Y')
+        OR (RECEIVER=#{eId} AND REC_SAVE='Y')
+	</select>
+	
+	<select id="selectSaveList" resultMap="noteResultSet">
+		SELECT *
+		FROM NOTE
+		WHERE (EID=#{eId} AND SENT_SAVE='Y')
+        OR (RECEIVER=#{eId} AND REC_SAVE='Y')
+	</select>
 	
 </mapper>
 

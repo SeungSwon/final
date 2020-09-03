@@ -24,7 +24,7 @@
 		SELECT *
 		FROM EMPLOYEE
 		WHERE EID= #{eId}
-		AND STATUS='I'
+		AND STATUS='Y'
 	</select> 
 	
 	<insert id="insertEmployee" parameterType="Employee">

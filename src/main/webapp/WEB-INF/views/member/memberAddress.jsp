@@ -273,7 +273,8 @@
         <div class="section1">
             <div class="menubar">
                 <button>&emsp;&emsp;주소록 조회&emsp;&emsp;&nbsp;</button>
-               
+                <button id="selected" onclick="location.href='clist.do'">거래처 조회</button>
+                <button id="insertClient" onclick="location.href='cinsertView.do'">거래처 등록</button>
             </div>
         </div>
         <div class="section2">

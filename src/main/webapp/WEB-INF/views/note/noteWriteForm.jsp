@@ -21,42 +21,22 @@
 	    }) 
 	</script>
     <style>
-        .icons{
-            width: 50%;
-            height: 50%;
+    	.menubar button {
+		   border: none;
+		   background: none;
+		   width: 100%;
+		   height: 50px;
+		   margin-top: 20px;
+		}
+		
+		.menubar button:hover {
+		   color: #1e87e4;
+		   font-weight: bold;
+		}
+		.icons{
+            width: 40%;
+            height: 40%;
             
-        }
-        .aside button{
-            width: 100%;
-            height: 11%;
-            background: none;
-            border: none;
-            color: white;
-            float: left;
-            margin-bottom: 4px;
-        }
-        .aside button:hover{
-            background: #1e87e4;
-        }
-        .top_profile button{
-            margin-top: 30px;
-            margin-right: 20px;
-        }
-        .dropdown-toggle{
-            border: none;
-            background: none;
-        }
-        .menubar button{
-            border: none;
-            background: none;
-            width: 100%;
-            height: 50px;
-            margin-top: 20px;
-        }
-        .menubar button:hover{
-            font-weight: bold;  
-            color:#1e87e4;
-           
         }
         /* sidebar 버튼 선택되었을 때 */
         #selected{
@@ -92,23 +72,14 @@
 <body>
 	<c:import url="../common/menubar.jsp"/>
     <div class="section"><br>
-        <div class="aside">
-            <button><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
-            <button><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
-            <button><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
-            <button><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
-            <button id="selectedMenu" onclick="location.href='ntInboxList.do'"><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
-            <button onclick="location.href='clist.do'"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
-            <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
-            <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
-        </div>
+	    <c:import url="../common/notemenu.jsp"/>
         <div class="section1">
             <div class="menubar">
                 <button>채팅</button>
-                <button id="selected">쪽지 쓰기</button>
-                <button>받은 쪽지함</button>
-                <button>보낸 쪽지함</button>
-                <button>쪽지 보관함</button>
+	            <button id="selected" onclick="location.href='ntwriteView.do'">쪽지 쓰기</button>
+	           	<button onclick="location.href='ntInboxList.do'">받은 쪽지함</button>
+	       		<button onclick="location.href='ntOutboxList.do'">보낸 쪽지함</button>
+	       		<button>쪽지 보관함</button>
             </div>
         </div>
         <div class="section2">

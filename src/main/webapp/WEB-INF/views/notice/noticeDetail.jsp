@@ -142,10 +142,12 @@
                 <tr class="tatr">
                     <td class="division">첨부파일</td>
                     <td class="in">
-                    	<!-- 여기 첨부파일 넣어야함 -->
-                    	<%-- <c:if test="${ !empty board.originalFileName }">
-							<a href="${ contextPath }/resources/buploadFiles/${ board.renameFileName }" download>${ board.originalFileName }</a>
-						</c:if> --%>
+                    	<c:if test="${ !empty at.originName }">
+                            <a href="${ contextPath }/resources/images/clientUploadFiles/${ at.changeName }" download>${ at.originName }</a>
+                        </c:if> 
+                        <c:if test="${ empty at.originName }">
+                            등록된 파일이 없습니다.
+                        </c:if> 
                     </td>
                 </tr>
                 <tr class="tatr">

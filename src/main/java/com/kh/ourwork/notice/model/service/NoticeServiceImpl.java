@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.notice.model.dao.NoticeDao;
 import com.kh.ourwork.notice.model.vo.Notice;
@@ -42,6 +43,21 @@ public class NoticeServiceImpl implements NoticeService {
 	// 게시글 삭제
 	public int deleteNotice(int nNo) {
 		return nDao.deleteNotice(nNo);
+	}
+
+	@Override
+	public int insertNotice(Notice n) {
+		return nDao.insertNotice(n);
+	}
+
+	@Override
+	public int insertAttachment(Attachment at) {
+		return nDao.insertAttachment(at);
+	}
+
+	@Override
+	public Attachment selectAttachment(int nNo) {
+		return nDao.selectAttachment(nNo);
 	}
 
 	
