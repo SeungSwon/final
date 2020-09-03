@@ -62,15 +62,17 @@
 	margin-right: 10px;
 }
 
-.name {
+.name1, .name2 {
 	font-weight: bold;
 	color: rgb(51, 51, 51);
 	font-size: 15px;
 }
 
-.dept {
+
+.deptname {
+	margin: 0px;
 	font-size: 13px;
-	color: rgb(51, 51, 51);
+	color: rgb(117, 117, 117);
 }
 
 .status {
@@ -89,9 +91,13 @@
 	overflow: auto;
 	border: none;
 }
-.user{
-        	display:none;
-        }
+.user1, .user2, .dBtn{
+	display:none;
+}
+#menu1{
+	color: #1e87e4;
+	font-weight:bold;	
+}
 </style>
 </head>
 <body>
@@ -552,22 +558,15 @@
 		</div>
 		<div class="content2">
 			<div id="radiobox">
-				<input type="radio" name="info" id="info1" onchange="setDisplay()"
-					checked="checked"><label for="info1">결재선</label> <input
-					type="radio" name="info" id="info2" onchange="setDisplay()"><label
-					for="info2">참조</label>
+				<input type="radio" name="info" id="info1" onchange="setDisplay()" checked="checked"><label for="info1">결재선</label> 
+				<input type="radio" name="info" id="info2" onchange="setDisplay()"><label for="info2">참조</label>
 			</div>
 			<div id="approvalinfo">
-				
+			
 			</div>
 			<div id="referenceinfo" style="display: none">
-				<div class="peopleinfo">
-					<img src="resources/images/common/profile_none.png">
-					<div>
-						<span class="name">최유빈 대리</span><br> <span class="dept">홍보팀</span><br>
-						<span class="status">참조</span><br>
-					</div>
-				</div>
+				
+			</div>
 
 			</div>
 		</div>
@@ -584,6 +583,9 @@
                 $('#approvalinfo').hide();
             }
         }
+        
+        
+
 
         function openAddr(){
             	var popupWidth = 900;
@@ -591,7 +593,7 @@
                 var popupX = (window.screen.width / 2) - (popupWidth / 2);
                 var popupY = (window.screen.height / 2) - (popupHeight / 2);
                 // window.open('addr.html','window_name','width=850,height=600,location=no,status=no,scrollbars=yes');
-                window.open('lList.do', '주소록', 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
+                window.open('lList.do', '조직도', 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
         }
     </script>
 </body>
