@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.ourwork.common.PageInfo;
@@ -14,6 +15,7 @@ import com.kh.ourwork.email.model.exception.EmailException;
 import com.kh.ourwork.email.model.service.EmailService;
 import com.kh.ourwork.email.model.vo.EmailAddr;
 import com.kh.ourwork.email.model.vo.ReceiveEmail;
+import com.kh.ourwork.employee.model.vo.Employee;
 
 @Controller
 public class EmailController {
@@ -38,7 +40,7 @@ public class EmailController {
 	}
 	
 	@RequestMapping("sendMailList.do")
-	public ModelAndView sendEmailList(ModelAndView mv,
+	public ModelAndView sendEmailList( ModelAndView mv,
 			@RequestParam(value="page", required=false) Integer page) {
 		int currentPage = page != null ? page : 1;
 		int listCount = eService.selectSendListCount();
