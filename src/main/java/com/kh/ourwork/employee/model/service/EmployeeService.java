@@ -1,5 +1,6 @@
 package com.kh.ourwork.employee.model.service;
 
+import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.employee.model.vo.Employee;
 
 public interface EmployeeService {
@@ -19,6 +20,21 @@ public interface EmployeeService {
 	
 	// 5. 이메일 중복 검사를 위한 메소드
 	public int checkEmailDup(String email);
+	
+	//6. 파일업로드를 위한 메소드
+	public int insertAttachment(Attachment at);
+	
+	public int updateAttachment(Attachment at);
+	
+	public int deleteAttachment(Attachment at);
+	
+	Attachment selectAttachment(String eId);
+	
+	// 수정 시 기존 파일 없을 때 INSERT
+	int insertAttachment2(Attachment at);
+
+
+
 
 
 

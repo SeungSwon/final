@@ -62,6 +62,16 @@ public class Attachment {
 		this.originName = originName;
 		this.changeName = changeName;
 	}
+	
+
+
+	public Attachment(String eId, String filePath, String originName, String changeName) {
+		super();
+		this.eId = eId;
+		this.filePath = filePath;
+		this.originName = originName;
+		this.changeName = changeName;
+	}
 
 	public Attachment(int cId) {
 		super();
