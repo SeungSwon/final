@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.employee.model.dao.EmployeeDao;
 import com.kh.ourwork.employee.model.vo.Employee;
 
@@ -59,5 +60,38 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public int checkEmailDup(String email) {
 		return eDao.checkEmailDup(email);
 	}
+	
+	
+	@Override
+	public int insertAttachment(Attachment at) {		
+		return eDao.insertAttachment(at);
+	}
+	
+	@Override
+	public Attachment selectAttachment(String eId) {
+		return eDao.selectAttachment(eId);
+	}
+	
+	@Override
+	public int updateAttachment(Attachment at) {		
+		return eDao.updateAttachment(at);
+	}
+	
+	@Override
+	public int deleteAttachment(Attachment at) {		
+		return eDao.deleteAttachment(at);
+	}
+	
+	@Override
+	public int insertAttachment2(Attachment at) {		
+		return eDao.insertAttachment2(at);
+	}
+
+
+
+
+	
+	
+	
 
 }

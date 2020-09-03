@@ -188,11 +188,7 @@
                     <td> <img class="pro" src="../html/image/IU.JPG"> </td>
                     <td>
                         <div id="profilemain">
-                            <form>
-                                <div class="form-group">
-                                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                                </div>
-                            </form>
+
                         </div>
                     </td>
                 </tr>

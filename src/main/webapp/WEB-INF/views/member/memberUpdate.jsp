@@ -152,6 +152,13 @@
         tr,td{
             text-align: center;
             }
+            
+         #new1{
+			width: 100%;
+			height: 100%;
+			float: left;
+			padding-bottom: 10px;
+		}
           
 
         
@@ -196,19 +203,16 @@
                 </tr>
                 <tr>
                     <td>프로필 사진 : </td>
-                    <img id="new1" >
-                    <button type="button" class="btn" id="profilImg" >사진첨부  </button> 
-                    
-                    <td>
-                        <div id="profil" hidden>
-                            <form>
-                                <div class="form-group">
-                                    <input type="file" id="Img1" name="Img1" onchange="loadImg(this,1)">
-                                </div>
-                            </form>
-                        </div>
+                  
+                    <td>                  
+	                    <input type="file" name="reloadFile">
+						<c:if test="${ !empty at.originName }">
+							<a>${ at.originName }</a>
+						</c:if>
+						<br>                           	
+						<button type="submit" name="submit" >프로필등록</button>
                     </td>
-                    <td> <img class="pro" src="../html/image/IU.JPG"> </td>
+                    
                 </tr>
                 
                 <tr> 
@@ -276,7 +280,7 @@
             </table>
             <br><br><input type="button" value="취소" required>&emsp;
             
-            <input type="submit" value="수정완료" required>
+            <input type="submit" id="update" value="수정완료" required>
 			</form>
         </div>
          
@@ -288,10 +292,9 @@
 
 $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); 
 
-$(function() { $("#contentImg1").click(function(){
-			  $("#Img1").click();
-				});
-				
+/* $("#contentImg1").click(function(){
+	$("#Img1").click();
+});
 		// input type="file" 태그에 이미지 파일이 첨부 되었을 때
 		// div에 미리보기 표현하기
 		function loadImg(value, num){
@@ -310,15 +313,19 @@ $(function() { $("#contentImg1").click(function(){
 						$("#new1").attr("src", e.target.result);
 						break;
 					}
-				}
-				
+				}				
 				// 파일 읽기 하는 메소드
 				reader.readAsDataURL(value.files[0]);
 			}
-		}
+		} */
+		
+    	$("#update").click(function(){
+    		if(confirm("개인정보를 수정하시겠습니까?") == false){
+    			return false;
+    		}
+    	});
 						
 </script>
-
 
 </body>
 

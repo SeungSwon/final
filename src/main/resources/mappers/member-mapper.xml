@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC 
-"-//mybatis.org//DTD Mapper 3.0//EN" 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
 	<resultMap id="employeeResultSet" type="Employee">
@@ -17,9 +16,16 @@
  		<result property="leave_date" column="LEAVE_DATE"/> 
 		<result property="status" column="STATUS"/>
  		<result property="holiday" column="HOLIDAY"/> 
- 		<result property="eBirth" column="EBIRTH"/>
-		
+ 		<result property="eBirth" column="EBIRTH"/>		
 	</resultMap>
+	
+<!-- 	<resultMap id="replyattachment" type="attachment">
+		<id property="mId" column="MID"/>
+		<result property="changeName" column="CHANGENAME"/>
+ 		<result property="changeName" column="CHANGENAME"/>
+		<result property="fileLevel" column="FILELEVEL"/> 
+	</resultMap> -->
+	
 	<select id="selectOne" parameterType="Employee" resultMap="employeeResultSet">		
 		SELECT *
 		FROM EMPLOYEE
@@ -37,6 +43,7 @@
 		SET ENAME=#{eName}, EID=#{eId}, EMAIL=#{email}, PHONE=#{phone}, ADDRESS=#{address}, JOIN_DATE=#{join_date}, #{eBirth}
 		WHERE EID=#{eId}
 	</update>
+		
 	
 	<select id="idCheck" parameterType="string" resultType="_int">
 		SELECT COUNT(*)
@@ -49,6 +56,42 @@
 		FROM EMPLOYEE
 		WHERE EMAIL=#{email}
 	</select>
+	
+	<!-- 파일 저장 -->
+	<insert id="insertAttachment" parameterType="Attachment">
+		INSERT INTO ATTACHMENT
+		VALUES(SEQ_FID.NEXTVAL, NULL, NULL, NULL, NULL, NULL, (SELECT LAST_NUMBER-1 FROM USER_SEQUENCES WHERE SEQUENCE_NAME='SEQ_EID'), 
+		NULL, #{filePath}, #{originName}, #{changeName}, SYSDATE, 10, DEFAULT)
+	</insert>
+	
+	<!-- 첨부파일 조회 -->
+	<select id="selectAttachment" resultType="Attachment">
+		SELECT *
+		FROM ATTACHMENT
+		WHERE EID=#{eId}
+		AND FSTATUS='Y'
+	</select>
+	
+	<!-- 첨부파일 수정 -->
+	<update id="updateAttachment" parameterType="Attachment">
+		UPDATE ATTACHMENT
+		SET FILEPATH=#{filePath},
+			ORIGINNAME=#{originName},
+			CHANGENAME=#{changeName}
+		WHERE EID=#{eId}
+	</update>
+	
+	<!-- 첨부파일 삭제 -->
+	<update id="deleteAttachment" parameterType="Attachment">
+		DELETE FROM ATTACHMENT
+		WHERE EID=#{eId}
+	</update>
+	
+	<!-- 수정 시 첨부파일 없을 때 INSERT -->
+	<insert id="insertAttachment2" parameterType="Attachment">
+		INSERT INTO ATTACHMENT
+		VALUES(SEQ_FID.NEXTVAL, NULL, NULL, NULL, NULL, NULL, #{eId}, NULL, #{filePath}, #{originName}, #{changeName}, SYSDATE, 10, DEFAULT)
+	</insert>
 	
 </mapper>
 
