@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div class="aside">
-  <button id="selectedEmenu" onclick="location.href='receiveMailList.do'"><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
+		<button id="selectedEmenu" onclick="location.href='receiveMailList.do'"><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
             <button onclick="location.href='ahome.do'"><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
             <button><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
             <button onclick="location.href='noticeMain.do'"><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
@@ -28,4 +28,5 @@
 		</div>
 	</div>
 </body>
+
 </html>

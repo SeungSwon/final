@@ -113,6 +113,35 @@ public class NoteServiceImpl implements NoteService{
 		return ntDao.inboxSearchList(pi, search);
 	}
 
+	@Override
+	public int returnNote(int ntId) {
+		
+		return ntDao.returnNote(ntId);
+	}
+
+	@Override
+	public int noteInSave(int ntId) {
+		
+		return ntDao.noteInSave(ntId);
+	}
+
+	@Override
+	public int noteOutSave(int ntId) {
+		
+		return ntDao.noteOutSave(ntId);
+	}
+
+	@Override
+	public int selectSaveListCount(Employee m) {
+
+		return ntDao.selectSaveListCount(m);
+	}
+
+	@Override
+	public ArrayList<Note> selectSaveList(PageInfo pi, Employee m) {
+		
+		return ntDao.selectSaveList(pi, m);
+	}
 	
 
 }

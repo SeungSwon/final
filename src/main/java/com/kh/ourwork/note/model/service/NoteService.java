@@ -43,6 +43,17 @@ public interface NoteService {
 
 	ArrayList<Note> inboxSearchList(PageInfo pi, Search search);
 
+	int returnNote(int ntId);
+
+	int noteInSave(int ntId);
+
+	int noteOutSave(int ntId);
+
+	int selectSaveListCount(Employee loginUser);
+
+	ArrayList<Note> selectSaveList(PageInfo pi, Employee loginUser);
+
+
 	
 
 

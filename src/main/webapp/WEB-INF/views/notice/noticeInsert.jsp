@@ -103,8 +103,7 @@
                 </tr>
                 <tr>
                     <td class="division">작성자</td>
-                    <!-- 여기에 loginUser아이디 가져와서 써야함 -->
-                    <td><input type="text" readonly name="eId" class="in" value="${ notice.eId }"></td>
+                    <td><input type="text" readonly name="eId" class="in" value="${ loginUser.eId }"></td>
                 </tr>
                 <tr>
                     <td class="division">첨부파일</td>
@@ -116,8 +115,8 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <button type="button" class="btn btn-secondary btn-sm">작성</button>
-                        <button type="button" class="btn btn-secondary btn-sm">취소</button>
+                        <button type="submit" class="btn btn-secondary btn-sm">등록</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="cancel" onclick="history.back();">취소</button>
                     </td>
                 </tr>
             </table>
