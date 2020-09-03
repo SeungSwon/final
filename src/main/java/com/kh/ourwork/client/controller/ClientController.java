@@ -182,7 +182,6 @@ public class ClientController {
 
 		
 		c.setcAddress(post + "," + address1 + "," + address2);
-	
 		
 		Attachment at = cService.selectAttachment(c.getClId());
 		
@@ -197,7 +196,7 @@ public class ClientController {
 				at = new Attachment(c.getClId(), renamePath, reloadFile.getOriginalFilename(), renameFileName);
 				int result4 = cService.insertAttachment2(at);
 			}
-
+			
 		}
 		
         if(reloadFile != null && !reloadFile.isEmpty()) {

@@ -7,23 +7,7 @@
 <meta charset="UTF-8">
 <title>거래처 수정</title>
 
-<style>
-		.aside button{
-            width: 100%;
-            height: 11%;
-            background: none;
-            border: none;
-            color: white;
-            float: left;
-            margin-bottom: 4px;
-        }
-        .aside button:hover{
-            background: #1e87e4;
-        }
-        #selectedMenu{
-            background: #1e87e4;  
-        }
-        
+<style> 
         .menubar button{
             border: none;
             background: none;
@@ -35,7 +19,6 @@
             font-weight: bold;  
             color:#1e87e4;
         }
-        
 		#selected{
             font-weight: bold;  
             color:#1e87e4;
@@ -110,22 +93,15 @@
 			  border: 0;
 		} */
 </style>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 </head>
 <body>
 	<c:import url="../common/menubar.jsp"/>
 	<div class="section"><br>
-        <div class="aside">
-            <button><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
-            <button><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
-            <button><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
-            <button><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
-            <button><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
-            <button id="selectedMenu"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
-            <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
-            <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
-        </div>
+        <c:import url="../common/clientmenu.jsp"/>
+
         <div class="section1">
             <div class="menubar">
                 <button>주소록 조회</button>
@@ -181,7 +157,7 @@
                             <th>우편번호</th>
                             <td>
                             	<input type="text" name="post" class="postcodify_postcode5" value="${ addr1 }">
-                  				<button type="button" id="postcodify_search_button">검색</button>
+                  				<button type="button" id="postcodify_search_button" class="btn btn-secondary btn-sm">검색</button>
                             </td>
                         </tr>
                         <tr>
