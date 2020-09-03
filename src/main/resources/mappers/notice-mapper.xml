@@ -43,4 +43,25 @@
 		AND STATUS='Y'
 	</select>
 	
+	<!-- 게시글 등록 여기서부터 다시해야함 -->
+	<insert id="insertNotice" parameterType="Notice">
+		INSERT INTO NOTICE
+		VALUES(SEQ_NNO.NEXTVAL, #{eId}, 1, #{nTitle}, #{nContent}, DEFAULT, SYSDATE, NULL, DEFAULT)
+	</insert>
+	
+	<!-- 파일 저장 -->
+	<insert id="insertAttachment" parameterType="Attachment">
+		INSERT INTO ATTACHMENT
+		VALUES(SEQ_FID.NEXTVAL, NULL, SEQ_NNO.CURRVAL, NULL,
+				NULL, NULL, NULL, NULL, #{filePath}, #{originName}, #{changeName}, SYSDATE, 70, DEFAULT)
+	</insert>
+	
+	<!-- 첨부파일 조회 -->
+	<select id="selectAttachment" resultType="Attachment">
+		SELECT * 
+		FROM ATTACHMENT
+		WHERE NNO=#{nNo}
+		AND FSTATUS='Y'
+	</select>
+	
 </mapper>
