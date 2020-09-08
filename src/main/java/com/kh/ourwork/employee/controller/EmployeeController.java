@@ -111,12 +111,14 @@ public class EmployeeController {
 
 	// 회원가입 메소드
 	@RequestMapping("memberJoin.do")
-	public String employeeInsert(Employee e, RedirectAttributes rd, HttpServletRequest request,
-			@RequestParam(value = "uploadFile", required = false) MultipartFile file, @RequestParam("post") String post,
-			@RequestParam("address1") String address1, @RequestParam("address2") String address2) {
 
-		System.out.println("emplyee : " + e);
-
+	public String employeeInsert(Employee e, RedirectAttributes rd, HttpServletRequest request, 
+			   @RequestParam(value="uploadFile", required=false) MultipartFile file, 
+			   @RequestParam("post") String post,
+			   @RequestParam("address1") String address1, 
+			   @RequestParam("address2") String address2) {
+  System.out.println("emplyee : " + e);
+		
 		String root = request.getSession().getServletContext().getRealPath("resources");
 
 		String savePath = root + "\\images\\profileUploadFiles";
@@ -155,6 +157,7 @@ public class EmployeeController {
 		File folder = new File(savePath);
 		// savePath 폴더를 불러와서
 		// 해당 폴더 경로가 존재하는지 확인하고
+
 
 		if (!folder.exists()) {
 			folder.mkdirs();

@@ -166,10 +166,10 @@
         <div class="section2">
                 <div id="searchMenu" align="right">
                     <p class="title">보낸 쪽지함</p>
-                    	<form action="ntsearch.do" name="searchForm" method="get">
+                    	<form action="ntOutsearch.do" name="searchForm" method="get">
 	                        <select id="searchCondition" name="searchCondition">
 	                            <option>------</option>
-	                            <option value="sender">받는 사람</option>
+	                            <option value="receiver">받는 사람</option>
 	                            <option value="content">내용</option>
 	                        </select>
 	                        <input type="text" class="searchMessage" name="searchValue">

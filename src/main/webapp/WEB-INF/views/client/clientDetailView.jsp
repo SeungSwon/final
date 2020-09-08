@@ -60,7 +60,6 @@
         	text-align:center;
         }
 </style>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body>
 	<c:import url="../common/menubar.jsp"/>
@@ -173,7 +172,7 @@
                     		<%-- <td>${ uc.ucId }</td> --%>
                     		<td>${ uc.reason }</td>
                     		<td>${ uc.eId }</td>
-                    		<td><fmt:formatDate pattern="yyyy-MM-dd" value="${ uc.modifyDate }"/></td>
+                    		<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${ uc.modifyDate }"/></td>
                     	</tr>
                     </c:forEach>
                     
