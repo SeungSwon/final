@@ -18,6 +18,7 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+
 </head>
 <body>
 	<div class="header">
@@ -31,7 +32,7 @@
                 <a class="dropdown-item" href="#">출근</a>
                 <a class="dropdown-item" href="#">퇴근</a>
                 <a class="dropdown-item" href="#" onclick="location.href='eMypage.do'">마이페이지</a>
-                <a class="dropdown-item" href="#" onclick="location.href='index.do'">로그아웃</a>
+                <a class="dropdown-item" href="#" onclick="location.href='/ourwork'">로그아웃</a>
             </div>
         </div>
         <img src="${ contextPath }/resources/images/common/profile_1.jpg" class="profile">

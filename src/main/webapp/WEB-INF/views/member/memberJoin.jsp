@@ -161,23 +161,16 @@ $("#email").blur(function() {
 							<tr>
 								<td>*이름 :</td>
 								<td><input type="text" name="eName" minlength="2" maxlength="5" placeholder="2-5글자"required> </td>
-								<!-- <td><font class="eheck_font" id="name_check" size="2" color="red"></font></td> -->
-
 							</tr>
-							<tr>
-								<td>프로필 사진 :</td>
-								<td>
-									<div id="profilemain">
-										<div id="profile"></div>
-
-			 							<form> 
-			 							<div class="form-group">
-			                        		<input type="file" class="form-control-file" id="exampleFormControlFile1">
-			                     		</div>
-			                    		</form> 
-									</div>
-								</td>
-							</tr>
+			                <tr>
+			                    <td>프로필 사진 : </td>
+			                  
+			                    <td>                  
+				                    <input type="file" name="reloadFile">                          	
+									<button type="submit" name="submit">프로필등록</button>
+			                    </td>
+			                    
+			                </tr>
 							<tr>
 								<td>*아이디 :</td>
 								<td><input type="text" name="eId" id="eId"  maxlength="10"  placeholder="4글자이상" required></td>
@@ -242,7 +235,7 @@ $("#email").blur(function() {
 
 						</div>
 					</table>
-					<input type="button" onclick="location.href='/index.do'" value="취소">&emsp;&emsp;&emsp;&emsp;&emsp;
+					<input type="button" onclick="location.href='index.do'" value="취소">&emsp;&emsp;&emsp;&emsp;&emsp;
 					<input type="submit" value="가입완료" required>
 					</form>
 				</div>

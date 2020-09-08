@@ -31,19 +31,14 @@ import com.kh.ourwork.employee.model.exception.EmployeeException;
 import com.kh.ourwork.employee.model.service.EmployeeService;
 import com.kh.ourwork.employee.model.vo.Employee;
 
-
-
 @SessionAttributes({ "loginUser", "msg" })
-@Controller // Controller 타입의 어노테이션을 붙여주면 빈 스캐닝을 통해 자동으로 빈으로 등록 된다
+@Controller
 
 public class EmployeeController {
-	// 아래와 같이 Autowired 타입의 어노테이션을 붙여주면 생성할 필요 없이 변수로 선언만 해도
-	// 빈 스캐닝을 통해 아래의 mService의 이름을 가지고 있는 빈을 찾아서 자동으로 생성해줌
+
 	@Autowired
 	private EmployeeService eService;
-	
 
-	// 2_3. 로거 객체
 	private Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
 	@RequestMapping("eJoin.do")
@@ -66,30 +61,82 @@ public class EmployeeController {
 		return "member/memberMypage";
 	}
 
+	// ID찾기
+	@RequestMapping("findId.do")
+	public String findIdView() {
+		return "member/memberId";
+	}
+
+	// PW찾기
+	@RequestMapping("findPwd.do")
+	public String findPwdView() {
+		return "member/memberId";
+	}
+
+	@RequestMapping("logout")
+	public String logoutView() {
+		return "index.do";
+	}
+
+	@RequestMapping("eUpdate.do")
+	public String updateView() {
+		return "member/memberUpdate";
+	}
+
+	@RequestMapping("memberMypage.do")
+	public String myPageView() {
+		return "member/memberMypage";
+	}
+
+	// 암호화 처리 후 최종 로그인 메소드
+	@RequestMapping(value = "login.do", method = RequestMethod.POST)
+	public String employeeLogin(Employee e, Model model) {
+		Employee loginUser = eService.loginEmployee(e);
+
+		System.out.println("login.do" + e);
+
+		if (loginUser != null) {
+			model.addAttribute("loginUser", loginUser);
+
+//			// 로그인 성공 시 로그 출력
+//			if (logger.isDebugEnabled()) {
+//
+//				logger.info(loginUser.geteId() + " 로그인");
+//			}
+		} else {
+			throw new EmployeeException("로그인에 실패하였습니다.");
+		}
+		return "redirect:home.do";
+	}
+
+	// 회원가입 메소드
 	@RequestMapping("memberJoin.do")
+
 	public String employeeInsert(Employee e, RedirectAttributes rd, HttpServletRequest request, 
 			   @RequestParam(value="uploadFile", required=false) MultipartFile file, 
 			   @RequestParam("post") String post,
 			   @RequestParam("address1") String address1, 
 			   @RequestParam("address2") String address2) {
+  System.out.println("emplyee : " + e);
 		
 		String root = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = root + "/images/profileUploadFiles";
-		File folder = new File(savePath);
+
+		String savePath = root + "\\images\\profileUploadFiles";
+		File folder = new File(root + "\\images\\profileUploadFiles");
 
 		e.setAddress(post + "," + address1 + "," + address2);
 
 		int result = eService.insertEmployee(e);
-		
-		if(!file.getOriginalFilename().equals("") && result>0) {
+
+		if (!file.getOriginalFilename().equals("") && result > 0) {
 			String renameFileName = saveFile(file, request);
-			String renamePath = folder + "/" + renameFileName;
-			
-			if(renameFileName != null) {
+			String renamePath = "/resources/images/profileUploadFiles";
+
+			if (renameFileName != null) {
 				Attachment at = new Attachment(renamePath, file.getOriginalFilename(), renameFileName, new Date(), 60);
 				int result2 = eService.insertEmployee(e);
 			}
-		}	
+		}
 
 		if (result > 0) {
 			rd.addFlashAttribute("msg", "회원가입이 완료되었습니다. 로그인 해주세요.");
@@ -98,125 +145,96 @@ public class EmployeeController {
 			throw new EmployeeException("회원가입에 실패하였습니다.");
 		}
 	}
-		
-		private String saveFile(MultipartFile file, HttpServletRequest request) {
-			
-			String root = request.getSession().getServletContext().getRealPath("resources");
-			
-			String savePath = root + "/images/clientUploadFiles";
-			
-			File folder = new File(savePath);
-			
-			if(!folder.exists()) {
-				folder.mkdirs();
-			}
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-			String originFileName = file.getOriginalFilename();
-			String renameFileName = sdf.format(new Date()) + originFileName.substring(originFileName.lastIndexOf("."));
-		
-			String renamePath = folder + "/" + renameFileName;
-			
-			try {
-				file.transferTo(new File(renamePath));
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
-			}
-			return renameFileName;
+
+	// 파일 저장을 위한 별도 메소드
+	private String saveFile(MultipartFile file, HttpServletRequest request) {
+		// 파일이 저장 될 경로 설정
+		// 해당 resources는 webapp 하위의 resources
+		String root = request.getSession().getServletContext().getRealPath("resources");
+
+		String savePath = root + "\\images\\profileUploadFiles";
+
+		File folder = new File(savePath);
+		// savePath 폴더를 불러와서
+		// 해당 폴더 경로가 존재하는지 확인하고
+
+
+		if (!folder.exists()) {
+			folder.mkdirs();
 		}
-		
 
-	// 암호화 처리 후 최종 로그인 메소드
-	@RequestMapping(value = "login.do", method = RequestMethod.POST)
-	public String employeeLogin(Employee e, Model model) {
-		Employee loginUser = eService.loginEmployee(e);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String originFileName = file.getOriginalFilename();
+		String renameFileName = sdf.format(new Date()) + originFileName.substring(originFileName.lastIndexOf("."));
 
-		if (loginUser != null) {
-			model.addAttribute("loginUser", loginUser);
+		String renamePath = folder + "\\" + renameFileName;
 
-//				// 로그인 성공 시 로그 출력
-//				if(logger.isDebugEnabled()) {
-//					
-//					logger.info(loginUser.geteId() + " 로그인");
-//				}
-		} else {
-			throw new EmployeeException("로그인에 실패하였습니다.");
+		try {
+			file.transferTo(new File(renamePath));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
 		}
-		return "redirect:home.do";
+		return renameFileName;
 	}
 
-	
-	@RequestMapping("logout")
-    public ModelAndView logout(HttpSession session) {
-        session.invalidate();
-        ModelAndView mv = new ModelAndView("index.do");
-        return mv;
-    }
-
-	
-	  @RequestMapping("eUpdate.do") 
-	  public String updateView() { 
-		  return "member/memberUpdate"; 
-	  }
-	 
-
-	  
-	  
+	// --------------------------------------------------------------------------------
 	// 회원정보 수정 메소드
-	// 성공 시 msg "회원정보가 수정 되었습니다"를 가지고 home.do로 redirect -> alert
-	// 실패 시 "회원 정보 수정에 실패하였습니다"라는 메세지를 가지고 Exception 처리
 	@RequestMapping("memberUpdate.do")
-	public String employeeUpdate(Employee e, Model model, HttpServletRequest request, 
-			@RequestParam(value="reloadFile", required=false) MultipartFile reloadFile,
-			@RequestParam("post") String post,
-			@RequestParam("address1") String addr1, 
-			@RequestParam("address2") String addr2, 
-			RedirectAttributes rd) {
+	public String employeeUpdate(Model model, HttpServletRequest request,
+			@RequestParam(value = "reloadFile", required = false) MultipartFile reloadFile, HttpSession session,
+			@RequestParam("post") String post, @RequestParam("address1") String addr1,
+			@RequestParam("address2") String addr2, @RequestParam("email") String email,
+			@RequestParam("phone") String phone, RedirectAttributes rd) {
 
-		System.out.println("emplyee : " + e);
-		
-		
+		Employee e = (Employee) session.getAttribute("loginUser");
+
 		e.setAddress(post + "," + addr1 + "," + addr2);
-		
-		Attachment at = eService.selectAttachment(e.geteId());
+		e.setEmail(email);
+		e.setPhone(phone);
 
-		
-		
-		if(at == null) {
-			String root = request.getSession().getServletContext().getRealPath("resources");
-			String savePath = root + "/images/profileUploadFiles";
-			File folder = new File(savePath);
-			
-			if(reloadFile != null && !reloadFile.isEmpty()) {
+		System.out.println("e" + e);
+
+		// input type="file"에 파일이 업로드 되었을때
+		if (reloadFile != null && !reloadFile.isEmpty()) {
+			// 프로필 업로드
+			Attachment at = eService.selectAttachment(e.geteId());
+			String savePath = "\\images\\profileUploadFiles";
+
+			// 등록된 프로필 사진이 없는 경우
+			if (at == null) {
+
 				String renameFileName = saveFile(reloadFile, request);
-				String renamePath = folder + "/" + renameFileName;
-				at = new Attachment(e.geteId(), renamePath, reloadFile.getOriginalFilename(), renameFileName);
-				int result4 = eService.insertAttachment2(at);
-				System.out.println("Attachment : " + at);
-			}
 
-		}
-		
-        if(reloadFile != null && !reloadFile.isEmpty()) {
-			if(at.getChangeName() != null) {
-				deleteFile(at.getChangeName(), request);
+				at = new Attachment(e.geteId(), savePath, reloadFile.getOriginalFilename(), renameFileName);
+				int result4 = eService.insertAttachment2(at);
+
+				System.out.println("Attachment : " + at);
+				System.out.println("Employee : " + e);
+				System.out.println("savePath : " + savePath);
+				System.out.println("---------------");
+
+			} else { // 등록된 프로필 사진이 있는 경우 & 변경하기 위해 파일을 업로드 한 경우
+				if (at.getChangeName() != null) {
+					deleteFile(at.getChangeName(), request);
+				}
+
+				String renameFileName = saveFile(reloadFile, request);
+
+				if (renameFileName != null) {
+					at = new Attachment(e.geteId(), savePath, reloadFile.getOriginalFilename(), renameFileName);
+
+					System.out.println("savePath2 : " + savePath);
+					System.out.println("---------------");
+
+				}
+
+				int result3 = eService.updateAttachment(at);
 			}
 			
-			String savePath = saveFile(reloadFile, request);
-			File folder = new File(savePath);
-			String renamePath = folder + "/" + at.getChangeName();
-		
-			if(savePath != null) {
-				at.setChangeName(savePath);
-				at.setOriginName(reloadFile.getOriginalFilename());
-				at.setFilePath(renamePath);
-				at.seteId(e.geteId());				
-			}
+			e.setProfile(at);
 		}
-        
-		int result = eService.updateEmployee(e);
-		int result3 = eService.updateAttachment(at);
 
+		int result = eService.updateEmployee(e);
 		if (result > 0) {
 			rd.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
 			model.addAttribute("loginUser", e);
@@ -225,19 +243,23 @@ public class EmployeeController {
 			throw new EmployeeException("회원 정보 수정에 실패하였습니다");
 		}
 	}
-	
+
+	// 삭제
 	public void deleteFile(String fileName, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = root + "/images/profileUploadFiles";
-		
-		File deleteFile = new File(savePath + "/" + fileName);
-		
-		if(deleteFile.exists()) {
+		String savePath = root + "\\images\\profileUploadFiles";
+
+		File deleteFile = new File(savePath + "\\" + fileName);
+
+		if (deleteFile.exists()) {
 			deleteFile.delete();
 		}
+
+		System.out.println("root3 : " + root);
+		System.out.println("savePath3 : " + savePath);
+		System.out.println("deleteFile : " + deleteFile);
+		System.out.println("---------------");
 	}
-		
-			
 
 	// 2. JsonView를 이용한 방법
 	// dependency 라이브러리 추가 후 JsonView, BeanNameViewResolver 빈 등록 후 사용
@@ -256,20 +278,19 @@ public class EmployeeController {
 		return mv;
 	}
 
-	
-	  @RequestMapping("edupid.do") public ModelAndView emailDuplicateCheck(String
-	  email, ModelAndView mv) { boolean isUsable = eService.checkEmailDup(email) ==
-	  0 ? true : false;
-	  
-	  Map map = new HashMap(); map.put("isUsable", isUsable);
-	  mv.addAllObjects(map);
-	  
-	  mv.setViewName("jsonView");
-	  
-	  System.out.println(email);
-	  
-	  return mv; }
-	 
-	
+	@RequestMapping("edupid.do")
+	public ModelAndView emailDuplicateCheck(String email, ModelAndView mv) {
+		boolean isUsable = eService.checkEmailDup(email) == 0 ? true : false;
+
+		Map map = new HashMap();
+		map.put("isUsable", isUsable);
+		mv.addAllObjects(map);
+
+		mv.setViewName("jsonView");
+
+		System.out.println(email);
+
+		return mv;
+	}
 
 }

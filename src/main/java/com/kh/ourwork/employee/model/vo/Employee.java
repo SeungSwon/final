@@ -1,7 +1,8 @@
 package com.kh.ourwork.employee.model.vo;
 
-
 import java.sql.Date;
+
+import com.kh.ourwork.common.Attachment;
 
 public class Employee {
 	private String eId;
@@ -18,6 +19,7 @@ public class Employee {
 	private String status;
 	private int holiday;
 	private String eBirth;
+	private Attachment profile;
 	
 	public Employee() {}
 	
@@ -25,9 +27,10 @@ public class Employee {
 		super();
 		this.eId = eId;
 	}
-	
+
 	public Employee(String eId, int dId, int rId, String ePwd, String eName, String email, String phone, String address,
-			int salary, Date join_date, Date leave_date, String status, int holiday, String eBirth) {
+			int salary, Date join_date, Date leave_date, String status, int holiday, String eBirth,
+			Attachment profile) {
 		super();
 		this.eId = eId;
 		this.dId = dId;
@@ -43,8 +46,8 @@ public class Employee {
 		this.status = status;
 		this.holiday = holiday;
 		this.eBirth = eBirth;
+		this.profile = profile;
 	}
-
 
 	public String geteId() {
 		return eId;
@@ -158,12 +161,20 @@ public class Employee {
 		this.eBirth = eBirth;
 	}
 
+	public Attachment getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Attachment profile) {
+		this.profile = profile;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [eId=" + eId + ", dId=" + dId + ", rId=" + rId + ", ePwd=" + ePwd + ", eName=" + eName
 				+ ", email=" + email + ", phone=" + phone + ", address=" + address + ", salary=" + salary
 				+ ", join_date=" + join_date + ", leave_date=" + leave_date + ", status=" + status + ", holiday="
-				+ holiday + ", eBirth=" + eBirth + "]";
+				+ holiday + ", eBirth=" + eBirth + ", profile=" + profile + "]";
 	}
 	
 	
