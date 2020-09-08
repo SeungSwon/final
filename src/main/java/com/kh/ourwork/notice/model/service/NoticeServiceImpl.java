@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
+import com.kh.ourwork.common.Search;
 import com.kh.ourwork.notice.model.dao.NoticeDao;
 import com.kh.ourwork.notice.model.vo.Notice;
+import com.kh.ourwork.notice.model.vo.Reply;
 
 @Service("nService")
 public class NoticeServiceImpl implements NoticeService {
@@ -37,6 +39,7 @@ public class NoticeServiceImpl implements NoticeService {
 
 	// 게시글 수정
 	public int updateNotice(Notice n) {
+		// 여기였냐???
 		return nDao.updateNotice(n);
 	}
 
@@ -58,6 +61,36 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public Attachment selectAttachment(int nNo) {
 		return nDao.selectAttachment(nNo);
+	}
+
+	@Override
+	public ArrayList<Notice> searchList(Search search) {
+		return nDao.searchList(search);
+	}
+
+	@Override
+	public int insertAttachment2(Attachment at) {
+		return nDao.insertAttachment2(at);
+	}
+
+	@Override
+	public int updateAttachment(Attachment at) {
+		return nDao.updateAttachment(at);
+	}
+
+	@Override
+	public int deleteAttachment(Attachment at) {
+		return nDao.deleteAttachment(at);
+	}
+
+	@Override
+	public int insertReply(Reply r) {
+		return nDao.insertReply(r);
+	}
+
+	@Override
+	public int SselectListCount(Search search) {
+		return nDao.SselectListCount(search);
 	}
 
 	
