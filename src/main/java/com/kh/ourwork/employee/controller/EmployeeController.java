@@ -72,8 +72,6 @@ public class EmployeeController {
 			   @RequestParam("post") String post,
 			   @RequestParam("address1") String address1, 
 			   @RequestParam("address2") String address2) {
-
-		System.out.println("emplyee : " + e);
 		
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "/images/profileUploadFiles";
@@ -132,8 +130,6 @@ public class EmployeeController {
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public String employeeLogin(Employee e, Model model) {
 		Employee loginUser = eService.loginEmployee(e);
-
-		System.out.println(e);
 
 		if (loginUser != null) {
 			model.addAttribute("loginUser", loginUser);

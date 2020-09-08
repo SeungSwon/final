@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,6 +64,15 @@ public class ClientController {
 		Attachment at = cService.selectAttachment(clId);
 				
 		ArrayList<UpdateClient> list = cService.selectUpdateHistory(clId);
+				
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+		
+		for(UpdateClient uc : list) {
+			sdf.format(uc.getModifyDate());
+		}
+		
+		System.out.println("list="+list);
 		
 		if(c != null) {
 			mv.addObject("c", c).addObject("list", list).addObject("at", at).addObject("currentPage", currentPage).setViewName("client/clientDetailView");
@@ -103,6 +113,7 @@ public class ClientController {
 			if(renameFileName != null) {
 				Attachment at = new Attachment(renamePath, file.getOriginalFilename(), renameFileName, new Date(), 60);
 				int result2 = cService.insertAttachment(at);
+				System.out.println("at="+at);
 			}
 		}		
 		
@@ -199,17 +210,23 @@ public class ClientController {
 			
 		}
 		
-        if(reloadFile != null && !reloadFile.isEmpty()) {
+        if(reloadFile != null && !reloadFile.isEmpty()) {	// at가 있고 재업로드한 파일이 있을 때
 			if(at.getChangeName() != null) {
 				deleteFile(at.getChangeName(), request);
+				
 			}
-			
-			String savePath = saveFile(reloadFile, request);
+			// 새로 저장
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			String savePath = root + "/images/clientUploadFiles";
 			File folder = new File(savePath);
-			String renamePath = folder + "/" + at.getChangeName();
+			
+			String renameFileName = saveFile(reloadFile, request);
+			String renamePath = folder + "/" + renameFileName;
 		
+			System.out.println();
+			
 			if(savePath != null) {
-				at.setChangeName(savePath);
+				at.setChangeName(renameFileName);
 				at.setOriginName(reloadFile.getOriginalFilename());
 				at.setFilePath(renamePath);
 				at.setcId(c.getClId());				
@@ -239,6 +256,7 @@ public class ClientController {
 		File deleteFile = new File(savePath + "/" + fileName);
 		
 		if(deleteFile.exists()) {
+			System.out.println("deleteFile="+deleteFile);
 			deleteFile.delete();
 		}
 	}
