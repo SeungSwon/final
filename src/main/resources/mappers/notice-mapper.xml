@@ -30,6 +30,15 @@
 		ORDER BY NNO DESC
 	</select>
 	
+	<!-- 게시판 수정 -->
+	<update id="updateNotice" parameterType="Notice">
+		UPDATE NOTICE
+		SET NTITLE=#{nTitle},
+			NCONTENT=#{nContent}
+		WHERE NNO=#{nNo}
+		AND STATUS='Y'
+	</update>
+	
 	<update id="updateCount" parameterType="_int">
 		UPDATE NOTICE
 		SET NCOUNT = NCOUNT+1
@@ -62,6 +71,81 @@
 		FROM ATTACHMENT
 		WHERE NNO=#{nNo}
 		AND FSTATUS='Y'
+	</select>
+	
+	<!-- 게시글 삭제 -->
+	<update id="deleteNotice" parameterType="_int">
+		UPDATE NOTICE
+		SET STATUS='N'
+		WHERE NNO=#{nNo}
+	</update>
+	
+	<!-- 첨부파일 삭제 -->
+	<update id="deleteAttachment" parameterType="Attachment">
+		DELETE FROM ATTACHMENT
+		WHERE NNO=#{nNo}
+	</update>
+	
+	<select id="searchList" parameterType="Search" resultMap="noticeResultSet">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT * FROM NOTICE
+		<where>
+			<choose>
+				<when test="searchCondition == 'eId'">
+					AND EID LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'nTitle'">
+					AND NTITLE LIKE #{sv}
+				</when>
+				<otherwise>
+					AND (EID LIKE #{sv}
+					     OR NTITLE LIKE #{sv})
+				</otherwise>
+			</choose>
+		</where>
+		ORDER BY NNO DESC
+	</select>
+	
+	<!-- 수정시 첨부파일 없을때 insert -->
+	<insert id="insertAttachment2" parameterType="Attachment">
+		INSERT INTO ATTACHMENT
+		VALUES(SEQ_FID.NEXTVAL, NULL, #{nNo}, NULL, NULL, NULL, NULL, NULL, #{filePath}, #{originName}, #{changeName}, SYSDATE, 70, DEFAULT)
+	</insert>
+	
+	<!-- 첨부파일 수정 -->
+	<update id="updateAttachment" parameterType="Attachment">
+		UPDATE ATTACHMENT
+		SET FILEPATH=#{filePath},
+			ORIGINNAME=#{originName},
+			CHANGENAME=#{changeName}
+		WHERE NNO=#{nNo}
+	</update>	
+	
+	<insert id="insertReply" parameterType="Reply">
+		INSERT INTO NREPLY
+		VALUES(SEQ_NRID.NEXTVAL, #{refnNo}, #{rContent}, SYSDATE, SYSDATE, DEFAULT);
+	</insert>
+	
+	<!-- 검색된 게시글 갯수구하기  -->
+	<select id="SselectListCount" resultType="_int">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT COUNT(*)
+		FROM NOTICE
+		<where>
+			<choose>
+				<when test="searchCondition == 'eId'">
+					AND EID LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'nTitle'">
+					AND NTITLE LIKE #{sv}
+				</when>
+				<otherwise>
+					AND (EID LIKE #{sv}
+					     OR NTITLE LIKE #{sv})
+				</otherwise>
+			</choose>
+		</where>
+		AND STATUS='Y'
 	</select>
 	
 </mapper>

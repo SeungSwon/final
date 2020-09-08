@@ -129,7 +129,7 @@
             <button onclick="location.href='noticeMain.do'"><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
             <button onclick="location.href='ntInboxList.do'"><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
             <button onclick="location.href='eAddress.do'"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
-            <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
+            <button onclick="location.href='pteam.do'"><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
             <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
       </div>
       <div class="section1">

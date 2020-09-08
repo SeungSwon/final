@@ -6,6 +6,16 @@ public class Search {
 	private String existFile;
 	
 	public Search() {}
+	
+	
+
+	public Search(String searchCondition, String searchValue) {
+		super();
+		this.searchCondition = searchCondition;
+		this.searchValue = searchValue;
+	}
+
+
 
 	public Search(String searchCondition, String searchValue, String existFile) {
 		super();

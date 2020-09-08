@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
+import com.kh.ourwork.common.Search;
 import com.kh.ourwork.notice.model.vo.Notice;
+import com.kh.ourwork.notice.model.vo.Reply;
 
 public interface NoticeService {
 
@@ -30,6 +32,20 @@ public interface NoticeService {
 	int insertAttachment(Attachment at);
 
 	Attachment selectAttachment(int nNo);
+
+	ArrayList<Notice> searchList(Search search);
+
+	// 수정시 기존 파일 없을때 insert
+	int insertAttachment2(Attachment at);
+
+	int updateAttachment(Attachment at);
+
+	int deleteAttachment(Attachment at);
+
+	//댓글 입력
+	int insertReply(Reply r);
+
+	int SselectListCount(Search search);
 	
 
 	

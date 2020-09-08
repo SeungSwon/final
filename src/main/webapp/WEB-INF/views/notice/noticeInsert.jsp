@@ -20,7 +20,7 @@
         crossorigin="anonymous"></script>
     <style>
         
-        #selectedMenu{
+       #selectedMenu{
             background: #1e87e4;  
         }
         /* sidebar 버튼 선택되었을 때 */
@@ -62,7 +62,7 @@
       margin:auto;
       border:solid 1px white;
       width: 900px;
-      height: 70%;
+      height: 130%;
       margin-top: 30px;
    }
    
@@ -77,6 +77,14 @@
    }
    .in{
    	width: 88%;
+   }
+   
+   .formt{
+   	margin:auto;
+      border:solid 1px white;
+      width: 900px;
+      height: 61%;
+      margin-top: 30px;
    }
 
         
@@ -95,7 +103,7 @@
         </div>
         </div>
         <div class="section2">
-        	<form action="ninsert.do" method="post" enctype="multipart/form-data">
+        	<form action="ninsert.do" method="post" enctype="multipart/form-data" class="formt">
             <table id="boardTable">
                 <tr>
                     <td class="division">제목</td>
