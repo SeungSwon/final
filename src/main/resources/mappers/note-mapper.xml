@@ -100,7 +100,7 @@
 	<!-- 쪽지 보내기 -->
 	<insert id="sendNote" parameterType="Note">
 		INSERT INTO NOTE
-		VALUES(SEQ_NTID.NEXTVAL, #{eId}, #{ntContent}, SYSDATE, DEFAULT, #{receiver}, NULL, DEFAULT, DEFAULT)
+		VALUES(SEQ_NTID.NEXTVAL, #{eId}, #{ntContent}, SYSDATE, DEFAULT, #{receiver}, NULL, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
 	
 	<!-- 받은 쪽지함에서 쪽지 삭제 -->
@@ -135,6 +135,7 @@
 		WHERE NTID=#{ntId}
 	</update>
 	
+	<!-- 받은 쪽지 검색 -->
 	<select id="inboxSearchListCount" resultType="_int">
 		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
 		SELECT COUNT(*)
@@ -150,6 +151,8 @@
 			</choose>
 		</where>
 		AND REC_SAVE='N'
+		AND REC_DEL='N'
+		AND RECEIVER=#{ employee.eId }
 	</select>
 	
 	<select id="inboxSearchList" resultMap="noteResultSet">
@@ -166,7 +169,103 @@
 				</when>
 			</choose>
 		</where>
+		AND REC_SAVE='N'
+		AND REC_DEL='N'
+		AND RECEIVER=#{ employee.eId }
+		ORDER BY NTDATE DESC
+	</select>
+	
+	<!-- 보낸 쪽지 검색 -->
+	<select id="outboxSearchListCount" resultType="_int">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT COUNT(*)
+		FROM NOTE
+		<where>
+			<choose>
+				<when test="searchCondition == 'receiver'">
+					AND RECEIVER LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'content'">
+					AND NTCONTENT LIKE #{sv}
+				</when>
+			</choose>
+		</where>
 		AND SENT_SAVE='N'
+		AND SENT_DEL='N'
+		AND EID=#{ employee.eId }
+	</select>
+	
+	<select id="outboxSearchList" resultMap="noteResultSet">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT *
+		FROM NOTE
+		<where>
+			<choose>
+				<when test="searchCondition == 'receiver'">
+					AND RECEIVER LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'content'">
+					AND NTCONTENT LIKE #{sv}
+				</when>
+			</choose>
+		</where>
+		AND SENT_SAVE='N'
+		AND SENT_DEL='N'
+		AND EID=#{ employee.eId }
+	</select>
+	
+	<!-- 보관함에서 검색 -->
+	<select id="saveSearchListCount" resultType="_int">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT COUNT(*)
+		FROM NOTE
+		<where>
+			<choose>
+				<when test="searchCondition == 'receiver'">
+					AND RECEIVER LIKE #{sv}
+					AND SENT_SAVE='Y'
+					AND SENT_DEL='N'
+					AND EID=#{employee.eId}
+				</when>
+				<when test="searchCondition == 'sender'">
+					AND EID LIKE #{sv}
+					AND REC_DEL='N'
+					AND REC_SAVE='Y'
+					AND RECEIVER=#{employee.eId}
+				</when>
+				<when test="searchCondition == 'content'">
+					AND NTCONTENT LIKE #{sv}
+				</when>
+			</choose>
+		</where>	
+	</select>
+	
+	<select id="saveSearchList" resultMap="noteResultSet">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT *
+		FROM NOTE
+		<where>
+			<choose>
+				<when test="searchCondition == 'receiver'">
+					AND RECEIVER LIKE #{sv}
+					AND SENT_SAVE='Y'
+					AND SENT_DEL='N'
+					AND EID=#{employee.eId}
+				</when>
+				<when test="searchCondition == 'sender'">
+					AND EID LIKE #{sv}
+					AND REC_SAVE='Y'
+					AND REC_DEL='N'
+					AND RECEIVER=#{employee.eId}
+				</when>
+				<when test="searchCondition == 'content'">
+					AND NTCONTENT LIKE #{sv}
+					AND REC_DEL='N'
+					AND REC_SAVE='Y'
+					AND (RECEIVER=#{employee.eId} OR EID=#{employee.eId})
+				</when>
+			</choose>
+		</where>	
 	</select>
 	
 	<!-- 보낸 쪽지 발송 취소 -->
@@ -203,7 +302,9 @@
 		FROM NOTE
 		WHERE (EID=#{eId} AND SENT_SAVE='Y')
         OR (RECEIVER=#{eId} AND REC_SAVE='Y')
+        ORDER BY NTDATE, RECEIVE_DATE
 	</select>
+	
 	
 </mapper>
 

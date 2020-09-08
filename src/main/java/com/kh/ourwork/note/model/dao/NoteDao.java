@@ -8,7 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.ourwork.client.model.vo.Search;
+import com.kh.ourwork.note.model.vo.Search;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.employee.model.vo.Employee;
 import com.kh.ourwork.note.model.vo.Note;
@@ -108,42 +108,13 @@ public class NoteDao {
 	}
 
 	public ArrayList<Note> inboxSearchList(PageInfo pi, Search search) {
+		
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("noteMapper.inboxSearchList", search, rowBounds);
 	}
-
-	class TestList{
-		String eId;
-		Search search;
 		
-		public TestList() {}
-
-		public TestList(String eId, Search search) {
-			super();
-			this.eId = eId;
-			this.search = search;
-		}
-
-		public String geteId() {
-			return eId;
-		}
-
-		public void seteId(String eId) {
-			this.eId = eId;
-		}
-
-		public Search getSearch() {
-			return search;
-		}
-
-		public void setSearch(Search search) {
-			this.search = search;
-		}
-		
-		
-	}
 
 	public int returnNote(int ntId) {
 		
@@ -170,6 +141,30 @@ public class NoteDao {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("noteMapper.selectSaveList", m, rowBounds);
+	}
+
+	public int outboxSearchListCount(Search search) {
+		
+		return sqlSession.selectOne("noteMapper.outboxSearchListCount", search);
+	}
+
+	public ArrayList<Note> outboxSearchList(PageInfo pi, Search search) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("noteMapper.outboxSearchList", search, rowBounds);
+	}
+
+	public int saveSearchListCount(Search search) {
+		
+		return sqlSession.selectOne("noteMapper.saveSearchListCount", search);
+	}
+
+	public ArrayList<Note> saveSearchList(PageInfo pi, Search search) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("noteMapper.saveSearchList", search, rowBounds);
 	}
 
 

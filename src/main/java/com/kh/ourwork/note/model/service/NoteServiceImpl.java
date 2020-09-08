@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.ourwork.client.model.vo.Search;
+import com.kh.ourwork.note.model.vo.Search;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.employee.model.vo.Employee;
 import com.kh.ourwork.note.model.dao.NoteDao;
@@ -141,6 +141,30 @@ public class NoteServiceImpl implements NoteService{
 	public ArrayList<Note> selectSaveList(PageInfo pi, Employee m) {
 		
 		return ntDao.selectSaveList(pi, m);
+	}
+
+	@Override
+	public int outboxSearchListCount(Search search) {
+		
+		return ntDao.outboxSearchListCount(search);
+	}
+
+	@Override
+	public ArrayList<Note> outboxSearchList(PageInfo pi, Search search) {
+		
+		return ntDao.outboxSearchList(pi, search);
+	}
+
+	@Override
+	public int saveSearchListCount(Search search) {
+		
+		return ntDao.saveSearchListCount(search);
+	}
+
+	@Override
+	public ArrayList<Note> saveSearchList(PageInfo pi, Search search) {
+		
+		return ntDao.saveSearchList(pi, search);
 	}
 	
 
