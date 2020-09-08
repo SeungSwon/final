@@ -1,5 +1,7 @@
 package com.kh.ourwork.common;
 
+import com.kh.ourwork.employee.model.vo.Employee;
+
 public class Search {
 	private String searchCondition;
 	private String searchValue;
@@ -23,6 +25,7 @@ public class Search {
 		this.searchValue = searchValue;
 		this.existFile = existFile;
 	}
+	
 
 	public String getSearchCondition() {
 		return searchCondition;

@@ -35,12 +35,17 @@
             width: 90%;
             height: 10%;
         }
+        th, td{
+            border: 1px solid grey;
+        }
         .address{
             width: 80%;
-            height: 69%;
+            height: 58.5%;
             border: 1px solid black;
         }
-        
+        .addressTable{
+        	border-collapse: seperate;
+        }
         /*----------------------*/
         .page_wrap {
             text-align:center;
@@ -97,8 +102,9 @@
             text-align: center;
             width: 100%;
         }
-        th, td{
-            border: 1px solid gray;
+        
+        table tr{
+        	padding: 5px;
         }
     </style>
 
@@ -113,7 +119,7 @@
             </form>
         </div>
         <div class="address">
-	        <table>
+	        <table class="addressTable">
 	            <tr>
 	                <th colspan="2">주소록</th>
 	            </tr>
@@ -122,7 +128,7 @@
 						<td>${ m.eName } ${ m.rName }, ${ m.dName }</td>
 						<c:set var="eId" value="${ m.eId }"/>
 						
-						<td><a type="button" id="searchBtn" class="btn btn-secondary btn-sm" href="javascript:sendReceiver('${ m.eId }')">선택</a></td>			                    
+						<td><a type="button" id="searchBtn" class="btn btn-secondary btn-sm" href="javascript:sendReceiver('${ m.eId },${ m.eName }')">선택</a></td>			                    
 					</tr>
 				</c:forEach>
 			</table>
@@ -177,15 +183,15 @@
                     <a class="arrow nnext" href="${ last }">&gt;&gt;</a>
                 </div>
             </div>
+            <br>
         <div class="buttons">
-            
             <button type="button" class="btn btn-secondary btn-sm" id="cancel" onclick="window.close();">취소</button>
         </div>
     </div>
 
     <script>    	
     	
-    	function sendReceiver(eId){
+    	function sendReceiver(eId,eName){
 			opener.document.getElementById("addReceiver").value = eId;
  	 		self.close();
     	}

@@ -2,7 +2,7 @@ package com.kh.ourwork.note.model.service;
 
 import java.util.ArrayList;
 
-import com.kh.ourwork.client.model.vo.Search;
+import com.kh.ourwork.note.model.vo.Search;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.employee.model.vo.Employee;
 import com.kh.ourwork.note.model.vo.Note;
@@ -52,6 +52,14 @@ public interface NoteService {
 	int selectSaveListCount(Employee loginUser);
 
 	ArrayList<Note> selectSaveList(PageInfo pi, Employee loginUser);
+
+	int outboxSearchListCount(Search search);
+
+	ArrayList<Note> outboxSearchList(PageInfo pi, Search search);
+
+	int saveSearchListCount(Search search);
+
+	ArrayList<Note> saveSearchList(PageInfo pi, Search search);
 
 
 	

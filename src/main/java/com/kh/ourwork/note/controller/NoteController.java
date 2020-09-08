@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.ourwork.client.model.vo.Search;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Pagination;
 import com.kh.ourwork.employee.model.vo.Employee;
@@ -18,6 +17,7 @@ import com.kh.ourwork.note.exception.NoteException;
 import com.kh.ourwork.note.model.service.NoteService;
 import com.kh.ourwork.note.model.vo.Note;
 import com.kh.ourwork.note.model.vo.NoteReceiver;
+import com.kh.ourwork.note.model.vo.Search;
 @Controller
 public class NoteController {
 	@Autowired
@@ -113,9 +113,12 @@ public class NoteController {
 	@RequestMapping("ntsend.do")
 	public ModelAndView sendNote(String addReceiver, String ntContent, ModelAndView mv,HttpSession session) {
 	
+	int index = addReceiver.indexOf(",");
+	String receiver = addReceiver.substring(0, index);
+	
 	Employee loginUser = (Employee)session.getAttribute("loginUser");
-		
-	Note nt = new Note(loginUser.geteId(), ntContent, addReceiver);
+	
+	Note nt = new Note(loginUser.geteId(), ntContent, receiver);
 	
 	int result = ntService.sendNote(nt);
 	
@@ -238,18 +241,16 @@ public class NoteController {
 		return mv;
 	}
 	
-	
-	//----------------------------------
-	/* 수정하기 */
 	@RequestMapping("ntInsearch.do")
 	public ModelAndView noteInboxSearch(Search search, ModelAndView mv, @RequestParam(value="page", required=false) Integer page, HttpSession session) {
 		
 		int currentPage = page != null ? page : 1;
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
+		search.setEmployee(loginUser);
+		
 		int listCount = ntService.inboxSearchListCount(search);
 	
-		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Note> list = ntService.inboxSearchList(pi, search);
@@ -257,6 +258,40 @@ public class NoteController {
 		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).setViewName("note/noteInboxView");
 		return mv;
 	}
+	
+	@RequestMapping("ntOutsearch.do")
+	public ModelAndView noteOutboxSearch(Search search, ModelAndView mv, @RequestParam(value="page", required=false) Integer page, HttpSession session) {
+		
+		int currentPage = page != null ? page : 1;
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
+		search.setEmployee(loginUser);
+		int listCount = ntService.outboxSearchListCount(search);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Note> list = ntService.outboxSearchList(pi, search);
+		
+		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).setViewName("note/noteOutboxView");
+		return mv;
+	}
+	
+	@RequestMapping("ntSavesearch.do")
+	public ModelAndView noteSaveSearch(Search search, ModelAndView mv, @RequestParam(value="page", required=false) Integer page, HttpSession session) {
+		int currentPage = page != null ? page : 1;
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
+		search.setEmployee(loginUser);
+		int listCount = ntService.saveSearchListCount(search);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Note> list = ntService.saveSearchList(pi, search);
+		
+		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).setViewName("note/noteSaveView");
+		return mv;
+	}
+	
 	//----------------------------------
 	@RequestMapping("deleteInSelected.do")
 	public ModelAndView deleteInSelected(@RequestParam(value="check") Integer[] check, ModelAndView mv) {
@@ -370,7 +405,6 @@ public class NoteController {
 		
 		Note nt = ntService.selectNote(ntId);
 		
-		System.out.println("발신자="+nt.geteId()+", 수신자="+nt.getReceiver());
 		int result = 0;
 		if(nt.geteId().equals(loginUser.geteId())) {
 			result = ntService.ntOutDelete(ntId);

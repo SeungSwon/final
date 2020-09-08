@@ -188,7 +188,7 @@
             </div>
         </div>
         <div class="section2">
-        <form action="memberUpdate.do" method="post" id="updateForm" onsubmit="return validate();">
+        <form action="memberUpdate.do" method="post" id="updateForm" onsubmit="return validate();" enctype="multipart/form-data">
         
           <br><br>
             <p>개인정보 수정</p>
@@ -210,7 +210,7 @@
 							<a>${ at.originName }</a>
 						</c:if>
 						<br>                           	
-						<button type="submit" name="submit" >프로필등록</button>
+						<button type="submit" name="submit">프로필등록</button>
                     </td>
                     
                 </tr>
