@@ -6,6 +6,9 @@
 	</settings>
 	
 	<typeAliases>
+	
+		<typeAlias type="com.kh.ourwork.pteam.model.vo.Employee1" alias="Employee1"/>
+		<typeAlias type="com.kh.ourwork.notice.model.vo.Reply" alias="Reply"/>
 
 		<typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
 		<typeAlias type="com.kh.ourwork.notice.model.vo.Notice" alias="Notice"/>
@@ -24,12 +27,14 @@
     
 	</typeAliases>
 	<mappers>
+		<mapper resource="mappers/pteam-mapper.xml"/>
+
 		<mapper resource="mappers/notice-mapper.xml"/>
 		<mapper resource="mappers/client-mapper.xml"/>
 		<mapper resource="mappers/note-mapper.xml"/>
 		<mapper resource="mappers/email-mapper.xml"/>
-  	<mapper resource="mappers/approval-mapper.xml"/>
-    <mapper resource="mappers/member-mapper.xml"/>
+  		<mapper resource="mappers/approval-mapper.xml"/>
+    	<mapper resource="mappers/member-mapper.xml"/>
 	</mappers>	
 </configuration>
 

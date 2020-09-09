@@ -229,41 +229,18 @@
 </head>
 
 <body>
-    <div class="header">
-        <img class="logo" src="#">
-        <div class="top_profile" align="right">
-            <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">김윤지</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">출근</a>
-                <a class="dropdown-item" href="#">퇴근</a>
-                <a class="dropdown-item" href="#">마이페이지</a>
-                <a class="dropdown-item" href="#">로그아웃</a>
-            </div>
-        </div>
-        <img src="../html/image/profile.png" class="profile">
-    </div>
+    <jsp:include page="../common/menubar.jsp" />
     <div class="section"><br>
-        <div class="aside">
-            <button><img class="icons" src="../html/image/mail.png"><br>메일</button>
-            <button><img class="icons" src="../html/image/stamp.png"><br>결재</button>
-            <button><img class="icons" src="../html/image/calendar.png"><br>일정</button>
-            <button><img class="icons" src="../html/image/board.png"><br>게시판</button>
-            <button><img class="icons" src="../html/image/chat_white.png"><br>메신저</button>
-            <button><img class="icons" src="../html/image/address.png"><br>주소록</button>
-            <button id="selectedMenu"><img class="icons" src="../html/image/group.png"><br>인사관리</button>
-            <button><img class="icons" src="../html/image/texting.png"><br>SNS</button>
-
-        </div>
+       <jsp:include page="../common/noticemenu.jsp" />
         <div class="section1">
             <div class="menubar">
-                    <div class="menubar">
-                        <button id="selected">휴가 관리</button>
-                        <button>결재 조회</button>
-                        <button onclick="location.href='employeeE.do'">사원 관리</button>
-                        <button onclick="window.open('address.html','window_name','width=600,height=500,location=no,status=no,scrollbars=yes');">부서 관리</button>
-                        <button>증명서 관리</button>
-                        <button>근퇴 관리</button>
-                    </div>
+                    <button onclick="location.href='pteam.do'">휴가 관리</button>
+                    <button>결재 조회</button>
+                    <button id="selected" onclick="location.href='employeeE.do'">사원 관리</button>
+                    <button onclick="window.open('address.html','window_name','width=600,height=500,location=no,status=no,scrollbars=yes');">부서
+                        관리</button>
+                    <button>증명서 관리</button>
+                    <button>근퇴 관리</button>
         </div>
         </div>
         <div class="section2">
