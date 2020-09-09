@@ -7,6 +7,11 @@
 <html>
 <head>
 <title>Home</title>
+
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+
 <style>
 .approval, .schedule, .notice, .board {
 
@@ -127,11 +132,11 @@
       <div class="aside">
          	<button id="selectedEmenu" onclick="location.href='receiveMailList.do'"><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
             <button onclick="location.href='ahome.do'"><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
-            <button><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
+            <button onclick="location.href='calview.do'"><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
             <button onclick="location.href='noticeMain.do'"><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
             <button onclick="location.href='ntInboxList.do'"><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
             <button onclick="location.href='eAddress.do'"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
-            <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
+            <button onclick="location.href='pteam.do'"><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
             <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
       </div>
       <div class="section1">

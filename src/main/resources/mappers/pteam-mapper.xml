@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pteamMapper">
+	
+	<resultMap id="employeeResultSet" type="Employee1">
+		<id property="eId" column="EID"/>
+ 		<result property="dId" column="DID"/>
+		<result property="rId" column="RID"/> 
+		<result property="ePwd" column="EPWD"/>
+		<result property="eName" column="ENAME"/>
+		<result property="email" column="EMAIL"/>
+		<result property="phone" column="PHONE"/>
+		<result property="address" column="ADDRESS"/>
+ 		<result property="salary" column="SALARY"/> 
+		<result property="join_date" column="JOIN_DATE"/>
+ 		<result property="leave_date" column="LEAVE_DATE"/> 
+		<result property="status" column="STATUS"/>
+ 		<result property="holiday" column="HOLIDAY"/> 
+ 		<result property="eBirth" column="EBIRTH"/>	
+ 		<result property="rName" column="RNAME"/>
+ 		<result property="dName" column="DNAME"/>	
+	</resultMap>
+	
+	
+	<select id="EselectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE STATUS='Y'
+	</select>
+	
+	<!-- 퇴직사원count -->
+	<select id="NselectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE STATUS='N'
+	</select>
+	
+	<!-- 퇴직사원 리스트 -->
+	<select id="NselectList" resultMap="employeeResultSet">
+		SELECT EID, DID, RNAME, DNAME, ENAME, EMAIL, PHONE, ADDRESS, SALARY, JOIN_DATE, LEAVE_DATE, HOLIDAY, EBIRTH
+		FROM EMPLOYEE
+        JOIN RANK USING(RID)
+        JOIN DEPARTMENT USING(DID)
+		WHERE STATUS='N'
+		ORDER BY RID DESC
+	</select>
+	
+	
+	<select id="EselectList" resultMap="employeeResultSet">
+		SELECT EID, DID, RNAME, DNAME, ENAME, EMAIL, PHONE, ADDRESS, SALARY, JOIN_DATE, LEAVE_DATE, HOLIDAY, EBIRTH
+		FROM EMPLOYEE
+        JOIN RANK USING(RID)
+        JOIN DEPARTMENT USING(DID)
+		WHERE STATUS='Y'
+		ORDER BY RID DESC
+	</select>
+	
+	<select id="selectOne" parameterType="String" resultMap="employeeResultSet">
+		SELECT EID, DID, RNAME, DNAME, ENAME, EMAIL, PHONE, ADDRESS, SALARY, JOIN_DATE, LEAVE_DATE, HOLIDAY, EBIRTH
+		FROM EMPLOYEE
+		JOIN RANK USING(RID)
+        JOIN DEPARTMENT USING(DID)
+		WHERE EID=#{eId}
+		AND STATUS='Y'
+	</select>
+	
+	<select id="searchList" parameterType="Search" resultMap="employeeResultSet">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT * 
+		FROM EMPLOYEE
+		JOIN RANK USING(RID)
+        JOIN DEPARTMENT USING(DID)
+		<where>
+			<choose>
+				<when test="searchCondition == 'eName'">
+					AND ENAME LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'dName'">
+					AND DNAME LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'rName'">
+					AND RNAME LIKE #{sv}
+				</when>
+			</choose>
+					AND STATUS='Y'
+		</where>
+		ORDER BY RID DESC
+	</select>
+	
+	<!-- 퇴사사원 -->
+	<select id="nsearchList" parameterType="Search" resultMap="employeeResultSet">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT * 
+		FROM EMPLOYEE
+		JOIN RANK USING(RID)
+        JOIN DEPARTMENT USING(DID)
+		<where>
+			<choose>
+				<when test="searchCondition == 'eName'">
+					AND ENAME LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'dName'">
+					AND DNAME LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'rName'">
+					AND RNAME LIKE #{sv}
+				</when>
+			</choose>
+			AND STATUS='N'
+		</where>
+		ORDER BY RID DESC
+	</select>
+	
+	
+	<!-- 재직중 검색 listCount -->
+	<select id="SselectListCount" resultType="_int">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		JOIN RANK USING(RID)
+        JOIN DEPARTMENT USING(DID)
+		<where>
+			<choose>
+				<when test="searchCondition == 'eName'">
+					AND ENAME LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'dName'">
+					AND DNAME LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'rName'">
+					AND RNAME LIKE #{sv}
+				</when>
+			</choose>
+			AND STATUS='Y'
+		</where>
+		ORDER BY RID DESC
+	</select>
+	
+</mapper>

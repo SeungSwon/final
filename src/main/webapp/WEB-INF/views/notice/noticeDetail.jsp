@@ -105,10 +105,10 @@
     .imgg{
         text-align: right;
     }
-    .replyTable1{
+    #replyTable1{
         width: 100%;
     }
-    .replyTable1{
+    #replyTable1{
         width: 81.5%;
     }
     .tatr{
@@ -162,16 +162,17 @@
                         <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${ noticeMain }'">목록으로</button>
                         
                         <!-- 여기 if문으로 나눠야함 -->
+                        <c:if test="${ loginUser.eId == notice.eId }">
                         <c:url var="upno" value="upno.do">
                         	<c:param name="nNo" value="${ notice.nNo }"/>
                         	<c:param name="page" value="${ currentPage }"/>
                         </c:url>
                         <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${ upno }'">수정하기</button>
-                        
                         <c:url var="deno" value="deno.do">
                         	<c:param name="nNo" value="${ notice.nNo }"/>
                         </c:url>
                         <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${ deno }'">삭제하기</button>
+                        </c:if>
                     </td>
                 </tr>
             </table>
@@ -181,23 +182,146 @@
                     <tr>
                         <td>댓글작성</td><br>
                         <td colspan="3"><textarea cols="75" rows="3" id="rContent"></textarea>
-                            <button type="button" class="btn btn-secondary btn-sm rbtn">등록</button>
+                            <button type="button" id="rSubmit" class="btn btn-secondary btn-sm rbtn">등록하기</button>
                         </td>
                     </tr>
                 </table>
-                <!-- 댓글 작성 후 보이는 테이블-->
+                <!-- 댓글 작성 후 보이는 테이블 => 아작스-->
                 <br>
-                <table class="replyTable1">
-                        <thead class="the">
+                <table id="replyTable1">
+                        <thead>
                             <tr>
-                                <td><b>이후석</b>&nbsp;&nbsp;&nbsp;<span>2020-02-12 : 대박이다 여기에 댓글이?</span></td>
+                                <td><b>${ loginUser.eName }</b>&nbsp;&nbsp;&nbsp;<span>2020-02-12 : 대박이다 여기에 댓글이?</span></td>
                                 <td class="imgg"><img class="imgsa" src="image/city1.PNG"></td>
                             </tr>
                         </thead>
+                        <tbody>
+                        	
+                        </tbody>
                     </table>
             </div>
         </div>
     </div>
+    
+    <script>
+    	/* $(function() {
+    		getReplyList(); // 페이지 로드 시 댓글 리스트 불러오기
+    		
+    		// 댓글이 입력 되는 내용을 실시간으로 반영해서 보여주고 싶다면
+    		setInterval(function{
+				getReplyList();
+			}, 10000);	// 10초에 한번씩 업데이트
+			
+			// 댓글 등록하는 이벤트
+			$("#rSubmit").on("click", function() {
+				var usereId = ${ loginUser.eId };
+				var rContent = $("#rContent").val();
+				var refnNo = ${ notice.nNo };
+				
+				$.ajax({
+					url : "addReply.do",
+					data : {usereId:usereId, rContent:rContent, refnNo:refnNo},
+					type : "post",
+					success : function(data){
+						if(data == "success"){
+							// 1. 등록 성공 시 다시 댓글 리스트 불러오기
+							getReplyList();
+							// 2. textarea의 글 없애기
+							$("#rContent").val("");
+						}
+					},
+					error : function(e){
+						console.log(e);
+					}
+				});
+			});
+		}); */
+		
+		$(function(){
+			getReplyList();	// 페이지 로드 시 댓글 리스트 불러오기
+			
+			// 댓글이 입력되는 내용을 실시간으로 반영해서 보여주고 싶다면
+			setInterval( function {
+				getReplyList();
+			}, 10000);	// 10초에 한번씩 업데이트
+			
+			// 댓글 등록하는 이벤트
+			$("#rSubmit").on("click", function(){
+				var usereId = ${ loginUser.eId };
+				var rContent = $("#rContent").val();
+				var refnNo = ${ notice.nNo };
+				
+				$.ajax({
+					url : "addReply.do",
+					data : {usereId:usereId, rContent:rContent, refnNo:refnNo},
+					type : "post",
+					success : function(data){
+						if(data == "success"){
+							// 1. 등록 성공 시 다시 댓글 리스트 불러오기
+							getReplyList();
+							// 2. textarea의 글 없애기
+							$("#rContent").val("");
+						}
+					},
+					error : function(e){
+						console.log(e);
+					}
+				});
+			});
+		});
+    	
+    	/* // 댓글 리스트를 불러오는 함수
+		function getReplyList(){
+			var bId = ${ board.bId };
+			
+			$.ajax({
+				url : "rList.do",
+				data : {bId:bId},
+				dataType : "json",
+				success : function(data){
+					console.log(data);
+					
+					$tableBody = $("#replyTable tbody");
+					$tableBody.html("");
+					
+					$("#rCount").text("댓글("+data.length+")");
+					
+					if(data.length > 0){ // 댓글이 있는 경우
+						
+						for(var i in data){
+							var $tr = $("<tr>");
+						
+							var $rWriter = $("<td width='100'>").text(data[i].rWriter);
+							var $rContent = $("<td>").text(data[i].rContent);
+							var $rCreateDate = $("<td width='100'>").text(data[i].rCreateDate);
+							
+							$tr.append($rWriter);
+							$tr.append($rContent);
+							$tr.append($rCreateDate);
+							
+							$tableBody.append($tr);
+						}
+						
+					}else{	// 댓글이 없는 경우
+					 	var $tr = $("<tr>");
+						var $rContent = $("<td colspan='3'>").text("등록된 댓글이 없습니다.");
+						
+						$tr.append($rContent);
+						$tableBody.append($tr);
+					}
+					
+					
+					
+					
+					
+				},
+				error : function(e){
+					console.log(e);
+				}
+			});
+		} */
+    	
+    </script>
 
 </body>
 

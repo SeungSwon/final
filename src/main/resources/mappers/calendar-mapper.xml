@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="calendarMapper">
-
-
+<mapper namespace="calMapper">
+	<resultMap id="calResultSet" type="Calendar">
+		<id property="sId" column="SID"/>
+		<result property="eId" column="EID"/>
+		<result property="dId" column="DID"/>
+		<result property="sort" column="SORT"/>
+		<result property="sName" column="SNAME"/>
+		<result property="sDate" column="S_DATE"/>
+		<result property="fDate" column="F_DATE"/>
+		<result property="place" column="PLACE"/>
+		<result property="memo" column="MEMO"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+	
+	<insert id="addEvent" parameterType="Calendar">
+		INSERT INTO SCHEDULE
+		VALUES(SEQ_SID.NEXTVAL, #{eId}, null, 1, #{sName}, #{sDate}, #{fDate}, #{place}, #{memo}, DEFAULT)
+	</insert>
+	
+	<select id="selectList" resultMap="calResultSet">
+		SELECT *
+		FROM SCHEDULE
+		WHERE STATUS='Y'
+	</select>
+	
+	<select id="selectCal" resultMap="calResultSet">
+		SELECT *
+		FROM SCHEDULE
+		WHERE SID=#{sId}
+		AND STATUS='Y'
+	</select>
+	
+	<update id="deleteCal">
+		UPDATE SCHEDULE
+		SET STATUS='N'
+		WHERE SID=#{sId}
+	</update>
 </mapper>

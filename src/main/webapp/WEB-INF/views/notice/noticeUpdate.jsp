@@ -111,11 +111,18 @@
                 </tr>
                 <tr>
                     <td class="division">작성자</td>
-                    <td class="in"><input type="text" readonly name="bWriter" size="50" class="in" value="${ notice.eId }" required="required"></td>
+                    <td class="in"><input type="text" readonly name="bWriter" size="50" class="in" value="${ notice.eId }"></td>
                 </tr>
                 <tr>
                     <td class="division">첨부파일</td>
-                    <td class="in"><input type="file" name="uploadFile" class="in">수정하자</td>
+                    <td class="in">
+                    	<c:if test="${ !empty at.originName }">
+                            		현재 업로드한 파일명 :
+                            		<a>${ at.originName }</a>
+                            	</c:if>
+                            	<br>
+                            	<input type="file" name="reloadFile" id="ex_file">
+                    </td>
                 </tr>
                 <tr>
                     <td class="division">내용</td>
@@ -123,7 +130,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <button type="submit" class="btn btn-secondary btn-sm">수정</button>
+                        <button type="submit" class="btn btn-secondary btn-sm" id="update">수정</button>
                         
                         <!-- 이거 안된다!! -->
                         <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='history.back();'">취소</button>
@@ -133,7 +140,13 @@
             </form>
         </div>
     </div>
-
+	<script>
+		$("#update").click(function(){
+			if(confirm("게시판을 수정하시겠습니까?") == false){
+				return false;
+			}
+		});
+	</script>
 </body>
 
 </html>

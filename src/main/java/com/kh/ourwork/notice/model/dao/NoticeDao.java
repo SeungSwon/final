@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
+import com.kh.ourwork.common.Search;
 import com.kh.ourwork.notice.model.vo.Notice;
+import com.kh.ourwork.notice.model.vo.Reply;
 
 @Repository("nDao")
 public class NoticeDao {
@@ -60,6 +62,40 @@ public class NoticeDao {
 
 	public Attachment selectAttachment(int nNo) {
 		return sqlSession.selectOne("noticeMapper.selectAttachment", nNo);
+	}
+
+
+	public ArrayList<Notice> searchList(Search search,PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit() ;
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("noticeMapper.searchList", search, rowBounds);
+	}
+
+
+	public int insertAttachment2(Attachment at) {
+		return sqlSession.insert("noticeMapper.insertAttachment2", at);
+	}
+
+	
+
+
+	public int deleteAttachment(Attachment at) {
+		return sqlSession.update("noticeMapper.deleteAttachment", at);
+	}
+
+
+	public int updateAttachment(Attachment at) {
+		return sqlSession.update("noticeMapper.updateAttachment", at);
+	}
+
+
+	public int insertReply(Reply r) {
+		return sqlSession.insert("noticeMapper.insertReply", r);
+	}
+
+
+	public int SselectListCount(Search search) {
+		return sqlSession.selectOne("noticeMapper.SselectListCount", search);
 	}
 
 

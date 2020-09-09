@@ -3,8 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -169,10 +167,11 @@
         <div class="section2">
                 <div id="searchMenu" align="right">
                     <p class="title">쪽지 보관함</p>
-                    	<form action="ntsearch.do" name="searchForm" method="get">
+                    	<form action="ntSavesearch.do" name="searchForm" method="get">
 	                        <select id="searchCondition" name="searchCondition">
 	                            <option>------</option>
-	                            <option value="sender">받는 사람</option>
+	                            <option value="receiver">받는사람</option>
+	                            <option value="sender">보낸사람</option>
 	                            <option value="content">내용</option>
 	                        </select>
 	                        <input type="text" class="searchMessage" name="searchValue">
@@ -211,7 +210,7 @@
 		                                    	<c:if test="${ nt.eId eq loginUser.eId }">
 		                                    		<a id="send">[보낸 쪽지] </a><a href="${ ntdetail }" id="toDetail">${ nt.ntContent }</a>
 		                                    	</c:if>
-		                                    </td>
+		                                    </td>		                                   
 		                                    <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${ nt.ntDate }"/></td>
 		                                </tr>
 	                                </c:forEach>

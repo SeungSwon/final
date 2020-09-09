@@ -21,13 +21,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Autowired
 	private EmployeeDao eDao;
+	
+	private Employee employee;
 
 	@Override
 	public Employee loginEmployee(Employee e) {
 
 		Employee loginUser = eDao.selectEmployee(e);
-		System.out.println(e);
-		System.out.println(loginUser); 
+		/*
+		 * System.out.println("EmployeeServiceImpl"+e);
+		 * System.out.println("EmployeeServiceImpl"+loginUser);
+		 */
 		
 		if(loginUser != null && !bcryptPasswordEncoder.matches(e.getePwd(), loginUser.getePwd())) {
 			// 첫번째 인자로 로그인시 입력한 pwd 평문
@@ -35,7 +39,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 			// match되지 않으면 비밀번호 틀린 것이므로 loginUser를 null처리
 			loginUser = null;
 		}
+		this.employee = loginUser;
 		return loginUser;
+	}
+	
+	@Override
+	public Employee findEmployee() {
+		return employee;
 	}
 
 	@Override
