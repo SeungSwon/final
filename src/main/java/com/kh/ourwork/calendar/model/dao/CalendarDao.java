@@ -23,5 +23,15 @@ public class CalendarDao {
 		return (ArrayList)sqlSession.selectList("calMapper.selectList");
 	}
 
+	public Calendar selectCal(int sId) {
+		
+		return sqlSession.selectOne("calMapper.selectCal", sId);
+	}
+
+	public int deleteCal(int sId) {
+		
+		return sqlSession.update("calMapper.deleteCal", sId);
+	}
+
 }
 

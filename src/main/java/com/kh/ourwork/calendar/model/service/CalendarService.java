@@ -13,5 +13,9 @@ public interface CalendarService {
 	int addEvent(Calendar cal);
 
 	ArrayList<Calendar> selectList();
+
+	Calendar selectCal(int sId);
+
+	int deleteCal(int sId);
 	
 }

@@ -93,7 +93,7 @@ public class EmployeeController {
 	public String employeeLogin(Employee e, Model model) {
 		Employee loginUser = eService.loginEmployee(e);
 
-		System.out.println("login.do" + e);
+//		System.out.println("login.do" + e);
 
 		if (loginUser != null) {
 			model.addAttribute("loginUser", loginUser);
