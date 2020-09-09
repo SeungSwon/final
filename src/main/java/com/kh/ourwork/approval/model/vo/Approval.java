@@ -1,16 +1,17 @@
 package com.kh.ourwork.approval.model.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Approval {
 	private String aId;
 	private String eId;
 	private String aName;
 	private String aTitle;
-	private String aContent;
 	private String aStatus;	//I:진행  Y:완료  N:반려
-	private Date startDate;
-	private Date endDate;
+	private Date astartDate;
+	private Date aendDate;
+	private String eName;
+	private String dName;
 	
 	public Approval() {}
 
@@ -37,6 +38,7 @@ public class Approval {
 	public void setaName(String aName) {
 		this.aName = aName;
 	}
+	
 
 	public String getaTitle() {
 		return aTitle;
@@ -44,14 +46,6 @@ public class Approval {
 
 	public void setaTitle(String aTitle) {
 		this.aTitle = aTitle;
-	}
-
-	public String getaContent() {
-		return aContent;
-	}
-
-	public void setaContent(String aContent) {
-		this.aContent = aContent;
 	}
 
 	public String getaStatus() {
@@ -62,27 +56,43 @@ public class Approval {
 		this.aStatus = aStatus;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public Date getAstartDate() {
+		return astartDate;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setAstartDate(Date astartDate) {
+		this.astartDate = astartDate;
 	}
 
-	public Date getEndDate() {
-		return endDate;
+	public Date getAendDate() {
+		return aendDate;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setAendDate(Date aendDate) {
+		this.aendDate = aendDate;
+	}
+	
+	public String geteName() {
+		return eName;
+	}
+
+	public void seteName(String eName) {
+		this.eName = eName;
+	}
+
+	public String getdName() {
+		return dName;
+	}
+
+	public void setdName(String dName) {
+		this.dName = dName;
 	}
 
 	@Override
 	public String toString() {
-		return "Approval [aId=" + aId + ", eId=" + eId + ", aName=" + aName + ", aTitle=" + aTitle + ", aContent="
-				+ aContent + ", aStatus=" + aStatus + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+		return "Approval [aId=" + aId + ", eId=" + eId + ", aName=" + aName + ", aTitle=" + aTitle + ", aStatus="
+				+ aStatus + ", astartDate=" + astartDate + ", aendDate=" + aendDate + ", eName=" + eName + ", dName="
+				+ dName + "]";
 	}
-	
-	
+
 }

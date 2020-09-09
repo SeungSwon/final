@@ -117,8 +117,7 @@ public class EmployeeController {
 			   @RequestParam("post") String post,
 			   @RequestParam("address1") String address1, 
 			   @RequestParam("address2") String address2) {
-  System.out.println("emplyee : " + e);
-		
+
 		String root = request.getSession().getServletContext().getRealPath("resources");
 
 		String savePath = root + "\\images\\profileUploadFiles";
@@ -152,8 +151,6 @@ public class EmployeeController {
 		// 해당 resources는 webapp 하위의 resources
 		String root = request.getSession().getServletContext().getRealPath("resources");
 
-		String savePath = root + "\\images\\profileUploadFiles";
-
 		File folder = new File(savePath);
 		// savePath 폴더를 불러와서
 		// 해당 폴더 경로가 존재하는지 확인하고
@@ -180,6 +177,7 @@ public class EmployeeController {
 	// --------------------------------------------------------------------------------
 	// 회원정보 수정 메소드
 	@RequestMapping("memberUpdate.do")
+
 	public String employeeUpdate(Model model, HttpServletRequest request,
 			@RequestParam(value = "reloadFile", required = false) MultipartFile reloadFile, HttpSession session,
 			@RequestParam("post") String post, @RequestParam("address1") String addr1,
@@ -187,7 +185,6 @@ public class EmployeeController {
 			@RequestParam("phone") String phone, RedirectAttributes rd) {
 
 		Employee e = (Employee) session.getAttribute("loginUser");
-
 		e.setAddress(post + "," + addr1 + "," + addr2);
 		e.setEmail(email);
 		e.setPhone(phone);
@@ -208,10 +205,12 @@ public class EmployeeController {
 				at = new Attachment(e.geteId(), savePath, reloadFile.getOriginalFilename(), renameFileName);
 				int result4 = eService.insertAttachment2(at);
 
+
 				System.out.println("Attachment : " + at);
 				System.out.println("Employee : " + e);
 				System.out.println("savePath : " + savePath);
 				System.out.println("---------------");
+
 
 			} else { // 등록된 프로필 사진이 있는 경우 & 변경하기 위해 파일을 업로드 한 경우
 				if (at.getChangeName() != null) {
@@ -272,8 +271,6 @@ public class EmployeeController {
 		mv.addAllObjects(map);
 
 		mv.setViewName("jsonView");
-
-		System.out.println(eId);
 
 		return mv;
 	}
