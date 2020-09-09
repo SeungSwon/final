@@ -67,7 +67,7 @@
 	<!-- 거래처 등록하면서 수정내역에 1.0 기본값 등록 -->
 	<insert id="insertUpdateClient" parameterType="updateClient">
 		INSERT INTO UPDATE_CLIENT
-		VALUES('1.0', SEQ_CLID.CURRVAL, 'user01', '최초등록', SYSDATE)
+		VALUES(1, SEQ_CLID.CURRVAL, 'user01', '최초등록', SYSDATE)
 	</insert>
 	
 	<!-- 파일 저장 -->
@@ -112,7 +112,7 @@
 	<!-- 거래처 수정 시 수정내역 추가 -->
 	<insert id="updateUpdateClient" parameterType="updateClient">
 		INSERT INTO UPDATE_CLIENT
-		VALUES('2.5', #{clId}, #{eId}, #{reason}, SYSDATE)
+		VALUES(SEQ_UCID.NEXTVAL, #{clId}, #{eId}, #{reason}, SYSDATE)
 	</insert>
 	
 	<!-- 거래처 검색 -->
@@ -179,24 +179,3 @@
 		</where>
 	</select>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

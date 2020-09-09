@@ -5,10 +5,10 @@ import java.util.Date;
 public class Line {
 	private int lineId;
 	private String aId;
-	private String eId;
+	private String leId;
 	private String lStatus;
 	private String lContent;
-	private String lLevel;
+	private int lLevel;
 	private Date lDate;
 
 	public Line() {}
@@ -29,12 +29,12 @@ public class Line {
 		this.aId = aId;
 	}
 
-	public String geteId() {
-		return eId;
+	public String getLeId() {
+		return leId;
 	}
 
-	public void seteId(String eId) {
-		this.eId = eId;
+	public void setLeId(String leId) {
+		this.leId = leId;
 	}
 
 	public String getlStatus() {
@@ -53,11 +53,11 @@ public class Line {
 		this.lContent = lContent;
 	}
 
-	public String getlLevel() {
+	public int getlLevel() {
 		return lLevel;
 	}
 
-	public void setlLevel(String lLevel) {
+	public void setlLevel(int lLevel) {
 		this.lLevel = lLevel;
 	}
 
@@ -71,7 +71,7 @@ public class Line {
 
 	@Override
 	public String toString() {
-		return "Line [LineId=" + lineId + ", aId=" + aId + ", eId=" + eId + ", lStatus=" + lStatus + ", lContent="
+		return "Line [LineId=" + lineId + ", aId=" + aId + ", leId=" + leId + ", lStatus=" + lStatus + ", lContent="
 				+ lContent + ", lLevel=" + lLevel + ", lDate=" + lDate + "]";
 	}
 	

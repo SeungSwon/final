@@ -73,8 +73,6 @@ public class EmployeeController {
 			   @RequestParam("address1") String address1, 
 			   @RequestParam("address2") String address2) {
 
-		System.out.println("emplyee : " + e);
-		
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "/images/profileUploadFiles";
 		File folder = new File(savePath);
@@ -133,7 +131,6 @@ public class EmployeeController {
 	public String employeeLogin(Employee e, Model model) {
 		Employee loginUser = eService.loginEmployee(e);
 
-		System.out.println(e);
 
 		if (loginUser != null) {
 			model.addAttribute("loginUser", loginUser);
@@ -177,9 +174,6 @@ public class EmployeeController {
 			@RequestParam("address2") String addr2, 
 			RedirectAttributes rd) {
 
-		System.out.println("emplyee : " + e);
-		
-		
 		e.setAddress(post + "," + addr1 + "," + addr2);
 		
 		Attachment at = eService.selectAttachment(e.geteId());
@@ -196,7 +190,6 @@ public class EmployeeController {
 				String renamePath = folder + "/" + renameFileName;
 				at = new Attachment(e.geteId(), renamePath, reloadFile.getOriginalFilename(), renameFileName);
 				int result4 = eService.insertAttachment2(at);
-				System.out.println("Attachment : " + at);
 			}
 
 		}
@@ -255,8 +248,6 @@ public class EmployeeController {
 
 		mv.setViewName("jsonView");
 
-		System.out.println(eId);
-
 		return mv;
 	}
 
@@ -269,8 +260,6 @@ public class EmployeeController {
 	  mv.addAllObjects(map);
 	  
 	  mv.setViewName("jsonView");
-	  
-	  System.out.println(email);
 	  
 	  return mv; }
 	 
