@@ -3,34 +3,42 @@ package com.kh.ourwork.approval.model.vo;
 import java.sql.Date;
 
 public class Holiday {
+	private String aId;
 	private String hdType;
-	private Date startDate;
-	private Date endDate;
-	private int remain;
+	private int hterm;
+	private Date hstartDate;
+	private Date hendDate;
 	private String hReason;
+	
+	public String getaId() {
+		return aId;
+	}
+	public void setaId(String aId) {
+		this.aId = aId;
+	}
 	public String getHdType() {
 		return hdType;
 	}
 	public void setHdType(String hdType) {
 		this.hdType = hdType;
 	}
-	public Date getStartDate() {
-		return startDate;
+	public Date getHstartDate() {
+		return hstartDate;
 	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setHstartDate(Date hstartDate) {
+		this.hstartDate = hstartDate;
 	}
-	public Date getEndDate() {
-		return endDate;
+	public Date getHendDate() {
+		return hendDate;
 	}
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setHendDate(Date hendDate) {
+		this.hendDate = hendDate;
 	}
-	public int getRemain() {
-		return remain;
+	public int getHterm() {
+		return hterm;
 	}
-	public void setRemain(int remain) {
-		this.remain = remain;
+	public void setHterm(int hterm) {
+		this.hterm = hterm;
 	}
 	public String gethReason() {
 		return hReason;
@@ -40,8 +48,7 @@ public class Holiday {
 	}
 	@Override
 	public String toString() {
-		return "Holiday [hdType=" + hdType + ", startDate=" + startDate + ", endDate=" + endDate + ", remain=" + remain
-				+ ", hReason=" + hReason + "]";
+		return "Holiday [aId=" + aId + ", hdType=" + hdType + ", hterm=" + hterm + ", hstartDate=" + hstartDate
+				+ ", hendDate=" + hendDate + ", hReason=" + hReason + "]";
 	}
-
 }

@@ -65,8 +65,10 @@ public class NoticeDao {
 	}
 
 
-	public ArrayList<Notice> searchList(Search search) {
-		return (ArrayList)sqlSession.selectList("noticeMapper.searchList", search);
+	public ArrayList<Notice> searchList(Search search,PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit() ;
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("noticeMapper.searchList", search, rowBounds);
 	}
 
 
@@ -78,13 +80,11 @@ public class NoticeDao {
 
 
 	public int deleteAttachment(Attachment at) {
-		System.out.println("deleteAttachment 다오 : 안옵니까? ");
 		return sqlSession.update("noticeMapper.deleteAttachment", at);
 	}
 
 
 	public int updateAttachment(Attachment at) {
-		System.out.println("다오 updateAtt 진짜 안들어오냐??");
 		return sqlSession.update("noticeMapper.updateAttachment", at);
 	}
 
@@ -95,7 +95,6 @@ public class NoticeDao {
 
 
 	public int SselectListCount(Search search) {
-		System.out.println(search);
 		return sqlSession.selectOne("noticeMapper.SselectListCount", search);
 	}
 

@@ -6,23 +6,26 @@ import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Search;
 import com.kh.ourwork.employee.model.vo.Employee;
+import com.kh.ourwork.pteam.model.vo.Employee1;
 
 public interface pteamService {
 
 	int selectListCount();
 
-	ArrayList<Employee> selectList(PageInfo pi);
+	ArrayList<Employee1> selectList(PageInfo pi);
 
 	/*Attachment selectAttachment(String eId);*/
 
-	Employee selectEmployee(String eId);
+	Employee1 selectEmployee(String eId);
 
-	ArrayList<Employee> selectNList(PageInfo pin);
+	ArrayList<Employee1> selectNList(PageInfo pin);
 
 	int selectnListCount();
 
-	ArrayList<Employee> searchList(Search search);
+	ArrayList<Employee1> searchList(Search search, PageInfo pi);
 
 	ArrayList<Employee> nsearchList(Search search2);
+
+	int SselectListCount(Search search);
 
 }

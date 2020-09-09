@@ -102,6 +102,7 @@
 					     OR NTITLE LIKE #{sv})
 				</otherwise>
 			</choose>
+			AND STATUS='Y'
 		</where>
 		ORDER BY NNO DESC
 	</select>
