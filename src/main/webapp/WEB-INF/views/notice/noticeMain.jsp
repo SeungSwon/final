@@ -129,28 +129,27 @@
         <div class="section2">
             <div id="test" align="right">
                 <p class="title">사내 게시판</p>
-                <from action="nsearch.do" name="searchForm" method="get">
-                
+                <form action="nsearch.do" name="searchForm" method="get">
                 <select id="searchCondition" name="searchCondition">
                     <option value="all"
 						<c:if test="${search.searchCondition == 'all' }">selected
 						</c:if>>전체</option>
                     <option value="writer"
-					<c:if test="${search.searchCondition == 'writer'}">selected
+					<c:if test="${search.searchCondition == 'eId'}">selected
 						</c:if>>작성자</option>
 					<option value="title"
-						<c:if test="${search.searchCondition == 'title'}">selected
+						<c:if test="${search.searchCondition == 'nTitle'}">selected
 					</c:if>>제목</option>
                 </select>
                 <input type="search" name="searchValue" value="${ search.searchValue }">
-                <!-- 검색이 sumbit안됩니다.. 이유가 뭘까요. -->
+                <input type="hidden" name="page" value="${ pi.currentPage }"/>
                 <button type="submit" class="btn btn-secondary btn-sm">검색</button>
-                </from>
+                <c:if test="${ loginUser.dId == 1 }">
+                	<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='noticeInsert.do'">작성</button>
+                	<button type="button" class="btn btn-secondary btn-sm">선택삭제</button>
+                </c:if>
+                </form>
                 
-                <!-- 여기 if문으로 짜름 만약 did 1(인사) 이면 보여주고 -->
-                <%-- <c:if test="${ loginUser.dId == 1 }"> --%>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='noticeInsert.do'">작성</button>
-                <button type="button" class="btn btn-secondary btn-sm">선택삭제</button>
                 
             </div>
             <div id="mainContent">
@@ -222,8 +221,6 @@
                             	</c:url>
                             	<a class="arrow next" href="${ after }">></a>
                             </c:if>
-                            
-                            
                         </div>
                     </div>
         </div>

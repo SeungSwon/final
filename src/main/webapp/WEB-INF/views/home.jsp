@@ -5,10 +5,11 @@
 <html>
 <head>
 <title>Home</title>
-<script
-  src="https://code.jquery.com/jquery-3.5.1.min.js"
-  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-  crossorigin="anonymous"></script>
+
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+
 <style>
 .approval, .schedule, .notice, .board {
 
@@ -133,7 +134,7 @@
             <button onclick="location.href='noticeMain.do'"><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
             <button onclick="location.href='ntInboxList.do'"><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
             <button onclick="location.href='eAddress.do'"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
-            <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
+            <button onclick="location.href='pteam.do'"><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
             <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
       </div>
       <div class="section1">

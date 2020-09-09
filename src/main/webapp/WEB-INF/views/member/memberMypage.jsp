@@ -19,136 +19,140 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+
    
 
     <style>
-        body {
-            width: 1400px;
-            height: 800px;
-        }
+body {
+	width: 1400px;
+	height: 800px;
+}
 
-        .section {
-            width: 100%;
-            height: 85%;
-        }
+.section {
+	width: 100%;
+	height: 85%;
+}
 
-        .aside {
-            height: 100%;
-            width: 6%;
-            background: #01579a;
-        }
+.aside {
+	height: 100%;
+	width: 6%;
+	background: #01579a;
+}
 
-        .section1 {
-            width: 14%;
-            height: 100%;
-            
+.section1 {
+	width: 14%;
+	height: 100%;
+}
 
-        }
-        
-        .section,
-        .section1 {
-            display: flex;
-        }
-        
-        
-        .section2 {
-            text-align: center;
-/*             width: 80%;
+.section, .section1 {
+	display: flex;
+}
+
+.section2 {
+	text-align: center;
+	/*             width: 80%;
             height: 100%;
             margin-left: 50px;
             margin-top: 80px; */
-            float: left;
-            font-size: 20px;
-            color:rgba(78, 78, 78, 0.952);
-            font-weight: bold;    
-        }
+	float: left;
+	font-size: 20px;
+	color: rgba(78, 78, 78, 0.952);
+	font-weight: bold;
+}
 
-        .icons{
-            width: 50%;
-            height: 50%;
-            
-        }
-        .aside button{
-            width: 100%;
-            height: 11%;
-            background: none;
-            border: none;
-            color: white;
-            float: left;
-            margin-bottom: 4px;
-        }
-        .aside button:hover{
-            background: #1e87e4;
-        }
-                
-        .menubar button{
-            border: none;
-            background: none;
-            width: 100%;
-            height: 50px;
-            margin-top: 20px;
-        }
-        .menubar button:hover{
-            color: #1e87e4;
-            font-weight: bold;
-        }
-        
-        h4{
-            font-weight : bold;
-        }
-        
-        #myinfo td {
-            font-size: 15px;
-            text-align: center;
-            height: 50px;
-            text-decoration: none;        
-        }
-        
-        #mybtn{
-         width: 20%;       
-        }
-        
-        input {
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 4px;
-        margin: 5px 0;
-        opacity: 0.85;
-        display: inline-block;
-        font-size: 17px;
-        line-height: 20px;
-        text-decoration: none; /* remove underline from anchors */
-        }
-        
-        #add{
-        width: 310px;
-        }
+.icons {
+	width: 50%;
+	height: 50%;
+}
 
-        /* style the submit button */
-        input[type=button] {
-        width: 10%;
-        padding: 12px;
-        background-color: #2a7fc0;
-        color: white;
-        cursor: pointer; 
-        
-        }
+.aside button {
+	width: 100%;
+	height: 11%;
+	background: none;
+	border: none;
+	color: white;
+	float: left;
+	margin-bottom: 4px;
+}
 
-        input[type=button]:hover {
-        background-color: #2670a8;
-        }
-        
+.aside button:hover {
+	background: #1e87e4;
+}
 
-        .modal-content{
-            background-color: hsl(0, 0%, 95%);
-        }
-       .pro{
-            width:80px;
-            height:80px;
-        }
-        
-    </style>
+.menubar button {
+	border: none;
+	background: none;
+	width: 100%;
+	height: 50px;
+	margin-top: 20px;
+}
+
+.menubar button:hover {
+	color: #1e87e4;
+	font-weight: bold;
+}
+
+h4 {
+	font-weight: bold;
+}
+
+#myinfo td {
+	font-size: 15px;
+	text-align: center;
+	height: 50px;
+	text-decoration: none;
+}
+
+#mybtn {
+	width: 20%;
+}
+
+input {
+	width: 100%;
+	padding: 12px;
+	border: none;
+	border-radius: 4px;
+	margin: 5px 0;
+	opacity: 0.85;
+	display: inline-block;
+	font-size: 17px;
+	line-height: 20px;
+	text-decoration: none; /* remove underline from anchors */
+}
+
+#add {
+	width: 310px;
+}
+
+/* style the submit button */
+input[type=button] {
+	width: 10%;
+	padding: 12px;
+	background-color: #2a7fc0;
+	color: white;
+	cursor: pointer;
+}
+
+input[type=button]:hover {
+	background-color: #2670a8;
+}
+
+.modal-content {
+	background-color: hsl(0, 0%, 95%);
+}
+
+.pro {
+	width: 80px;
+	height: 80px;
+}
+
+#mainpro {
+	width: 150px;
+	height: 150px;
+	border-radius: 70px;
+	margin-left: 35px;
+}
+</style>
 </head>
 
 <body>
@@ -185,7 +189,7 @@
                 </tr>
                 <tr>
                     <td>프로필 사진 : </td>
-                    <td> <img class="pro" src="../html/image/IU.JPG"> </td>
+                    <td>  <img id="mainpro" src="${ contextPath }/resources${ loginUser.profile.filePath }/${ loginUser.profile.changeName }">   </td>
                     <td>
                         <div id="profilemain">
 
@@ -284,10 +288,7 @@
 						<c:param name="ePwd" value="${ loginUser.ePwd }"/>
 					</c:url>
 						<input type="button" id="mybtn" class="btn btn-primary" value="수정">
-					</form>
-					
-						
-                        
+					</form> 
                         
                     </div>
                 </div>
