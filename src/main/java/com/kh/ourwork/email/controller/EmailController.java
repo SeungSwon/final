@@ -2,19 +2,25 @@ package com.kh.ourwork.email.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Pagination;
 import com.kh.ourwork.email.model.exception.EmailException;
 import com.kh.ourwork.email.model.service.EmailService;
+import com.kh.ourwork.email.model.vo.Email;
 import com.kh.ourwork.email.model.vo.EmailAddr;
-import com.kh.ourwork.email.model.vo.ReceiveEmail;
+import com.kh.ourwork.email.model.vo.Ereceiver;
+import com.kh.ourwork.email.model.vo.RsEmail;
 import com.kh.ourwork.employee.model.vo.Employee;
 
 @Controller
@@ -24,11 +30,13 @@ public class EmailController {
 	
 	@RequestMapping("receiveMailList.do")
 	public ModelAndView receiveEmailList(ModelAndView mv,
-			@RequestParam(value="page", required=false) Integer page) {
+			@RequestParam(value="page", required=false) Integer page, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
 		int currentPage = page != null ? page : 1;
-		int listCount = eService.selectReceiveListCount();
+		int listCount = eService.selectReceiveListCount(id);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		ArrayList<ReceiveEmail> list = eService.selectReceiveList(pi);
+		ArrayList<RsEmail> list = eService.selectReceiveList(id, pi);
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
@@ -41,11 +49,16 @@ public class EmailController {
 	
 	@RequestMapping("sendMailList.do")
 	public ModelAndView sendEmailList( ModelAndView mv,
-			@RequestParam(value="page", required=false) Integer page) {
+			@RequestParam(value="page", required=false) Integer page, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
 		int currentPage = page != null ? page : 1;
-		int listCount = eService.selectSendListCount();
+		System.out.println(currentPage);
+		int listCount = eService.selectSendListCount(id);
+		System.out.println(listCount);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		ArrayList<ReceiveEmail> list = eService.selectSendList(pi);
+		ArrayList<RsEmail> list = eService.selectSendList(id, pi);
+		System.out.println(pi);
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
@@ -58,11 +71,13 @@ public class EmailController {
 	
 	@RequestMapping("temporaryEmailList.do")
 	public ModelAndView temporaryEmailList(ModelAndView mv,
-			@RequestParam(value="page", required=false) Integer page) {
+			@RequestParam(value="page", required=false) Integer page, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
 		int currentPage = page != null ? page : 1;
-		int listCount = eService.selectTempListCount();
+		int listCount = eService.selectTempListCount(id);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		ArrayList<ReceiveEmail> list = eService.selectTempList(pi);
+		ArrayList<RsEmail> list = eService.selectTempList(id, pi);
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
@@ -78,10 +93,48 @@ public class EmailController {
 		return "email/sendEmailForm";
 	}
 	
-	/*@RequestMapping("emailAddr.do")
-	public String emailAddrView() {
-		return "email/emailAddr";
-	}*/
+	@RequestMapping("sendEmailDetailView.do")
+	public String sendEmailDetailView(int mId, RsEmail r, Model model) {
+		ArrayList<Ereceiver> receiver = eService.sreceiverList(mId);
+		ArrayList<Ereceiver> ref = eService.srefList(mId);
+		ArrayList<Ereceiver> hide = eService.shideList(mId);
+		r = eService.sEmailDetail(mId);
+		
+		if(r != null) {
+			model.addAttribute("receiver", receiver);
+			model.addAttribute("ref", ref);
+			model.addAttribute("hide", hide);
+			model.addAttribute("email", r);
+			return "email/sendEmailDetailView";
+		} else {
+			model.addAttribute("msg", "보낸메일 상세보기 실패했습니다.");
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping("receiveEmailDetailView.do")
+	public String receiveEmailDetailView(int mId, RsEmail r, Model model, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
+		String sendId = eService.selectSendId(mId);
+		ArrayList<Ereceiver> receiver = eService.rreceiverList(mId);
+		ArrayList<Ereceiver> ref = eService.rrefList(mId);
+		ArrayList<Ereceiver> hide = eService.rhideList(mId);
+		r = eService.sEmailDetail(mId);
+		System.out.println(id);
+		if(r != null) {
+			model.addAttribute("sendId", sendId);
+			model.addAttribute("id", id);
+			model.addAttribute("receiver", receiver);
+			model.addAttribute("ref", ref);
+			model.addAttribute("hide", hide);
+			model.addAttribute("email", r);
+			return "email/receiveEmailDetailView";
+		} else {
+			model.addAttribute("msg", "받은메일 상세보기 실패했습니다.");
+			return "common/errorPage";
+		}
+	}
 	
 	@RequestMapping("emailAddr.do")
 	public ModelAndView emailAddrView(ModelAndView mv) {
@@ -95,42 +148,54 @@ public class EmailController {
 		return mv;
 	}
 	
-	/*@RequestMapping("emailAddr.do")
-	public ModelAndView testemailAddrView(ModelAndView mv,
-			@RequestParam(value="page", required=false) Integer page) {
-		int currentPage = page != null ? page : 1;
-		int listCount = eService.testselectEmpListCount();
-		PageInfo pi = AddrPagination.getPageInfo(currentPage, listCount);
-		ArrayList<EmailAddr> list = eService.testselectEmpAddrList(pi);
-		if(list != null) {
-			mv.addObject("list", list);
-			mv.addObject("pi", pi);
-			mv.setViewName("email/testAddr");
-		} else {
-			throw new EmailException("주소록 조회 실패");
-		}
-		return mv;
-	}*/
+	@RequestMapping("sendEmailGoId.do")
+	public String sendEmailGoId(String eId, Model model, RsEmail r) {
+		System.out.println(eId);
+		model.addAttribute("eId", eId);
+		return "email/sendEmailForm";
+	}
 	
-	/*@RequestMapping(value="emailAddr.do")
-    public ResponseEntity<Map<String,Object>> testemailAddrView(@PathVariable("board_num") int board_num,
-            @PathVariable("page") int page){
-        //ResponseEntity 쓰면 list는물론 HttpStatus(접속 상태)도 같이 보낼 수 있다.
-        ResponseEntity<Map<String,Object>> entity = null;
-        PageInfo pi = new PageInfo();
-        PageInfo.setPage(page);
-        PageInfo.setTotalCount(eService.testselectEmpListCount(board_num));
-        try{
-            Map<String,Object> map = new HashMap<String,Object>();
-            //map 구조: {board_num:1, paging:{startNum:1, endNum:10,...}, list:{} }
-            map.put("paging", paging);
-            map.put("board_num", board_num);
-            map.put("list", dao.list(map));
-            entity = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-        }catch(Exception e){
-            entity = new ResponseEntity<Map<String,Object>>(HttpStatus.BAD_REQUEST);
-        }
-        return entity;
-    }*/
+	@RequestMapping("esend.do")
+	public String emailInsert(String[] reId, String[] feId, String[] heId, Email e, HttpServletRequest request,
+			@RequestParam(value="uploadFile", required=false) MultipartFile file, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
+		e.setEeId(id);
+		ArrayList<Ereceiver> rlist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> flist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> hlist = new ArrayList<Ereceiver>();
+		if(reId != null) {
+			for(int i = 0; i < reId.length; i++) {
+				Ereceiver r = new Ereceiver();
+				String[] rr = reId[i].split("@");
+				r.seteId(rr[1]);
+				rlist.add(r);
+			}
+		}
+		if(feId != null) {
+			for(int i = 0; i < feId.length; i++) {
+				Ereceiver f = new Ereceiver();
+				String[] ff = feId[i].split("@");
+				f.seteId(ff[1]);
+				flist.add(f);
+			}
+		}
+		if(heId != null) {
+			for(int i = 0; i < heId.length; i++) {
+				Ereceiver h = new Ereceiver();
+				String[] hh = heId[i].split("@");
+				h.seteId(hh[1]);
+				hlist.add(h);
+			}
+		}
+		
+		int eresult = eService.insertEmail(e);
+		int rresult = eService.insertRec(rlist);
+		int fresult = eService.insertRef(flist);
+		int hresult = eService.insertHid(hlist);
+		return null;
+
+	}
+	
 
 }

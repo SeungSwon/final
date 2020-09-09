@@ -2,7 +2,7 @@ package com.kh.ourwork.email.model.vo;
 
 import java.util.Date;
 
-public class ReceiveEmail {
+public class RsEmail {
 	private int mId;
 	private String eeId;
 	private String mTitle;
@@ -18,9 +18,9 @@ public class ReceiveEmail {
 	private String eName;
 	private String dName;
 	
-	public ReceiveEmail() {}
+	public RsEmail() {}
 
-	public ReceiveEmail(int mId, String eeId, String mTitle, String mContent, String mReceipt, Date sendDate,
+	public RsEmail(int mId, String eeId, String mTitle, String mContent, String mReceipt, Date sendDate,
 			String mStatus, String sendStatus, int mLevel, String reId, int erLevel, Date receiveDate, String eName,
 			String dName) {
 		super();
@@ -38,6 +38,23 @@ public class ReceiveEmail {
 		this.receiveDate = receiveDate;
 		this.eName = eName;
 		this.dName = dName;
+	}
+
+	public RsEmail(int mId, String eeId, String mTitle, String mContent, String mReceipt, Date sendDate, String mStatus,
+			String sendStatus, int mLevel, String reId, int erLevel, Date receiveDate) {
+		super();
+		this.mId = mId;
+		this.eeId = eeId;
+		this.mTitle = mTitle;
+		this.mContent = mContent;
+		this.mReceipt = mReceipt;
+		this.sendDate = sendDate;
+		this.mStatus = mStatus;
+		this.sendStatus = sendStatus;
+		this.mLevel = mLevel;
+		this.reId = reId;
+		this.erLevel = erLevel;
+		this.receiveDate = receiveDate;
 	}
 
 	public int getmId() {
@@ -154,7 +171,7 @@ public class ReceiveEmail {
 
 	@Override
 	public String toString() {
-		return "ReceiveEmail [mId=" + mId + ", eeId=" + eeId + ", mTitle=" + mTitle + ", mContent=" + mContent
+		return "RsEmail [mId=" + mId + ", eeId=" + eeId + ", mTitle=" + mTitle + ", mContent=" + mContent
 				+ ", mReceipt=" + mReceipt + ", sendDate=" + sendDate + ", mStatus=" + mStatus + ", sendStatus="
 				+ sendStatus + ", mLevel=" + mLevel + ", reId=" + reId + ", erLevel=" + erLevel + ", receiveDate="
 				+ receiveDate + ", eName=" + eName + ", dName=" + dName + "]";

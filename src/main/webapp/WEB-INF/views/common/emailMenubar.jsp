@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ contextPath }/resources/css/email.css"
 	type="text/css">
+
 </head>
 <body>
 	<div class="aside">

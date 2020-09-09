@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="emailMapper">
-	<resultMap type="ReceiveEmail" id="emailResultSet">
+	<resultMap type="RsEmail" id="emailResultSet">
 		<id property="mId" column="MID"/>
 		<result property="eeId" column="EEID"/>
 		<result property="mTitle" column="MTITLE"/>
@@ -38,22 +38,29 @@
 		<result property="rNum" column="rnum"/>
 	</resultMap>
 	
+	<resultMap type="Ereceiver" id="receiverResultSet">
+		<result property="mId" column="MID"/>
+		<result property="eId" column="EID"/>
+		<result property="erLevel" column="ERLEVEL"/>
+		<result property="receiveDate" column="RECEIVE_DATE"/>
+	</resultMap>
+	
 	<!-- 받은메일리스트 개수 -->
 	<select id="selectReceiveListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM EMAIL E
 		JOIN ERECEIVER R ON(E.MID = R.MID)
-		WHERE R.EID = 'user02'
+		WHERE R.EID = #{id}
 		AND SENDSTATUS = 'Y'
 		AND MSTATUS = 'Y'
 	</select>
 	
 	<!-- 보낸메일리스트 개수 -->
 	<select id="selectSendListCount" resultType="_int">
-		SELECT COUNT(*)
+		SELECT COUNT(DISTINCT E.MID)
 		FROM EMAIL E
 		JOIN ERECEIVER R ON(E.MID = R.MID)
-		WHERE E.EID = 'user01'
+		WHERE E.EID = #{id}
 		AND SENDSTATUS = 'Y'
 		AND MSTATUS = 'Y'
 	</select>
@@ -63,7 +70,7 @@
 		SELECT COUNT(*)
 		FROM EMAIL E
 		JOIN ERECEIVER R ON(E.MID = R.MID)
-		WHERE E.EID = 'user01'
+		WHERE E.EID = #{id}
 		AND SENDSTATUS = 'N'
 		AND MSTATUS = 'Y'
 	</select>
@@ -76,7 +83,7 @@
 		JOIN ERECEIVER R ON(E.MID = R.MID)
 		JOIN EMPLOYEE L ON(E.EID = L.EID)
 		JOIN DEPARTMENT D ON(L.DID = D.DID)
-		WHERE R.EID = 'user02'
+		WHERE R.EID = #{id}
 		AND SENDSTATUS = 'Y'
 		AND E.MSTATUS = 'Y'
 		ORDER BY E.MID DESC
@@ -90,10 +97,10 @@
 		JOIN ERECEIVER R ON(E.MID = R.MID)
 		JOIN EMPLOYEE L ON(R.EID = L.EID)
 		JOIN DEPARTMENT D ON(L.DID = D.DID)
-		WHERE E.EID = 'user01'
+		WHERE E.EID = #{id}
 		AND SENDSTATUS = 'Y'
 		AND E.MSTATUS = 'Y'
-		ORDER BY E.MID DESC
+		ORDER BY E.MID DESC, R.ERLEVEL ASC, REID ASC
 	</select>
 	
 	<!-- 임시저장메일리스트 목록 셀렉트 -->
@@ -104,7 +111,7 @@
 		JOIN ERECEIVER R ON(E.MID = R.MID)
 		LEFT JOIN EMPLOYEE L ON(R.EID = L.EID)
 		LEFT JOIN DEPARTMENT D ON(L.DID = D.DID)
-		WHERE E.EID = 'user01'
+		WHERE E.EID = #{id}
 		AND SENDSTATUS = 'N'
 		AND E.MSTATUS = 'Y'
 		ORDER BY E.MID DESC
@@ -125,4 +132,68 @@
 		JOIN RANK R ON(E.RID = R.RID)
 		WHERE STATUS='Y'
 	</select>
+	
+	<select id="sEmailDetail" parameterType="_int" resultMap="emailResultSet">
+		SELECT *
+		FROM EMAIL
+		WHERE MID = #{mId}
+	</select>
+	
+	<select id="sreceiverList" resultMap = "receiverResultSet">
+		SELECT *
+		FROM ERECEIVER
+		WHERE MID = #{mId}
+		AND ERLEVEL = 1
+	</select>
+	<select id="srefList" resultMap = "receiverResultSet">
+		SELECT *
+		FROM ERECEIVER
+		WHERE MID = #{mId}
+		AND ERLEVEL = 2
+	</select>
+	<select id="shideList" resultMap = "receiverResultSet">
+		SELECT *
+		FROM ERECEIVER
+		WHERE MID = #{mId}
+		AND ERLEVEL = 3
+	</select>
+	
+	<select id="rreceiverList" resultMap = "receiverResultSet">
+		SELECT *
+		FROM ERECEIVER
+		WHERE MID = #{mId}
+		AND ERLEVEL = 1
+	</select>
+	<select id="rrefList" resultMap = "receiverResultSet">
+		SELECT *
+		FROM ERECEIVER
+		WHERE MID = #{mId}
+		AND ERLEVEL = 2
+	</select>
+	<select id="rhideList" resultMap = "receiverResultSet">
+		SELECT *
+		FROM ERECEIVER
+		WHERE MID = #{mId}
+		AND ERLEVEL = 3
+	</select>
+	<select id="selectSendId" resultType="string">
+		SELECT EID
+		FROM EMAIL
+		WHERE MID=#{mid}
+	</select>
+	
+	<!-- insert 이메일 -->
+	<insert id="insertEmail" parameterType="Email">
+		INSERT INTO EMAIL VALUES(
+			SEQ_MID.NEXTVAL, #{eeId}, #{mTitle}, #{mContent},
+			DEFAULT, SYSDATE, DEFAULT, DEFAULT, NULL
+		)
+	</insert>
+	
+	<insert id="insertRec" parameterType="Ereceiver">
+		INSERT INTO ERECEIVER VALUES
+		<foreach collection="rlist" item="item" separator=",">
+			()
+		</foreach>
+	</insert>
 </mapper>
