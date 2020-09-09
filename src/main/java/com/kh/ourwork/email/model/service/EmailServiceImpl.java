@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.email.model.dao.EmailDao;
+import com.kh.ourwork.email.model.vo.Email;
 import com.kh.ourwork.email.model.vo.EmailAddr;
-import com.kh.ourwork.email.model.vo.ReceiveEmail;
+import com.kh.ourwork.email.model.vo.Ereceiver;
+import com.kh.ourwork.email.model.vo.RsEmail;
 
 @Service("eService")
 public class EmailServiceImpl implements EmailService {
@@ -16,33 +18,33 @@ public class EmailServiceImpl implements EmailService {
 	private EmailDao mDao;
 
 	@Override
-	public int selectReceiveListCount() {
-		return mDao.selectReceiveListCount();
+	public int selectReceiveListCount(String id) {
+		return mDao.selectReceiveListCount(id);
 	}
 	
 	@Override
-	public int selectSendListCount() {
-		return mDao.selectSendListCount();
+	public int selectSendListCount(String id) {
+		return mDao.selectSendListCount(id);
 	}
 	
 	@Override
-	public int selectTempListCount() {
-		return mDao.selectTempListCount();
+	public int selectTempListCount(String id) {
+		return mDao.selectTempListCount(id);
 	}
 
 	@Override
-	public ArrayList<ReceiveEmail> selectReceiveList(PageInfo pi) {
-		return mDao.selectReceiveList(pi);
+	public ArrayList<RsEmail> selectReceiveList(String id, PageInfo pi) {
+		return mDao.selectReceiveList(id, pi);
 	}
 
 	@Override
-	public ArrayList<ReceiveEmail> selectSendList(PageInfo pi) {
-		return mDao.selectSendList(pi);
+	public ArrayList<RsEmail> selectSendList(String id, PageInfo pi) {
+		return mDao.selectSendList(id, pi);
 	}
 
 	@Override
-	public ArrayList<ReceiveEmail> selectTempList(PageInfo pi) {
-		return mDao.selectTempList(pi);
+	public ArrayList<RsEmail> selectTempList(String id, PageInfo pi) {
+		return mDao.selectTempList(id, pi);
 	}
 
 	@Override
@@ -55,13 +57,64 @@ public class EmailServiceImpl implements EmailService {
 		return mDao.selectEmpAddrList();
 	}
 
-	/*@Override
-	public int testselectEmpListCount() {
-		return mDao.testselectEmpListCount();
+	@Override
+	public RsEmail sEmailDetail(int mId) {
+		return mDao.sEmailDetail(mId);
 	}
 
 	@Override
-	public ArrayList<EmailAddr> testselectEmpAddrList(PageInfo pi) {
-		return mDao.testselectEmpAddrList(pi);
-	}*/
+	public ArrayList<Ereceiver> sreceiverList(int mId) {
+		return mDao.sreceiverList(mId);
+	}
+
+	@Override
+	public ArrayList<Ereceiver> srefList(int mId) {
+		return mDao.srefList(mId);
+	}
+
+	@Override
+	public ArrayList<Ereceiver> shideList(int mId) {
+		return mDao.shideList(mId);
+	}
+
+	@Override
+	public ArrayList<Ereceiver> rreceiverList(int mId) {
+		return mDao.rreceiverList(mId);
+	}
+
+	@Override
+	public ArrayList<Ereceiver> rrefList(int mId) {
+		return mDao.rrefList(mId);
+	}
+
+	@Override
+	public ArrayList<Ereceiver> rhideList(int mId) {
+		return mDao.rhideList(mId);
+	}
+
+	@Override
+	public String selectSendId(int mId) {
+		return mDao.selectSendId(mId);
+	}
+
+	@Override
+	public int insertEmail(Email e) {
+		return mDao.insertEmail(e);
+	}
+
+	@Override
+	public int insertRec(ArrayList<Ereceiver> rlist) {
+		return mDao.insertRec(rlist);
+	}
+
+	@Override
+	public int insertRef(ArrayList<Ereceiver> flist) {
+		return mDao.insertRef(flist);
+	}
+
+	@Override
+	public int insertHid(ArrayList<Ereceiver> hlist) {
+		return mDao.insertHid(hlist);
+	}
+
 }
