@@ -9,6 +9,8 @@ public interface EmployeeService {
 	// 1. 회원 로그인 서비스를 위한 메소드
 	public Employee loginEmployee(Employee e);
 	
+	public Employee findEmployee();
+	
 	// 2. 회원 가입 서비스를 위한 메소드
 	public int insertEmployee(Employee e);
 	
@@ -31,7 +33,7 @@ public interface EmployeeService {
 	Attachment selectAttachment(String eId);
 	
 	// 수정 시 기존 파일 없을 때 INSERT
-	int insertAttachment2(Attachment at);
+	public int insertAttachment2(Attachment at);
 
 
 
