@@ -106,7 +106,7 @@
             font-weight : bold;
         }
 
-        input {
+        input,#postcodify_search_button {
         
         padding: 9px;
         border: 1px solid rgb(182, 181, 181);
@@ -146,22 +146,21 @@
         background-color: #2670a8;
         }
         
-        .modal-content{
-            background-color: hsl(0, 0%, 95%);
-        }
-        tr,td{
+       tr,td{
             text-align: center;
             }
             
-         #new1{
-			width: 100%;
-			height: 100%;
-			float: left;
-			padding-bottom: 10px;
-		}
-          
-
+        #postcodify_search_button{
+        background-color: #2a7fc0;
+        color: white;
+        cursor: pointer; 
+        }
         
+        #postcodify_search_button :hover{
+         background-color: #2670a8;
+         }
+        
+                
     </style>
 </head>
 
@@ -170,17 +169,16 @@
 	<jsp:include page="../common/menubar.jsp"/>
 
     <div class="section"><br>
-        <div class="aside">
-            <button><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
-            <button><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
-            <button><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
-            <button><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
-            <button><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
-            <button><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
-            <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
-            <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
-
-        </div>
+ 	<div class="aside">
+		<button onclick="location.href='receiveMailList.do'"><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
+       	<button onclick="location.href='ahome.do'"><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
+     	<button onclick="location.href='calview.do'"><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
+       	<button onclick="location.href='noticeMain.do'"><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
+  		<button onclick="location.href='ntInboxList.do'"><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
+       	<button id="selectedEmenu" onclick="location.href='eAddress.do'"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
+        <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
+   		<button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
+	</div>
         <div class="section1">
             <div class="menubar">
                 <button onclick="location.href='eMypage.do'">개인정보 조회</button>
@@ -208,10 +206,11 @@
 	                    <input type="file" name="reloadFile">
 						<c:if test="${ !empty at.originName }">
 							<a>${ at.originName }</a>
-						</c:if>
-						<br>                           	
-						<button type="submit" name="submit">프로필등록</button>
-                    </td>
+						</c:if> 
+					</td>
+					<!-- <td>                      	
+						<button id="prbtn" type="submit" name="submit">프로필등록</button>
+                    </td> -->
                     
                 </tr>
                 
@@ -226,20 +225,13 @@
                     <td>
 						<input type="email" name="email" value="${ loginUser.email }" >
 					</td>
-					<td>
-                        <input type="submit" name="submit" value="수정">
-
-                    </td>
                 </tr>
                 <tr>
                     <td>전화번호 : </td>
                     <td>
                    	 <input type="text" name="phone" value="${ loginUser.phone }" >
                     </td>
-                    <td>
-                        <input type="submit" name="submit" value="수정">
 
-                    </td>
                 </tr>
                 <c:forTokens var="addr" items="${ loginUser.address }" delims="," varStatus="status">
 					<c:if test="${ status.index eq 0 }">
@@ -266,10 +258,6 @@
 				<tr>
 					<td>상세 주소 : </td>
 					<td><input type="text" name="address2" class="postcodify_details" value="${ addr3 }"></td>					
-					<td>
-                        <input type="submit" name="submit" value="수정">
-
-                    </td>
 				</tr>
 
                 <tr>
@@ -291,33 +279,6 @@
 <script> 
 
 $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); 
-
-/* $("#contentImg1").click(function(){
-	$("#Img1").click();
-});
-		// input type="file" 태그에 이미지 파일이 첨부 되었을 때
-		// div에 미리보기 표현하기
-		function loadImg(value, num){
-			// value => this : input type="file"
-			// num => 각 번호에 맞춰 위의 미리보기 img에 적용 시킬 숫자
-			
-			// file이 존재한다면
-			if(value.files && value.files[0]){
-				// 파일을 읽어들일 수 있는 FileReader 객체 생성
-				var reader = new FileReader();
-				
-				// 파일 읽기가 다 완료 되었을 때 실행 되는 메소드
-				reader.onload = function(e){
-					switch(num){
-					case 1:
-						$("#new1").attr("src", e.target.result);
-						break;
-					}
-				}				
-				// 파일 읽기 하는 메소드
-				reader.readAsDataURL(value.files[0]);
-			}
-		} */
 		
     	$("#update").click(function(){
     		if(confirm("개인정보를 수정하시겠습니까?") == false){

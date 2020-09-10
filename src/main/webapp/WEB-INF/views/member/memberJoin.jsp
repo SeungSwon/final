@@ -24,75 +24,86 @@
 	box-sizing: border-box
 }
 
-	#wrapper {
-		width: 1200px;
-		margin: auto;
-		/*display: flex; */
-		background-color: #5396c9;
-	}
-	
-	/* style the container */
-	.container {
-		width: 60%;
-		position: relative;
-		border-radius: 5px;
-		background-color: hsl(0, 0%, 95%);
-		padding: 20px 0 30px 0;
-		/*display: flex;*/
-	}
-	
-	/* style inputs and link buttons */
-	input, .btn {
-		width: 100%;
-		padding: 9px;
-		border: none;
-		border-radius: 4px;
-		margin: 5px 0;
-		opacity: 0.85;
-		display: inline-block;
-		font-size: 12px;
-		line-height: 20px;
-		text-decoration: none; /* remove underline from anchors */
-	}
-	
-	/* style the submit button */
-	input[type=submit] {
-		width: 70px;
-		background-color: #0c70bd;
-		color: rgb(255, 255, 255);
-		cursor: pointer;
-	}
-	
-	input[type=submit]:hover {
-		background-color: #01579a;
-	}
-	
-	input[type=button] {
-		width: 70px;
-		background-color: #0c70bd;
-		color: rgb(255, 255, 255);
-		cursor: pointer;
-	}
-	
-	input[type=button]:hover {
-		background-color: #01579a;
-	}
-	
-	/* ajax 적용 이후 */
-	span.guide {
-		display: none;
-		font-size: 12px;
-		top: 12px;
-		right: 10px;
-	}
-	
-	span.ok {
-		color: green;
-	}
-	
-	span.error {
-		color: red;
-	}
+#wrapper {
+	width: 1200px;
+	margin: auto;
+	/*display: flex; */
+	background-color: #5396c9;
+}
+
+/* style the container */
+.container {
+	width: 60%;
+	position: relative;
+	border-radius: 5px;
+	background-color: hsl(0, 0%, 95%);
+	padding: 20px 0 30px 0;
+	/*display: flex;*/
+}
+
+/* style inputs and link buttons */
+input, .btn, #postcodify_search_button {
+	width: 100%;
+	padding: 9px;
+	border: none;
+	border-radius: 4px;
+	margin: 5px 0;
+	opacity: 0.85;
+	display: inline-block;
+	font-size: 12px;
+	line-height: 20px;
+	text-decoration: none; /* remove underline from anchors */
+}
+
+/* style the submit button */
+input[type=submit] {
+	width: 70px;
+	background-color: #0c70bd;
+	color: rgb(255, 255, 255);
+	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	background-color: #01579a;
+}
+
+input[type=button] {
+	width: 70px;
+	background-color: #0c70bd;
+	color: rgb(255, 255, 255);
+	cursor: pointer;
+}
+
+input[type=button]:hover {
+	background-color: #01579a;
+}
+
+#postcodify_search_button {
+	swidth: 70px;
+	background-color: #0c70bd;
+	color: rgb(255, 255, 255);
+	cursor: pointer;
+}
+
+#postcodify_search_button:hover {
+	background-color: #01579a;
+}
+
+/* ajax 적용 이후 */
+span.guide {
+	display: none;
+	font-size: 12px;
+	top: 12px;
+	right: 10px;
+}
+
+span.ok {
+	color: green;
+}
+
+span.error {
+	color: black;
+}
 </style>
 
 <!-- <script type="text/javascript"> 
@@ -167,7 +178,7 @@ $("#email").blur(function() {
 			                  
 			                    <td>                  
 				                    <input type="file" name="reloadFile">                          	
-									<button type="submit" name="submit">프로필등록</button>
+									<!-- <button type="submit" name="submit">프로필등록</button> -->
 			                    </td>
 			                    
 			                </tr>
@@ -211,17 +222,17 @@ $("#email").blur(function() {
 						</tr>
 						<tr>
 							<td>*우편번호 :</td>
-							<td><input type="text" name="post" class="postcodify_postcode5" size="6">
-								<button type="button" id="postcodify_search_button">검색</button>
-							</td>
+							<td><input type="text" name="post" class="postcodify_postcode5" size="6" placeholder="검색해주세요" ></td>
+							<td><button type="button" id="postcodify_search_button">검색</button></td>
+							
 						</tr>
 						<tr>
 							<td>*도로명 주소:</td>
-							<td><input type="text" name="address1" class="postcodify_address" required></td>
+							<td><input type="text" name="address1" class="postcodify_address" placeholder="상세히 입력해주세요" required></td>
 						</tr>
 						<tr>
 							<td>*상세 주소:</td>
-							<td><input type="text" name="address2" class="postcodify_details" required></td>
+							<td><input type="text" name="address2" class="postcodify_details" placeholder="상세히 입력해주세요" required></td>
 						</tr>
 						<tr>
 							<td>*입사일 :</td>

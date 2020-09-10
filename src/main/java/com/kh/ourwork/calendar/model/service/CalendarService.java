@@ -34,5 +34,6 @@ public interface CalendarService {
 	int deletePersonalCal(int sId);
 
 	Calendar selectPersonalCal(int sId);
+
 	
 }

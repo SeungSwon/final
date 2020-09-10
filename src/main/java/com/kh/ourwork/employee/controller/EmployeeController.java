@@ -45,7 +45,7 @@ public class EmployeeController {
 	public String joinView() {
 		return "member/memberJoin";
 	}
-
+	
 	@RequestMapping("eAddress.do")
 	public String addressView() {
 		return "member/memberAddress";
@@ -93,7 +93,7 @@ public class EmployeeController {
 	public String employeeLogin(Employee e, Model model) {
 		Employee loginUser = eService.loginEmployee(e);
 
-//		System.out.println("login.do" + e);
+		System.out.println("login.do" + e);
 
 		if (loginUser != null) {
 			model.addAttribute("loginUser", loginUser);
@@ -117,25 +117,24 @@ public class EmployeeController {
 			   @RequestParam("post") String post,
 			   @RequestParam("address1") String address1, 
 			   @RequestParam("address2") String address2) {
+		
+		System.out.println("emplyee : " + e);
 
-		String root = request.getSession().getServletContext().getRealPath("resources");
-
-		String savePath = root + "\\images\\profileUploadFiles";
-		File folder = new File(root + "\\images\\profileUploadFiles");
+		//String savePath = "\\images\\profileUploadFiles";
 
 		e.setAddress(post + "," + address1 + "," + address2);
 
 		int result = eService.insertEmployee(e);
 
-		if (!file.getOriginalFilename().equals("") && result > 0) {
-			String renameFileName = saveFile(file, request);
-			String renamePath = "/resources/images/profileUploadFiles";
-
-			if (renameFileName != null) {
-				Attachment at = new Attachment(renamePath, file.getOriginalFilename(), renameFileName, new Date(), 60);
-				int result2 = eService.insertEmployee(e);
-			}
-		}
+		/*
+		 * if (!reloadFile.getOriginalFilename().equals("") && result > 0) { String
+		 * renameFileName = saveFile(reloadFile, request); String renamePath =
+		 * "/resources/images/profileUploadFiles";
+		 * 
+		 * if (renameFileName != null) { Attachment at = new Attachment(renamePath,
+		 * reloadFile.getOriginalFilename(), renameFileName, new Date(), 60); int
+		 * result2 = eService.insertEmployee(e); } }
+		 */
 
 		if (result > 0) {
 			rd.addFlashAttribute("msg", "회원가입이 완료되었습니다. 로그인 해주세요.");
@@ -150,6 +149,8 @@ public class EmployeeController {
 		// 파일이 저장 될 경로 설정
 		// 해당 resources는 webapp 하위의 resources
 		String root = request.getSession().getServletContext().getRealPath("resources");
+
+		String savePath = root + "\\images\\profileUploadFiles";
 
 		File folder = new File(savePath);
 		// savePath 폴더를 불러와서
@@ -177,7 +178,6 @@ public class EmployeeController {
 	// --------------------------------------------------------------------------------
 	// 회원정보 수정 메소드
 	@RequestMapping("memberUpdate.do")
-
 	public String employeeUpdate(Model model, HttpServletRequest request,
 			@RequestParam(value = "reloadFile", required = false) MultipartFile reloadFile, HttpSession session,
 			@RequestParam("post") String post, @RequestParam("address1") String addr1,
@@ -185,6 +185,7 @@ public class EmployeeController {
 			@RequestParam("phone") String phone, RedirectAttributes rd) {
 
 		Employee e = (Employee) session.getAttribute("loginUser");
+
 		e.setAddress(post + "," + addr1 + "," + addr2);
 		e.setEmail(email);
 		e.setPhone(phone);
@@ -205,12 +206,10 @@ public class EmployeeController {
 				at = new Attachment(e.geteId(), savePath, reloadFile.getOriginalFilename(), renameFileName);
 				int result4 = eService.insertAttachment2(at);
 
-
 				System.out.println("Attachment : " + at);
 				System.out.println("Employee : " + e);
 				System.out.println("savePath : " + savePath);
 				System.out.println("---------------");
-
 
 			} else { // 등록된 프로필 사진이 있는 경우 & 변경하기 위해 파일을 업로드 한 경우
 				if (at.getChangeName() != null) {
@@ -259,6 +258,20 @@ public class EmployeeController {
 		System.out.println("deleteFile : " + deleteFile);
 		System.out.println("---------------");
 	}
+	
+	//주소록 불러오기
+	@RequestMapping("searchAddress.do")
+	public String searchEmployee(Employee e) {
+		
+		
+			return "member/memberMypage";
+		
+	}
+	
+	//출퇴근 저장하기
+	
+	
+	
 
 	// 2. JsonView를 이용한 방법
 	// dependency 라이브러리 추가 후 JsonView, BeanNameViewResolver 빈 등록 후 사용
@@ -271,6 +284,8 @@ public class EmployeeController {
 		mv.addAllObjects(map);
 
 		mv.setViewName("jsonView");
+
+		System.out.println(eId);
 
 		return mv;
 	}

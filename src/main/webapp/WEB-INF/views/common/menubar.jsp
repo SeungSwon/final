@@ -19,7 +19,18 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
 
+<style>
+#homepro {
+   width: 70px;
+   height: 70px;
+   border-radius: 70px;
+   margin-top: 5px;
+   margin-bootom: 5px;
+} 
+</style>
+
 </head>
+
 <body>
 	<div class="header">
 
@@ -28,15 +39,15 @@
         <div class="top_profile" align="right">
             <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <c:out value="${ loginUser.eName }님 "/>
+            <form action="login.do" method="post" >
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">출근</a>
-                <a class="dropdown-item" href="#">퇴근</a>
+                <a class="dropdown-item" href="#" type="time" name="wIn">출근</a>
+                <a class="dropdown-item" href="#" type="time" name="wOut">퇴근</a>
                 <a class="dropdown-item" href="#" onclick="location.href='eMypage.do'">마이페이지</a>
                 <a class="dropdown-item" href="#" onclick="location.href='/ourwork'">로그아웃</a>
             </div>
-        </div>
-        <img src="${ contextPath }/resources/images/common/profile_1.JPG" class="profile">
-
+        </div>       
+        <img id="homepro" src="${ contextPath }/resources${ loginUser.profile.filePath }/${ loginUser.profile.changeName }">
     </div>
 </body>
 </html>

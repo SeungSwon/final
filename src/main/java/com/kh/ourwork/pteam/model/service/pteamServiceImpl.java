@@ -22,7 +22,7 @@ public class pteamServiceImpl implements pteamService{
 	}
 	
 	@Override
-	public ArrayList<Employee1> selectList(PageInfo pi) {
+	public ArrayList<Employee> selectList(PageInfo pi) {
 		return pDao.selectLis(pi);
 	}
 	// 자격증 파일 찾기
@@ -32,12 +32,12 @@ public class pteamServiceImpl implements pteamService{
 		}*/
 
 	@Override
-	public Employee1 selectEmployee(String eId) {
+	public Employee selectEmployee(String eId) {
 		return pDao.selectEmployee(eId);
 	}
 
 	@Override
-	public ArrayList<Employee1> selectNList(PageInfo pin) {
+	public ArrayList<Employee> selectNList(PageInfo pin) {
 		return pDao.selectNList(pin);
 	}
 
@@ -47,18 +47,13 @@ public class pteamServiceImpl implements pteamService{
 	}
 
 	@Override
-	public ArrayList<Employee1> searchList(Search search, PageInfo pi) {
-		return pDao.searchList(search, pi);
+	public ArrayList<Employee> searchList(Search search) {
+		return pDao.searchList(search);
 	}
 
 	@Override
 	public ArrayList<Employee> nsearchList(Search search2) {
 		return pDao.nselectList(search2);
-	}
-
-	@Override
-	public int SselectListCount(Search search) {
-		return pDao.sselectListCount(search);
 	}
 
 	
