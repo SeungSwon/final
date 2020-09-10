@@ -59,7 +59,7 @@
 			var memo = $("#memo").val();
 			
 			$.ajax({
-				url: "addEvent.do",
+				url: "addteamEvent.do",
 				data: {sName:sName, sDate:sDate, fDate:fDate, place:place, memo:memo},
 				dataType: "json",
 				type: "post",

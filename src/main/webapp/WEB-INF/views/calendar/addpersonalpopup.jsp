@@ -24,7 +24,7 @@
 			<h1 class="zTree-h1">일정 추가</h1>
 		</div>
 		<div class="group-body">
-			<form id="scheduleData" action="addEvent.do" method="post">
+			<form id="scheduleData" action="addpersonalEvent.do" method="post">
 				<div class="top">
 					<input type="text" id="sName" name="sName" size="40" placeholder="제목을 입력해주세요">
 				</div>
@@ -59,7 +59,7 @@
 			var memo = $("#memo").val();
 			
 			$.ajax({
-				url: "addEvent.do",
+				url: "addpersonalEvent.do",
 				data: {sName:sName, sDate:sDate, fDate:fDate, place:place, memo:memo},
 				dataType: "json",
 				type: "post",

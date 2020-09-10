@@ -35,7 +35,7 @@
                 <a class="dropdown-item" href="#" onclick="location.href='/ourwork'">로그아웃</a>
             </div>
         </div>
-        <img src="${ contextPath }/resources/images/common/profile_1.jpg" class="profile">
+        <img src="${ contextPath }/resources/images/common/profile_1.JPG" class="profile">
 
     </div>
 </body>
