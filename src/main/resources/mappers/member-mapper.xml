@@ -22,11 +22,8 @@
 			<result property="originName" column="ORIGINNAME"/>
 	 		<result property="changeName" column="CHANGENAME"/>
 			<result property="fileLevel" column="FILELEVEL"/> 
- 		</association> 
- 		<association property="wId" javaType="Work">
- 			<result property="wIn" column="WIN"/>
- 			<result property="wOut" column="WOUT"/>
- 		</association>		
+ 		</association>	
+ 		
 	</resultMap>
 	
 	<resultMap type="attachment" id="replyattachment">
@@ -36,12 +33,15 @@
 		<result column="FILELEVEL" property="fileLevel" />
 	</resultMap>
 	
+	
+	
 	<select id="selectOne" parameterType="Employee" resultMap="employeeResultSet">		
         SELECT *
 		FROM ATTACHMENT 
 		RIGHT JOIN EMPLOYEE USING (EID)
 		WHERE EID= #{eId}
-		AND STATUS='Y'      
+		AND STATUS='Y'
+        
 	</select> 
 	
 	<insert id="insertEmployee" parameterType="Employee">
@@ -80,6 +80,7 @@
 		FROM ATTACHMENT
 		WHERE EID=#{eId}
 		AND FSTATUS='Y' 
+
 	</select>
 	
 	<!-- 첨부파일 수정 -->
@@ -103,35 +104,6 @@
 		VALUES(SEQ_FID.NEXTVAL, NULL, NULL, NULL, NULL, NULL, #{eId}, NULL, #{filePath}, #{originName}, #{changeName}, SYSDATE, 10, DEFAULT)
 	</insert>
 	
-	<!-- 주소록 값을 불러올때 -->
-	<select id="searchAddress" parameterType="Employee" resultMap="employeeResultSet">		
-        SELECT D.DNAME,E.ENAME,E.EMAIL,E.PHONE
-		FROM EMPLOYEE E
-		JOIN DEPARTMENT D ON(E.DID = D.DID)
-		JOIN RANK R ON(E.RID = R.RID)
-		WHERE STATUS='Y'
-	</select>  
-	
-	<!-- 출근 시간 등록하기 -->
-	<insert id="employeeWIn" parameterType="Work">
-		INSERT INTO WORK
-		VALUES(SEQ_FID.NEXTVAL, {wIn}, NULL, #{eId})   
-	</insert>  
-	
-	<!-- 퇴근 시간 등록하기 -->
-	<insert id="employeeWOut" parameterType="Work">
-		INSERT INTO WORK
-		VALUES(SEQ_FID.NEXTVAL, {wIn}, {wOut}, #{eId})
-	</insert>  
-	
-	<!-- 출퇴근 시간 조회 -->
-	<select id="employeeTime" resultType="Work">
- 		SELECT *
-		FROM WORK
-		RIGHT JOIN EMPLOYEE USING (EID)
-		WHERE EID= #{eId}
-		AND STATUS='Y' 
-	</select>
 </mapper>
 
 

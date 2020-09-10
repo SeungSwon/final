@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.employee.model.vo.Employee;
-import com.kh.ourwork.employee.model.vo.Work;
 
 
 
@@ -56,14 +55,6 @@ public class EmployeeDao {
 
 	public int insertAttachment2(Attachment at) {		
 		return sqlSession.insert("memberMapper.insertAttachment2", at);
-	}
-
-	public int employeeWIn(Work w) {
-		return sqlSession.selectOne("memberMapper.employeeWIn", w);
-	}
-
-	public int employeeWOut(Work w) {
-		return sqlSession.selectOne("memberMapper.employeeWOut", w);
 	}
 
 
