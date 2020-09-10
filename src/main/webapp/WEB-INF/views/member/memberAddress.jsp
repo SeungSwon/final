@@ -61,16 +61,6 @@
         .section1 {
             display: flex;
         }
-
-        .logo {
-            width: 20%;
-            border: none;
-        }
-
-        .icons{
-            width: 50%;
-            height: 50%;           
-        }
         .aside button{
             width: 100%;
             height: 11%;
@@ -262,7 +252,7 @@
 <jsp:include page="../common/employeemenu.jsp"/>
         <div class="section1">
             <div class="menubar">
-                <button onclick="location.href='eAddress.do'"></button>
+                <button onclick="location.href='eAddress.do'">주소록 조회</button>
                 <button id="selected" onclick="location.href='clist.do'">거래처 조회</button>
                 <button id="insertClient" onclick="location.href='cinsertView.do'">거래처 등록</button>
             </div>

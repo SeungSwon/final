@@ -45,7 +45,7 @@ public class EmployeeController {
 	public String joinView() {
 		return "member/memberJoin";
 	}
-	
+
 	@RequestMapping("eAddress.do")
 	public String addressView() {
 		return "member/memberAddress";
@@ -111,30 +111,30 @@ public class EmployeeController {
 
 	// 회원가입 메소드
 	@RequestMapping("memberJoin.do")
+	public String employeeInsert(Employee e, RedirectAttributes rd, HttpServletRequest request,
+			@RequestParam(value = "uploadFile", required = false) MultipartFile file, @RequestParam("post") String post,
+			@RequestParam("address1") String address1, @RequestParam("address2") String address2) {
 
-	public String employeeInsert(Employee e, RedirectAttributes rd, HttpServletRequest request, 
-			   @RequestParam(value="uploadFile", required=false) MultipartFile file, 
-			   @RequestParam("post") String post,
-			   @RequestParam("address1") String address1, 
-			   @RequestParam("address2") String address2) {
-		
 		System.out.println("emplyee : " + e);
 
-		//String savePath = "\\images\\profileUploadFiles";
+		String root = request.getSession().getServletContext().getRealPath("resources");
+
+		String savePath = root + "\\images\\profileUploadFiles";
+		File folder = new File(root + "\\images\\profileUploadFiles");
 
 		e.setAddress(post + "," + address1 + "," + address2);
 
 		int result = eService.insertEmployee(e);
 
-		/*
-		 * if (!reloadFile.getOriginalFilename().equals("") && result > 0) { String
-		 * renameFileName = saveFile(reloadFile, request); String renamePath =
-		 * "/resources/images/profileUploadFiles";
-		 * 
-		 * if (renameFileName != null) { Attachment at = new Attachment(renamePath,
-		 * reloadFile.getOriginalFilename(), renameFileName, new Date(), 60); int
-		 * result2 = eService.insertEmployee(e); } }
-		 */
+		if (!file.getOriginalFilename().equals("") && result > 0) {
+			String renameFileName = saveFile(file, request);
+			String renamePath = "/resources/images/profileUploadFiles";
+
+			if (renameFileName != null) {
+				Attachment at = new Attachment(renamePath, file.getOriginalFilename(), renameFileName, new Date(), 60);
+				int result2 = eService.insertEmployee(e);
+			}
+		}
 
 		if (result > 0) {
 			rd.addFlashAttribute("msg", "회원가입이 완료되었습니다. 로그인 해주세요.");
@@ -155,7 +155,6 @@ public class EmployeeController {
 		File folder = new File(savePath);
 		// savePath 폴더를 불러와서
 		// 해당 폴더 경로가 존재하는지 확인하고
-
 
 		if (!folder.exists()) {
 			folder.mkdirs();
@@ -258,20 +257,6 @@ public class EmployeeController {
 		System.out.println("deleteFile : " + deleteFile);
 		System.out.println("---------------");
 	}
-	
-	//주소록 불러오기
-	@RequestMapping("searchAddress.do")
-	public String searchEmployee(Employee e) {
-		
-		
-			return "member/memberMypage";
-		
-	}
-	
-	//출퇴근 저장하기
-	
-	
-	
 
 	// 2. JsonView를 이용한 방법
 	// dependency 라이브러리 추가 후 JsonView, BeanNameViewResolver 빈 등록 후 사용

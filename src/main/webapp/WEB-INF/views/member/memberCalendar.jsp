@@ -182,7 +182,7 @@
             <button><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
             <button><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
             <button><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
-            <button><img class="icons" src="resources/images/common/address.png" onclick="location.href='eAddress.do'"><br>주소록</button>
+            <button><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
             <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
             <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
 

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.employee.model.dao.EmployeeDao;
 import com.kh.ourwork.employee.model.vo.Employee;
-import com.kh.ourwork.employee.model.vo.Work;
 
 
 
@@ -94,21 +93,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public int insertAttachment2(Attachment at) {		
 		return eDao.insertAttachment2(at);
-	}
-
-	@Override
-	public int employeeWIn(Work w) {
-		return eDao.employeeWIn(w);
-	}
-
-	@Override
-	public int employeeWOut(Work w) {
-		return eDao.employeeWOut(w);
-	}
-
-	@Override
-	public int employeeTime(Work w) {
-		return eDao.employeeWOut(w);
 	}
 
 
