@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.employee.model.dao.EmployeeDao;
 import com.kh.ourwork.employee.model.vo.Employee;
-
-
+import com.kh.ourwork.employee.model.vo.Work;
 
 // @Component는 단순한 빈으로 등록하기 위한 어노테이션이라면
 // @Service는 보다 구체화 된 즉, Service의 의미를 가지는 클래스라는 것을 보여주기 위한 어노테이션
@@ -95,11 +94,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return eDao.insertAttachment2(at);
 	}
 
+	@Override
+	public int employeeWIn(Work w) {
+		return eDao.employeeWIn(w);
+	}
 
+	@Override
+	public int employeeWOut(Work w) {
+		return eDao.employeeWOut(w);
+	}
 
-
-	
-	
-	
-
+	@Override
+	public int employeeTime(Work w) {
+		return eDao.employeeWOut(w);
+	}
 }

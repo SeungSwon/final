@@ -20,7 +20,8 @@
 		<typeAlias type="com.kh.ourwork.email.model.vo.ReceiveEmail" alias="ReceiveEmail"/>
 		<typeAlias type="com.kh.ourwork.employee.model.vo.Employee" alias="Employee"/>
 		<typeAlias type="com.kh.ourwork.email.model.vo.EmailAddr" alias="EmailAddr"/>
-    <typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
+   		<typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
+   		<typeAlias type="com.kh.ourwork.employee.model.vo.Work" alias="Work"/>
     
 	</typeAliases>
 	<mappers>

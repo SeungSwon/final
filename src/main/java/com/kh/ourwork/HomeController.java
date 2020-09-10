@@ -32,6 +32,7 @@ public class HomeController {
 		Employee e = eService.findEmployee();
 		System.out.println("home.do e" + e);
 		model.addAttribute("loginUser", e);
+		
 //		"Employee" loginUser = eService.loginEmployee(e);
 //		
 //		System.out.println("e"+e+"loginUser"+loginUser);

@@ -30,6 +30,7 @@ import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.employee.model.exception.EmployeeException;
 import com.kh.ourwork.employee.model.service.EmployeeService;
 import com.kh.ourwork.employee.model.vo.Employee;
+import com.kh.ourwork.employee.model.vo.Work;
 
 @SessionAttributes({ "loginUser", "msg" })
 @Controller
@@ -98,11 +99,10 @@ public class EmployeeController {
 		if (loginUser != null) {
 			model.addAttribute("loginUser", loginUser);
 
-//			// 로그인 성공 시 로그 출력
-//			if (logger.isDebugEnabled()) {
-//
-//				logger.info(loginUser.geteId() + " 로그인");
-//			}
+			// 로그인 성공 시 로그 출력
+			if (logger.isDebugEnabled()) {
+				logger.info(loginUser.geteId() + " 로그인");
+			}
 		} else {
 			throw new EmployeeException("로그인에 실패하였습니다.");
 		}
@@ -257,7 +257,25 @@ public class EmployeeController {
 		System.out.println("deleteFile : " + deleteFile);
 		System.out.println("---------------");
 	}
-
+	
+	//주소록 불러오기
+	@RequestMapping("searchAddress.do")
+	public String searchEmployee(Employee e) {
+		return "member/memberMypage";
+	}
+	
+	//출근 저장하기
+	@RequestMapping("employeeWIn.do")
+	public String employeeWIn(Work w) {
+		return "home";
+	}
+	
+	//퇴근 저장하기
+	@RequestMapping("employeeWOut.do")
+	public String employeeWOut(Work w) {
+		return "home";
+	}
+	
 	// 2. JsonView를 이용한 방법
 	// dependency 라이브러리 추가 후 JsonView, BeanNameViewResolver 빈 등록 후 사용
 	@RequestMapping("dupid.do")
