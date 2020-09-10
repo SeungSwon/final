@@ -82,7 +82,8 @@
           arg.event.remove()
         }
       },
-      
+
+      locales: 'ko',
       editable: true,
       events: [
 <% 
@@ -145,9 +146,10 @@
 		<c:import url="../common/calendarmenu.jsp"/>
 		<div class="section1">
 			<div class="menubar">
-                <button>전체 캘린더</button>
-                <button>팀별 캘린더</button>
-                <button>개인 캘린더</button>
+
+                <button onclick="location.href='calview.do'">전체 캘린더</button>
+                <button id="selected" onclick="location.href='teamcalview.do'">팀별 캘린더</button>
+                <button onclick="location.href='personalcalview.do'">개인 캘린더</button>
             </div>
 		</div>
 		<div class="section2">	

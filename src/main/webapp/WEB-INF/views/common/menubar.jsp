@@ -46,12 +46,8 @@
                 <a class="dropdown-item" href="#" onclick="location.href='eMypage.do'">마이페이지</a>
                 <a class="dropdown-item" href="#" onclick="location.href='/ourwork'">로그아웃</a>
             </div>
-        </div>
-        
+        </div>       
         <img id="homepro" src="${ contextPath }/resources${ loginUser.profile.filePath }/${ loginUser.profile.changeName }">
-      
-        
-
     </div>
 </body>
 </html>
