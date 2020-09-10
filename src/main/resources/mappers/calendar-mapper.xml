@@ -14,27 +14,99 @@
 		<result property="status" column="STATUS"/>
 	</resultMap>
 	
+	<!-- 사내 일정 추가 -->
 	<insert id="addEvent" parameterType="Calendar">
 		INSERT INTO SCHEDULE
 		VALUES(SEQ_SID.NEXTVAL, #{eId}, null, 1, #{sName}, #{sDate}, #{fDate}, #{place}, #{memo}, DEFAULT)
 	</insert>
 	
+	<!-- 사내 일정 조회 -->
 	<select id="selectList" resultMap="calResultSet">
 		SELECT *
 		FROM SCHEDULE
 		WHERE STATUS='Y'
+		AND SORT=1
 	</select>
 	
+	<!-- 사내 일정 상세 조회 -->
 	<select id="selectCal" resultMap="calResultSet">
+		SELECT *
+		FROM SCHEDULE
+		WHERE SID=#{sId}
+		AND STATUS='Y'
+		AND SORT=1
+	</select>
+	
+	<!-- 사내 일정 삭제 -->
+	<update id="deleteCal">
+		UPDATE SCHEDULE
+		SET STATUS='N'
+		WHERE SID=#{sId}
+	</update>
+	
+	<!-- 팀별 일정 조회 -->
+	<select id="selectTeamCalList" resultMap="calResultSet">
+		SELECT *
+		FROM SCHEDULE
+		WHERE STATUS='Y'
+		AND SORT=2
+		AND DID=#{dId}
+	</select>
+	
+	<!-- 개인 일정 조회 -->
+	<select id="selectPersonalList" resultMap="calResultSet">
+		SELECT *
+		FROM SCHEDULE
+		WHERE STATUS='Y'
+		AND SORT=3
+		AND EID=#{eId}
+	</select>
+	
+	<!-- 팀 일정 추가 -->
+	<insert id="addTeamEvent" parameterType="Calendar">
+		INSERT INTO SCHEDULE
+		VALUES(SEQ_SID.NEXTVAL, #{eId}, #{dId}, 2, #{sName}, #{sDate}, #{fDate}, #{place}, #{memo}, DEFAULT)
+	</insert>
+	
+	<!-- 팀 일정 상세 조회 -->
+	<select id="selectTeamCal" resultMap="calResultSet">
 		SELECT *
 		FROM SCHEDULE
 		WHERE SID=#{sId}
 		AND STATUS='Y'
 	</select>
 	
-	<update id="deleteCal">
+	<!-- 팀 일정 삭제 -->
+	<update id="deleteTeamCal">
+		UPDATE SCHEDULE
+		SET STATUS='Y'
+		WHERE SID=#{sId}
+	</update>
+	
+	<!-- 개인 일정 추가 -->
+	<insert id="addPersonalEvent" parameterType="Calendar">
+		INSERT INTO SCHEDULE
+		VALUES(SEQ_SID.NEXTVAL, #{eId}, null, 3, #{sName}, #{sDate}, #{fDate}, #{place}, #{memo}, DEFAULT)
+	</insert>
+	
+	<!-- 개인 일정 삭제 -->
+	<update id="deletePersonalCal">
 		UPDATE SCHEDULE
 		SET STATUS='N'
 		WHERE SID=#{sId}
 	</update>
+	
+	<!-- 개인 일정 상세 조회 -->
+	<select id="selectPersonalCal" resultMap="calResultSet">
+		SELECT *
+		FROM SCHEDULE
+		WHERE SID=#{sId}
+		AND STATUS='Y'
+	</select>
+	
+	
+	
+	
+	
+	
 </mapper>

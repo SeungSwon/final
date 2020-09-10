@@ -6,7 +6,7 @@
 %>
 <html>
 <head>
-
+<title>팀별 캘린더</title>
 <link href='resources/fullcalendar/main.css' rel='stylesheet'/>
 <script src='resources/fullcalendar/main.js'></script>
  <script src='resources/fullcalendar/locales/ko.js'></script>
@@ -56,13 +56,12 @@
       },  */
       
       // eventclick하면 숨겨진 div => 일정 정보 나옴
-      
       eventClick: function(arg) {
         console.log(arg);
         var sId = arg.event.extendedProps.sId;
         
         $.ajax({
-        	url: "caldetail.do",
+        	url: "teamcaldetail.do",
         	data: {sId:sId},
         	dataType: "json",
         	type: "post",
@@ -84,7 +83,7 @@
         });
         
       },
-      locales: 'ko',
+      locale: 'ko',
       editable: true,
       events: [
 <% 
@@ -174,7 +173,7 @@
 		<div class="section2">
 		<br>	
 			<div align="right">
-				<button class="btn btn-secondary" type="button" onclick="window.open('addpopup.do','일정 추가','width=400, height=600,location=no,status=no,scrollbars=yes')">일정 추가</button>							
+				<button class="btn btn-secondary" type="button" onclick="window.open('addteampopup.do','일정 추가','width=400, height=600,location=no,status=no,scrollbars=yes')">일정 추가</button>							
 			</div>
 			<br>
 			<div id="calendar"></div>
@@ -209,7 +208,7 @@
 						<c:param name="sId" value="$('#paramsId').val()"/>
 					</c:url>
 						<button class="btn btn-secondary" onclick="window.open('${modifypopup}','일정 수정','width=400, height=600,location=no,status=no,scrollbars=yes')">수정</button>
-						<button class="btn btn-secondary" id="delete" onclick="location.href='deletecal.do?sId='+$('#paramsId').val()">삭제</button>
+						<button class="btn btn-secondary" id="delete" onclick="location.href='deleteteamcal.do?sId='+$('#paramsId').val()">삭제</button>
 					<c:if test="${ loginUser.eId eq eId }">					
 					</c:if>
 				</div>
@@ -225,4 +224,3 @@
 	</script>
 </body>
 </html>
-
