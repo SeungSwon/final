@@ -19,22 +19,10 @@
 		VALUES(SEQ_SID.NEXTVAL, #{eId}, null, 1, #{sName}, #{sDate}, #{fDate}, #{place}, #{memo}, DEFAULT)
 	</insert>
 	
+	
 	<select id="selectList" resultMap="calResultSet">
 		SELECT *
 		FROM SCHEDULE
 		WHERE STATUS='Y'
 	</select>
-	
-	<select id="selectCal" resultMap="calResultSet">
-		SELECT *
-		FROM SCHEDULE
-		WHERE SID=#{sId}
-		AND STATUS='Y'
-	</select>
-	
-	<update id="deleteCal">
-		UPDATE SCHEDULE
-		SET STATUS='N'
-		WHERE SID=#{sId}
-	</update>
 </mapper>

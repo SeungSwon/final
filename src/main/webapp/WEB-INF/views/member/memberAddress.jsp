@@ -69,8 +69,7 @@
 
         .icons{
             width: 50%;
-            height: 50%;
-            
+            height: 50%;           
         }
         .aside button{
             width: 100%;
@@ -260,20 +259,10 @@
 <body>
  <jsp:include page="../common/menubar.jsp"/>
     <div class="section"><br>
-        <div class="aside">
-            <button><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
-            <button><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>
-            <button><img class="icons" src="resources/images/common/calendar.png"><br>일정</button>
-            <button><img class="icons" src="resources/images/common/board.png"><br>게시판</button>
-            <button><img class="icons" src="resources/images/common/chat_white.png"><br>메신저</button>
-            <button id="selectedMenu"><img class="icons" src="resources/images/common/address.png"><br>주소록</button>
-            <button><img class="icons" src="resources/images/common/group.png"><br>인사관리</button>
-            <button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
-
-        </div>
+<jsp:include page="../common/employeemenu.jsp"/>
         <div class="section1">
             <div class="menubar">
-                <button>&emsp;&emsp;주소록 조회&emsp;&emsp;&nbsp;</button>
+                <button onclick="location.href='eAddress.do'"></button>
                 <button id="selected" onclick="location.href='clist.do'">거래처 조회</button>
                 <button id="insertClient" onclick="location.href='cinsertView.do'">거래처 등록</button>
             </div>
@@ -313,10 +302,10 @@
                             
                             <tr>
                                 <td><img id=pro src="../html/image/IU.JPG"></td>
-                                <td>인사팀 이지은<br>
-                                    010-1234-5678<br>
-                                    kh123@ourwork.com<br>
-                                    <button class="minicon2"><img class="minicon" src="../html/image/b.mail.png"></button>
+                                <td>인사팀  value="${ eName }<br>
+                                    	 value="${ phone }"<br>
+                                   	     value="${ email }"<br>
+                                    <button class="minicon2"><img class="minicon" src="${ contextPath }/resources${ profile.filePath }/${ profile.changeName }"></button>
                                     <button class="minicon2"><img class="minicon" src="../html/image/send.png"></button>
                                 </td>
 

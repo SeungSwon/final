@@ -31,23 +31,14 @@ public class HomeController {
 	public String home(Locale locale, Model model) {
 		Employee e = eService.findEmployee();
 		System.out.println("home.do e" + e);
+		
 		model.addAttribute("loginUser", e);
-//		"Employee" loginUser = eService.loginEmployee(e);
-//		
-//		System.out.println("e"+e+"loginUser"+loginUser);
-//		
-//		if (loginUser != null) {
-//			model.addAttribute("loginUser", loginUser);
-//		} else {
-//			throw new EmployeeException("로그인에 실패하였습니다.");
-//		}
-//		
+		
 		return "home";
 	}
 	
 	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
 	public String index(Locale locale, Model model) {
-
 		return "index";
 	}
 	

@@ -1,14 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+
 
 <style>
 .fa-caret-down {
@@ -105,10 +103,6 @@ th {
 	color: #1e87e4;
 	font-weight: bold;
 }
-#cp{
-	text-decoration: none;
-    color: black;
-}
 </style>
 </head>
 
@@ -136,33 +130,19 @@ th {
                         </tr>
                     </thead>
                     <tbody>
-                   		<%-- <c:set var="test" value="0"/> --%>
                         <c:forEach var="e" items="${ list }">
-                        		<%-- <c:if test="${ test != e.mId }">
-                        		<c:set var="test" value="${ e.mId }"/> --%>
 								<tr>
 									<td><input class="check" type="checkbox"></td>
-									<td>
-										<button class="dropdown-toggle" type="button"
+									<!-- <td id="replyBtn">인사팀 최유빈&lt;abcd@ourwork.com&gt;</td> -->
+									<td><button class="dropdown-toggle" type="button"
 											data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false">
-											${ e.dName } ${ e.eName }&lt;${ e.reId }@ourwork.com&gt;
-										</button>
-										<c:url var="sEmailWithId" value="sendEmailGoId.do">
-											<c:param name="eId" value="${ e.reId }@ourwork.com"/>
-										</c:url>
-										
+											aria-expanded="false">${ e.dName } ${ e.eName }&lt;${ e.reId }@ourwork.com&gt;</button>
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-											<a class="dropdown-item" href="${ sEmailWithId }">메일 쓰기</a>
-										</div>
-										</td>
-										<c:url var="sendEmailDetailView" value="sendEmailDetailView.do">
-											<c:param name="mId" value="${ e.mId }"/>
-										</c:url>
-									<td id="mContent"><a href="${ sendEmailDetailView }" id="cp">${ e.mTitle }</a></td>
-									<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ e.sendDate }"/></td>
+											<a class="dropdown-item" href="#">메일 쓰기</a>
+										</div></td>
+									<td id="mContent">${ e.mTitle }</td>
+									<td>${ e.sendDate }</td>
 								</tr>
-								<%-- </c:if> --%>
 							</c:forEach>
                     </tbody>
                   </table>

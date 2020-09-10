@@ -124,8 +124,8 @@
 <body>
     <div class="wrapper">
         <div class="div1">
-            <input type="text" id="word">
-            <button type="button" id="btn_search" class="btn btn-secondary btn-sm">검색</button>
+            <input type="text" >
+            <button type="button" class="btn btn-secondary btn-sm">검색</button>
             <div id="mlist">
                <c:forEach var="l" items="${ list }">
                <c:if test="${ l.rNum eq 1}">
@@ -136,11 +136,10 @@
                 </button>
                 </c:if>
                 <div class="dropdown-container">
-                <c:if test="${ loginUser.eId ne l.eId }">
                   <input type="checkbox" name="checkRow" class="checkRow" value="${l.eId}" id="${l.eId}">
                   <label for="${l.eId}"><span class="ename">${ l.eName }&nbsp;${ l.rName }</span>
                   <p class="deptname">${l.dName}</p></label>
-                </c:if>
+                  
                 </div>
                 </c:forEach>
             </div>
@@ -188,7 +187,7 @@
              var check = "";
              $(".checkRow:checked").each(function () {
                 var $rArea = $("#sortable");
-                var $value = $("<input type='hidden' name='leId' class='user1'>").val($(this).val());
+                var $value = $("<span class='user1'>").text($(this).val());
                 var $name = $("<li>").html($(this).next().html());
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/approval/trash.png'>");
@@ -204,7 +203,7 @@
                    $name.append($button);
                    $rArea.append($name);
                 }else{ 
-                  alert("동일한 사람이 존재합니다.");
+                   alert("동일한 사람이 존재합니다.");
                  } 
                  
                  console.log($("#deptname"));
@@ -220,7 +219,7 @@
              $(".checkRow:checked").each(function () {
                 console.log($(this).next().text());
                 var $rRefer = $("#rRefer");
-                var $value = $("<input type='hidden' name='leId' class='user2'>").val($(this).val());
+                var $value = $("<span class='user2'>").text($(this).val());
                 var $name = $("<li>").html($(this).next().html());
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/approval/trash.png'>");
@@ -254,9 +253,7 @@
               var $div2 = $("<div id='line'>")
               var $name = $("<span class='name1'>").html($(this).html());
               var $status = $("<span class='status'>").text("결재");
-              var $status2 = $("<input type='hidden' name='lLevel' value='결재'>");
              
-              $name.append($status2);
               $name.append($status);
               $div2.append($name);
               $div2.prepend($img);
@@ -269,11 +266,13 @@
                var $img = $("<img src='resources/images/common/profile_none.png'>");
                var $div2 = $("<div id='line'>")
                var $name = $("<span class='name2'>").html($(this).html());
-               var $status = $("<span class='status' name='lLevel'>").text("참조");
-               var $status2 = $("<input type='hidden' name='lLevel' value='참조'>");
+               var $dept = $("<span class='dept'>").text("인사팀");
+               var $status = $("<span class='status'>").text("참조");
                
-               $name.append($status2);
-               $name.append($status);
+               $status.prepend("<br>");
+               $dept.append($status);
+               $dept.prepend("<br>");
+               $name.append($dept);
                $div2.append($name);
                $div2.prepend($img);
                $div.append($div2);
@@ -315,8 +314,6 @@
             $("#sortable").sortable();
             $("#sortable").disableSelection();
         });
-        
-      
 
     </script>
 </body>

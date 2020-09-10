@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="approvalMapper">
-  <resultMap type="Approval" id="approvalResultSet">
-  	<id property="aId" column="AID"/>
-  	<result property="eId" column="EID"/>
-  	<result property="aName" column="ANAME"/>
-  	<result property="aStatus" column="ASTATUS"/>
-  	<result property="astartDate" column="ASTARTDATE"/>
-  	<result property="aendDate" column="AENDDATE"/>
-  	<result property="eName" column="ENAME"/>
-  	<result property="dName" column="DNAME"/>
-  </resultMap>
-  
   <resultMap type="LineList" id="lListResultSet">
   	<id property="eId" column="EID"/>
   	<result property="eName" column="ENAME"/>
@@ -19,14 +8,6 @@
   	<result property="dName" column="DNAME"/>
   	<result property="rNum" column="RNUM"/>
   </resultMap>
-  
-  <resultMap type="ApprovalPeople" id="aPeopleResultSet">
-  	<id property="eId" column="EID"/>
-  	<result property="eName" column="ENAME"/>
-  	<result property="rName" column="RNAME"/>
-  	<result property="dName" column="DNAME"/>
-  </resultMap>
-
   
   <select id="selectLineList" resultMap="lListResultSet">
 	  SELECT E.EID, E.ENAME, R.RNAME, D.DNAME,
@@ -36,123 +17,4 @@
       JOIN RANK R ON(E.RID = R.RID)
       WHERE STATUS='Y'
   </select>
-  
-  <select id="selectApprovalPeople" resultMap="aPeopleResultSet">
-  		SELECT E.EID, E.ENAME, R.RNAME, D.DNAME
-  		FROM EMPLOYEE E
-      	JOIN DEPARTMENT D ON(E.DID = D.DID)
-      	JOIN RANK R ON(E.RID = R.RID)
-      	WHERE E.EID=#{eId}
-  </select>
-  
-  <insert id="insertApproval" parameterType="Approval">
-  	INSERT INTO APPROVAL VALUES(
-  		SEQ_AID.NEXTVAL, #{eId}, #{aName}, #{aName}, 'I', SYSDATE, NULL)
-  </insert>
-  
-  <insert id="insertAttachment" parameterType="java.util.List">
-  	INSERT INTO ATTACHMENT(FID, AID, FILEPATH, ORIGINNAME, CHANGENAME, FUPLOADDATE, FILELEVEL)
-  		SELECT SEQ_FID.NEXTVAL AS FID, SEQ_AID.CURRVAL AS AID, T.*, SYSDATE, 40
-  		FROM
-  		<foreach collection="list" item="list" open="(" close=")" separator="union all"> 
-  		 SELECT #{list.filePath} AS FILEPATH, 
-  				#{list.originName} AS ORIGINNAME, 
-  				#{list.changeName} AS CHANGENAME
-  			FROM DUAL
-  		</foreach>T
-  </insert>
-  
-  <insert id="insertLine" parameterType="java.util.List">
-  	INSERT INTO LINE(LINEID, AID, EID, LSTATUS, LLEVEL)
-  		SELECT SEQ_LINEID.NEXTVAL AS LINEID, SEQ_AID.CURRVAL AS AID, EID, 'I', LLEVEL
-  		FROM
-  		<foreach collection="list" item="llist" open="(" close=")" separator="union all"> 
-  		 SELECT #{llist.leId} AS EID, 
-  				#{llist.lLevel} AS LLEVEL
-  			FROM DUAL
-  		</foreach>
-  </insert>
-  
-   <insert id="insertHoliday" parameterType="Holiday">
-  	INSERT INTO HOLIDAY VALUES(
-  		SEQ_AID.CURRVAL, #{hdType}, #{hterm}, #{hstartDate}, #{hendDate}, #{hReason})
-  </insert>
-  
-  <select id="selectRequestListCount" resultType="_int">
-  	SELECT COUNT(*)
-  	FROM APPROVAL
-  </select>
-  
-  <select id="selectRequestiListCount" resultType="_int">
-  	SELECT COUNT(*)
-  	FROM APPROVAL
-  	WHERE ASTATUS='I'
-  </select>
-  
-  <select id="selectRequestyListCount" resultType="_int">
-  	SELECT COUNT(*)
-  	FROM APPROVAL
-  	WHERE ASTATUS='Y'
-  </select>
-  
-  <select id="selectRequestnListCount" resultType="_int">
-  	SELECT COUNT(*)
-  	FROM APPROVAL
-  	WHERE ASTATUS='N'
-  </select>
-  
-  <select id="selectRequestList" resultMap="approvalResultSet">
-  	SELECT *
-  	FROM APPROVAL
-  	ORDER BY AID DESC
-  </select>
-  
-  <select id="selectRequestiList" resultMap="approvalResultSet">
-  	SELECT *
-  	FROM APPROVAL
-  	WHERE ASTATUS='I'
-  	ORDER BY AID DESC
-  </select>
-  
-  <select id="selectRequestyList" resultMap="approvalResultSet">
-  	SELECT *
-  	FROM APPROVAL
-  	WHERE ASTATUS='Y'
-  	ORDER BY AID DESC
-  </select>
-  
-  <select id="selectRequestnList" resultMap="approvalResultSet">
-  	SELECT *
-  	FROM APPROVAL
-  	WHERE ASTATUS='N'
-  	ORDER BY AID DESC
-  </select>
-  
-  <select id="selectSearchListCount" resultType="_int">
-  	SELECT COUNT(*)
-  	FROM APPROVAL A
-  	JOIN EMPLOYEE E ON(A.EID = E.EID)
-  	JOIN DEPARTMENT D ON(E.DID = D.DID)
-  	WHERE A.ASTARTDATE LIKE'%'||#{search}||'%'
-  	OR A.ANAME LIKE '%'||#{search}||'%'
-  	OR A.ATITLE LIKE '%'||#{search}||'%'
-  	OR E.ENAME LIKE '%'||#{search}||'%'
-  	OR D.DNAME LIKE '%'||#{search}||'%'
-  	OR A.AENDDATE LIKE '%'||#{search}||'%'
-  </select>
-  
-   <select id="selectSearchList" resultMap="approvalResultSet">
-  	SELECT A.AID, A.EID, A.ANAME, A.ATITLE, A.ASTATUS, A.ASTARTDATE, A.AENDDATE, E.ENAME, D.DNAME
-  	FROM APPROVAL A
-  	JOIN EMPLOYEE E ON(A.EID = E.EID)
-  	JOIN DEPARTMENT D ON(E.DID = D.DID)
-  	WHERE A.ASTARTDATE LIKE'%'||#{search}||'%'
-  	OR A.ANAME LIKE '%'||#{search}||'%'
-  	OR A.ATITLE LIKE '%'||#{search}||'%'
-  	OR E.ENAME LIKE '%'||#{search}||'%'
-  	OR D.DNAME LIKE '%'||#{search}||'%'
-  	OR A.AENDDATE LIKE '%'||#{search}||'%'
-  	ORDER BY AID DESC
-  </select>
-
 </mapper>

@@ -3,7 +3,7 @@ package com.kh.ourwork.notice.model.vo;
 import java.sql.Date;
 
 public class Reply {
-  private int nrId;
+	private int nrId;
 	private int nNo;
 	private String nrWriter;
 	private String nrContent;

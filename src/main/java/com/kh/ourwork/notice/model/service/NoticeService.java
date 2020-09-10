@@ -33,7 +33,7 @@ public interface NoticeService {
 
 	Attachment selectAttachment(int nNo);
 
-	ArrayList<Notice> searchList(Search search, PageInfo pi);
+	ArrayList<Notice> searchList(Search search);
 
 	// 수정시 기존 파일 없을때 insert
 	int insertAttachment2(Attachment at);
@@ -46,7 +46,6 @@ public interface NoticeService {
 	int insertReply(Reply r);
 
 	int SselectListCount(Search search);
-
 	
 
 	

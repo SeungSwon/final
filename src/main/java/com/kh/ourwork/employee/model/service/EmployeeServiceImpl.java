@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.employee.model.dao.EmployeeDao;
 import com.kh.ourwork.employee.model.vo.Employee;
+import com.kh.ourwork.employee.model.vo.Work;
 
 
 
@@ -28,10 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Employee loginEmployee(Employee e) {
 
 		Employee loginUser = eDao.selectEmployee(e);
-		/*
-		 * System.out.println("EmployeeServiceImpl"+e);
-		 * System.out.println("EmployeeServiceImpl"+loginUser);
-		 */
+		System.out.println("EmployeeServiceImpl"+e);
+		System.out.println("EmployeeServiceImpl"+loginUser); 
 		
 		if(loginUser != null && !bcryptPasswordEncoder.matches(e.getePwd(), loginUser.getePwd())) {
 			// 첫번째 인자로 로그인시 입력한 pwd 평문
@@ -95,6 +94,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public int insertAttachment2(Attachment at) {		
 		return eDao.insertAttachment2(at);
+	}
+
+	@Override
+	public int employeeWIn(Work w) {
+		return eDao.employeeWIn(w);
+	}
+
+	@Override
+	public int employeeWOut(Work w) {
+		return eDao.employeeWOut(w);
+	}
+
+	@Override
+	public int employeeTime(Work w) {
+		return eDao.employeeWOut(w);
 	}
 
 

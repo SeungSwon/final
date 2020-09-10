@@ -14,7 +14,6 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
-    
     <style>
         /* * {
             border: 1px solid gray;
@@ -102,11 +101,11 @@
             </table>
         </div>
         <div class="div2"><br><br><br>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="aReceiver()">&gt;&gt;</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="aReceiver();">&gt;&gt;</button>
             <br><br><br><br><br><br>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="aRefer()">&gt;&gt;</button><br><br>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="aRefer();">&gt;&gt;</button><br><br>
             <br><br><br><br>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="aHideR()">&gt;&gt;</button><br><br>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="aHideR();">&gt;&gt;</button><br><br>
         </div>
         <div class="div3">
             <table>
@@ -136,33 +135,27 @@
         </div>
     </div>
     <div class="btn-wrapper" align="center">
-        <button type="button" class="btn btn-secondary btn-sm" onclick="addEmail()">확인</button>
+        <button type="button" class="btn btn-secondary btn-sm">확인</button>
         <button type="button" class="btn btn-secondary btn-sm">취소</button>
     </div>
 
     <script>
-    var $spannnn = $("<span class='user1 adad'>").text($(this).next().text());
         // 받는사람
         function aReceiver() {
              var check = "";
              $(".checkRow:checked").each(function () {
+                console.log($(this).next().text());
                 var $rArea = $("#rArea");
-                var $span = $("<span class='user1 adad'>").text($(this).next().text());
+                var $span = $("<span>").text($(this).next().text());
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
                 var $br = $("<br>");
-                
-                var testValue = $(".user1").text();
-                var subValue = $(this).next().text();
-                
-                var iValue = testValue.indexOf(subValue);
-                
-                if(iValue == -1){
-	                $button.append($img);
-	                $span.append($button);
-	                $rArea.append($span);
-	                $rArea.append($br);
-                }
+
+                $button.append($img);
+                $span.append($button);
+                $span.append($br);
+                $rArea.append($span);
+
                 $(this).prop("checked", false);
              });
         }
@@ -171,23 +164,18 @@
         function aRefer() {
              var check = "";
              $(".checkRow:checked").each(function () {
+                console.log($(this).next().text());
                 var $rRefer = $("#rRefer");
-                var $span = $("<span class='user2'>").text($(this).next().text());
+                var $span = $("<span>").text($(this).next().text());
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
                 var $br = $("<br>");
-				
-                var testValue = $(".user2").text();
-                var subValue = $(this).next().text();
-                
-                var iValue = testValue.indexOf(subValue);
 
-                if(iValue == -1){
-	                $button.append($img);
-	                $span.append($button);
-	                $rRefer.append($span);
-	                $rRefer.append($br);
-                }
+                $button.append($img);
+                $span.append($button);
+                $rRefer.append($span);
+                $rRefer.append($br);
+
                 $(this).prop("checked", false);
              });
         }
@@ -196,23 +184,18 @@
         function aHideR() {
              var check = "";
              $(".checkRow:checked").each(function () {
+                console.log($(this).next().text());
                 var $rHide = $("#rHide");
-                var $span = $("<span class='user3'>").text($(this).next().text());
+                var $span = $("<span>").text($(this).next().text());
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
                 var $br = $("<br>");
 
-                var testValue = $(".user3").text();
-                var subValue = $(this).next().text();
-                
-                var iValue = testValue.indexOf(subValue);
-				
-                if(iValue == -1){
-	                $button.append($img);
-	                $span.append($button);
-	                $rHide.append($span);
-	                $rHide.append($br);
-                }
+                $button.append($img);
+                $span.append($button);
+                $rHide.append($span);
+                $rHide.append($br);
+
                 $(this).prop("checked", false);
              });
         }
@@ -221,86 +204,6 @@
         $(document).on("click", ".dBtn", function(){
             $(this).parents("span").remove();
         })
-        
-        //부모페이지로
-        function addEmail(){
-           $("#rArea span").each(function () {
-        	   var adr = $(this).text();
-        	   var arr = adr.split('/');
-        	   var $li = $("<li>");
-               var $div = $("<div id='addMail' class='mgr'>");
-               var str = $("#ra1").val();
-               var $span = $("<span class='Madd'>").text(arr[1]);
-               var $input = $("<input type='hidden' name='reId'>").val(arr[1]);
-               var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
-               var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
-               
-               /* for(var j = 0; j < $(".adad").length; j++){
-            	   console.log($(".adad").length); */
-               
-               /* var aArr = testValue.split('/'); */
-               /* for(var i = 0; i < $(opener.document).find(".Madd").length; i++){
-             	   var subValue = $(opener.document).find(".Madd")[i].innerHTML;
-             	   console.log("asd + " + subValue);
-             	  var testValue = $(".adad").text();
-             	  console.log(testValue);
-            	   var iValue = testValue.indexOf(subValue);
-            	   
-            	   console.log(iValue);
-                   if(iValue == -1){ */
-	    	           $button.append($img);
-	    	           $div.append($span);
-	    	           $div.append($button);
-	    	           $li.append($div);
-	    	           $(opener.document).find("#test3").append($input);
-	    	           $(opener.document).find("#test1").before($li);
-                   
-               
-               
-           });
-           
-           $("#rRefer span").each(function () {
-        	   var adr = $(this).text();
-        	   var arr = adr.split('/');
-        	   console.log(arr[1]);
-        	   var $li = $("<li>");
-               var $div = $("<div id='addMail' class='mgr'>");
-               var str = $("#ra2").val();
-               var $span = $("<span>").text(arr[1]);
-               var $input = $("<input type='hidden' name='feId'>").val(arr[1]);
-               var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
-               var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
-               
-               $button.append($img);
-               $div.append($span);
-               $div.append($button);
-               $li.append($div);
-               $(opener.document).find("#test3").append($input);
-              $(opener.document).find("#test2").before($li);
-           });
-           
-           $("#rHide span").each(function () {
-        	   var adr = $(this).text();
-        	   var arr = adr.split('/');
-        	   console.log(arr[1]);
-        	   var $li = $("<li>");
-               var $div = $("<div id='addMail' class='mgr'>");
-               var str = $("#ra3").val();
-               var $span = $("<span>").text(arr[1]);
-               var $input = $("<input type='hidden' name='heId'>").val(arr[1]);
-               var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
-               var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
-               
-               $button.append($img);
-               $div.append($span);
-               $div.append($button);
-               $li.append($div);
-               $(opener.document).find("#test3").append($input);
-              $(opener.document).find("#test3").before($li);
-           });
-           
-           close();
-        }
     </script>
 </body>
 </html>

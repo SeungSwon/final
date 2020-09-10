@@ -108,7 +108,7 @@
 			</button>
 			<div class="dropdown-container">
 				<button id="menu1" data-toggle="modal" data-target="#exampleModal">기안문작성</button>
-				<button id="menu2" onclick="location.href='aRequestList.do'">기안문서함</button>
+				<button id="menu2">기안문서함</button>
 				<button>임시저장함</button>
 			</div>
 			<button class="dropdown-btn" style="font-weight: bold">
@@ -152,8 +152,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                    <form action="aFormView.do">
-						<input type="hidden" name="eId" value="${loginUser.eId}">             
+                    <form action="formInsertView.do">
                         <div class="mbody">
                             <p>인사</p>
                             <div class="mlist">

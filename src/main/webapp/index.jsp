@@ -275,12 +275,12 @@ input[type=submit]:hover {
 			}
 		}
 	</script>
-	
+<!-- 	
 	<button onclick="location.href='home.do'">메인</button>	
 	<button onclick="location.href='eAddress.do'">주소록</button>
 	<button onclick="location.href='eCalendar.do'">캘린더</button>
 	<button onclick="location.href='eMypage.do'">마이페이지</button>
-	<button onclick="location.href='eUpdate.do'">정보수정</button>
+	<button onclick="location.href='eUpdate.do'">정보수정</button> -->
 	
 
 

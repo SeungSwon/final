@@ -24,16 +24,4 @@ public class CalendarServiceImpl implements CalendarService{
 		
 		return calDao.selectList();
 	}
-
-	@Override
-	public Calendar selectCal(int sId) {
-		
-		return calDao.selectCal(sId);
-	}
-
-	@Override
-	public int deleteCal(int sId) {
-		
-		return calDao.deleteCal(sId);
-	}
 }
