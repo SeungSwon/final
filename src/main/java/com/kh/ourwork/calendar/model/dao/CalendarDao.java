@@ -74,5 +74,10 @@ public class CalendarDao {
 		return sqlSession.selectOne("calMapper.selectPersonalCal", sId);
 	}
 
+	public int updateCal(Calendar cal) {
+		
+		return sqlSession.update("calMapper.updateCal", cal);
+	}
+
 }
 

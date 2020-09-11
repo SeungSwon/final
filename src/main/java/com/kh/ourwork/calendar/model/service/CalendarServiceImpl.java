@@ -85,4 +85,11 @@ public class CalendarServiceImpl implements CalendarService{
 		
 		return calDao.selectPersonalCal(sId);
 	}
+
+	@Override
+	public int updateCal(Calendar cal) {
+
+		return calDao.updateCal(cal);
+	}
+
 }

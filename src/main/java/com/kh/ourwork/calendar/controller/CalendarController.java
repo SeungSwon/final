@@ -24,10 +24,10 @@ public class CalendarController {
 	private CalendarService calService;
 	
 	@RequestMapping("calview.do")
-	public String calList(Model model) {
+	public String calList(Model model, ModelAndView mv) {
 		ArrayList<Calendar> list = calService.selectList();
 		model.addAttribute("list", list);
-		
+
 		return "calendar/calendar";
 	}
 	
@@ -66,13 +66,37 @@ public class CalendarController {
 	public String personalPopupView() {
 		return "calendar/addpersonalpopup";
 	}
-	@RequestMapping("modifypopup.do")
-	public String modifyView() {
+	
+	@RequestMapping("updatecalView.do")
+	public String modifyView(int sId, Model model) {
+		
+		Calendar cal = calService.selectCal(sId);
+			
+		model.addAttribute("cal", cal);
+		
 		return "calendar/modifypopup";
 	}
 	
-	// 일정 추가
+	@RequestMapping("updateTeamCalView.do")
+	public String modifyTeamView(int sId, Model model) {
+		
+		Calendar cal = calService.selectTeamCal(sId);
+		
+		model.addAttribute("cal", cal);
+		
+		return "calendar/teamModifyPopup";
+	}
 	
+	@RequestMapping("updatePersonalCalView.do")
+	public String modifyPersonalView(int sId, Model model) {
+		Calendar cal = calService.selectPersonalCal(sId);
+		
+		model.addAttribute("cal", cal);
+		
+		return "calendar/personalModifyPopup";
+	}
+	
+	// 일정 추가
 	@RequestMapping("addEvent.do")
 	@ResponseBody
 	public String addEvent(Calendar cal, HttpSession session, ModelAndView mv) {
@@ -87,6 +111,25 @@ public class CalendarController {
 			return "fail";
 		}
 	}
+	
+	// 일정 수정
+	@RequestMapping("updatecal.do")
+	@ResponseBody
+	public String updateCal(Calendar cal, HttpSession session) {
+								
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+				
+		cal.setdId(loginUser.getdId());
+		int result = calService.updateCal(cal);
+				
+		if(result>0) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+
+		
 	
 	@RequestMapping("addteamEvent.do")
 	@ResponseBody
@@ -193,7 +236,6 @@ public class CalendarController {
 			throw new CalendarException("일정 삭제에 실패하였습니다.");
 		}
 	}
-	
 	
 	
 	
