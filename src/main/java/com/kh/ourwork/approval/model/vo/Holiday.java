@@ -51,4 +51,5 @@ public class Holiday {
 		return "Holiday [aId=" + aId + ", hdType=" + hdType + ", hterm=" + hterm + ", hstartDate=" + hstartDate
 				+ ", hendDate=" + hendDate + ", hReason=" + hReason + "]";
 	}
+	
 }

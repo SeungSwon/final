@@ -10,6 +10,9 @@ public class Line {
 	private String lContent;
 	private int lLevel;
 	private Date lDate;
+	private String eName;
+	private String rName;
+	private String dName;
 
 	public Line() {}
 
@@ -18,7 +21,7 @@ public class Line {
 	}
 
 	public void setLineId(int lineId) {
-		lineId = lineId;
+		this.lineId = lineId;
 	}
 
 	public String getaId() {
@@ -69,10 +72,37 @@ public class Line {
 		this.lDate = lDate;
 	}
 
+	public String geteName() {
+		return eName;
+	}
+
+	public void seteName(String eName) {
+		this.eName = eName;
+	}
+
+	public String getrName() {
+		return rName;
+	}
+
+	public void setrName(String rName) {
+		this.rName = rName;
+	}
+
+	public String getdName() {
+		return dName;
+	}
+
+	public void setdName(String dName) {
+		this.dName = dName;
+	}
+
 	@Override
 	public String toString() {
-		return "Line [LineId=" + lineId + ", aId=" + aId + ", leId=" + leId + ", lStatus=" + lStatus + ", lContent="
-				+ lContent + ", lLevel=" + lLevel + ", lDate=" + lDate + "]";
+		return "Line [lineId=" + lineId + ", aId=" + aId + ", leId=" + leId + ", lStatus=" + lStatus + ", lContent="
+				+ lContent + ", lLevel=" + lLevel + ", lDate=" + lDate + ", eName=" + eName + ", rName=" + rName
+				+ ", dName=" + dName + "]";
 	}
+
+	
 	
 }
