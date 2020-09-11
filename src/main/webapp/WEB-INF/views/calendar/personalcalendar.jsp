@@ -236,7 +236,6 @@
 	 		    return false;
 	 		}
 	 	});
-	 	
 	 	function fn_modify(){
 	 		var sId = $("#paramsId").val();
 	 		window.open("<c:url value='updatePersonalCalView.do?sId="+sId+"'/>", "일정 수정", "width=500, height=600");

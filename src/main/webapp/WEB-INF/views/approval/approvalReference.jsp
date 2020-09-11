@@ -22,7 +22,7 @@
 	margin: 0 2%
 }
 
-#menu2{
+#menu6{
 	color: #1e87e4;
 	font-weight:bold;	
 }
@@ -115,7 +115,7 @@
 		<jsp:include page="../common/approvalmenu.jsp" />
 		<div class="section2">
 			<div class="content1">
-				<p class="title">기안문서함</p>
+				<p class="title">결재참조문서함</p>
 				<form action="asearch.do" name="searchForm" method="get">
 					<input type="text" placeholder="통합검색" name="search" minlegth="2">
 					<button type="submit" class="btn btn-secondary btn-sm" >검색</button>
@@ -129,40 +129,29 @@
 			</div>
 			<div class="content2" id="all">
 				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>기안일</th>
-							<th>결제양식</th>
-							<th>제목</th>
-							<th>첨부</th>
-							<th>완료일</th>
-							<th>결재상태</th>
-						</tr>
-					</thead>
-					<tbody>
-					<c:forEach var="a" items="${list}">
-						<tr>
-							<td>${a.astartDate}</td>
-							<td>${a.aName}</td>
-							<td>${a.aTitle}</td>
-							<c:if test="${ a.atNum ne 0 }">
-							<td>${a.atNum }</td>
-							</c:if>
-							<c:if test="${a.atNum eq 0 }">
-							<td></td>
-							</c:if>
-							<td>${a.aendDate }</td>
-						<c:if test="${a.aStatus eq 'I' }">
-							<td style="color: green;">진행중</td>
-						</c:if>
-						<c:if test="${a.aStatus eq 'Y' }">
-							<td style="color: gray;">완료</td>
-						</c:if>
-						<c:if test="${a.aStatus eq 'N' }">
-							<td style="color: red;">반려</td>
-						</c:if>
-						</tr>
-					</c:forEach>
+					 <thead>
+                        <tr>
+                            <th>기안일</th>
+                            <th>결제양식</th>
+                            <th>제목</th>
+                            <th>기안자</th>
+                            <th>기안부서</th>
+                            <th>첨부</th>
+                            <th>완료일</th>
+                            <th>결재상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>20/08/16</td>
+                            <td>지출결의서</td>
+                            <td>인사팀 지출결의서</td>
+                            <td>최유빈</td>
+                            <td>홍보팀</td>
+                            <td>1</td>
+                            <td></td>
+                            <td style="color: green;">진행중</td>
+                        </tr>
 					</tbody>
 				</table>
 				  <div class="page_wrap">
@@ -200,13 +189,15 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th>기안일</th>
-							<th>결제양식</th>
-							<th>제목</th>
-							<th>첨부</th>
-							<th>완료일</th>
-							<th>결재상태</th>
-						</tr>
+                            <th>기안일</th>
+                            <th>결제양식</th>
+                            <th>제목</th>
+                            <th>기안자</th>
+                            <th>기안부서</th>
+                            <th>첨부</th>
+                            <th>완료일</th>
+                            <th>결재상태</th>
+                        </tr>
 					</thead>
 					<tbody>
 						<c:forEach var="i" items="${ilist}">
@@ -214,12 +205,7 @@
 							<td>${i.astartDate}</td>
 							<td>${i.aName}</td>
 							<td>${i.aTitle}</td>
-							<c:if test="${ i.atNum ne 0 }">
-							<td>${i.atNum }</td>
-							</c:if>
-							<c:if test="${i.atNum eq 0 }">
 							<td></td>
-							</c:if>
 							<td>${i.aendDate }</td>
 							<td style="color: green;">진행중</td>
 						</tr>
@@ -260,13 +246,15 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th>기안일</th>
-							<th>결제양식</th>
-							<th>제목</th>
-							<th>첨부</th>
-							<th>완료일</th>
-							<th>결재상태</th>
-						</tr>
+                            <th>기안일</th>
+                            <th>결제양식</th>
+                            <th>제목</th>
+                            <th>기안자</th>
+                            <th>기안부서</th>
+                            <th>첨부</th>
+                            <th>완료일</th>
+                            <th>결재상태</th>
+                        </tr>
 					</thead>
 					<tbody>
 						<c:forEach var="y" items="${ylist}">
@@ -274,12 +262,7 @@
 							<td>${y.astartDate}</td>
 							<td>${y.aName}</td>
 							<td>${y.aTitle}</td>
-							<c:if test="${ y.atNum ne 0 }">
-							<td>${y.atNum }</td>
-							</c:if>
-							<c:if test="${y.atNum eq 0 }">
 							<td></td>
-							</c:if>
 							<td>${y.aendDate }</td>
 							<td style="color: gray;">완료</td>
 						</tr>
@@ -319,32 +302,24 @@
 			<div class="content2" id="companion" style="display: none">
 				<table class="table table-hover">
 					<thead>
-						<tr>
-							<th>기안일</th>
-							<th>결제양식</th>
-							<th>제목</th>
-							<th>첨부</th>
-							<th>완료일</th>
-							<th>결재상태</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="n" items="${nlist}">
-						<tr>
-							<td>${n.astartDate}</td>
-							<td>${n.aName}</td>
-							<td>${n.aTitle}</td>
-							<c:if test="${ n.atNum ne 0 }">
-							<td>${n.atNum }</td>
-							</c:if>
-							<c:if test="${n.atNum eq 0 }">
-							<td></td>
-							</c:if>
-							<td>${n.aendDate }</td>
-							<td style="color: red;">반려</td>
-						</tr>
-					</c:forEach>
-					</tbody>
+                       <tr>
+                            <th>기안일</th>
+                            <th>결제양식</th>
+                            <th>제목</th>
+                            <th>기안자</th>
+                            <th>기안부서</th>
+                            <th>첨부</th>
+                            <th>완료일</th>
+                            <th>결재상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                         <tr>
+                            <td colspan="6" style="text-align: center">
+                                <br>결재할 문서가 없습니다
+                            </td>
+                        </tr>
+                    </tbody>
 				</table>
 				<div class="page_wrap">
 					<div class="page_nation">

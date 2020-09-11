@@ -43,8 +43,7 @@ public class NoteController {
 		
 		return mv;
 	}
-	
-	
+
 	@RequestMapping("ntIndetail.do")
 	public ModelAndView noteInboxDetail(ModelAndView mv, int ntId, @RequestParam("page") Integer page) {
 		int currentPage = page != null ? page : 1;
