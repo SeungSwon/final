@@ -108,8 +108,8 @@
 			</button>
 			<div class="dropdown-container">
 				<button id="menu1" data-toggle="modal" data-target="#exampleModal">기안문작성</button>
-				<button id="menu2">기안문서함</button>
-				<button>임시저장함</button>
+				<button id="menu2" onclick="location.href='aRequestList.do'">기안문서함</button>
+				<button id="menu3" onclick="location.href='aSaveList.do'">임시저장함</button>
 			</div>
 			<button class="dropdown-btn" style="font-weight: bold">
 				수신함 &nbsp;&nbsp;
@@ -121,9 +121,9 @@
                     </svg>
 			</button>
 			<div class="dropdown-container">
-				<button>결재대기함</button>
+				<button id="menu4" onclick="location.href='aWaitingList.do'">결재대기함</button>
 				<button>결재문서함</button>
-				<button>참조문서함</button>
+				<button id="menu6" onclick="location.href='aReftList.do'">참조문서함</button>
 				<button>결재예정함</button>
 			</div>
 			<button class="dropdown-btn" style="font-weight: bold">
@@ -152,7 +152,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                    <form action="formInsertView.do">
+                    <form action="aFormView.do">
+						<input type="hidden" name="eId" value="${loginUser.eId}">             
                         <div class="mbody">
                             <p>인사</p>
                             <div class="mlist">

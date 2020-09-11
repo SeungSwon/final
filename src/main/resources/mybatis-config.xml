@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
-   <settings>
-      <setting name="jdbcTypeForNull" value="NULL"/>
-   </settings>
-   
-   <typeAliases>
-      <typeAlias type="com.kh.ourwork.notice.model.vo.Reply" alias="Reply"/>
-      <typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
-      <typeAlias type="com.kh.ourwork.notice.model.vo.Notice" alias="Notice"/>
-      <typeAlias type="com.kh.ourwork.client.model.vo.Client" alias="Client"/>
-      <typeAlias type="com.kh.ourwork.client.model.vo.UpdateClient" alias="updateClient"/>
-      <typeAlias type="com.kh.ourwork.common.Attachment" alias="Attachment"/>
-      <typeAlias type="com.kh.ourwork.client.model.vo.Search" alias="Search"/>
-      <typeAlias type="com.kh.ourwork.note.model.vo.Note" alias="Note"/>
-      <typeAlias type="com.kh.ourwork.note.model.vo.NoteReceiver" alias="NoteReceiver"/>
-      <typeAlias type="com.kh.ourwork.email.model.vo.Email" alias="Email"/>
-      <typeAlias type="com.kh.ourwork.email.model.vo.Ereceiver" alias="Ereceiver"/>
-      <typeAlias type="com.kh.ourwork.email.model.vo.ReceiveEmail" alias="ReceiveEmail"/>
-      <typeAlias type="com.kh.ourwork.employee.model.vo.Employee" alias="Employee"/>
-      <typeAlias type="com.kh.ourwork.email.model.vo.EmailAddr" alias="EmailAddr"/>
-      <typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
-      <typeAlias type="com.kh.ourwork.calendar.model.vo.Calendar" alias="Calendar"/>
-   </typeAliases>
-   <mappers>
-      <mapper resource="mappers/pteam-mapper.xml"/>
-      <mapper resource="mappers/notice-mapper.xml"/>
-      <mapper resource="mappers/client-mapper.xml"/>
-      <mapper resource="mappers/note-mapper.xml"/>
-      <mapper resource="mappers/email-mapper.xml"/>
-      <mapper resource="mappers/approval-mapper.xml"/>
-      <mapper resource="mappers/member-mapper.xml"/>
-      <mapper resource="mappers/calendar-mapper.xml"/>
-   </mappers>   
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.kh.ourwork.pteam.model.vo.Employee1" alias="Employee1"/>
+		<typeAlias type="com.kh.ourwork.notice.model.vo.Reply" alias="Reply"/>
+		<typeAlias type="com.kh.ourwork.notice.model.vo.Notice" alias="Notice"/>
+		<typeAlias type="com.kh.ourwork.client.model.vo.Client" alias="Client"/>
+		<typeAlias type="com.kh.ourwork.client.model.vo.UpdateClient" alias="updateClient"/>
+		<typeAlias type="com.kh.ourwork.common.Attachment" alias="Attachment"/>
+		<typeAlias type="com.kh.ourwork.client.model.vo.Search" alias="Search"/>
+		<typeAlias type="com.kh.ourwork.note.model.vo.Note" alias="Note"/>
+		<typeAlias type="com.kh.ourwork.note.model.vo.NoteReceiver" alias="NoteReceiver"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.Email" alias="Email"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.Ereceiver" alias="Ereceiver"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.RsEmail" alias="RsEmail"/>
+		<typeAlias type="com.kh.ourwork.employee.model.vo.Employee" alias="Employee"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.EmailAddr" alias="EmailAddr"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.ApprovalPeople" alias="ApprovalPeople"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.Approval" alias="Approval"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.Holiday" alias="Holiday"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.Line" alias="Line"/>
+	    <typeAlias type="com.kh.ourwork.notice.model.vo.Reply" alias="Reply"/>
+	    <typeAlias type="com.kh.ourwork.calendar.model.vo.Calendar" alias="Calendar"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="mappers/pteam-mapper.xml"/>
+		<mapper resource="mappers/notice-mapper.xml"/>
+		<mapper resource="mappers/client-mapper.xml"/>
+		<mapper resource="mappers/note-mapper.xml"/>
+		<mapper resource="mappers/email-mapper.xml"/>
+	    <mapper resource="mappers/approval-mapper.xml"/>
+	    <mapper resource="mappers/member-mapper.xml"/>
+	    <mapper resource="mappers/calendar-mapper.xml"/>
+	</mappers>	
 </configuration>

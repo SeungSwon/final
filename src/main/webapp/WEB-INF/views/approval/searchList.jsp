@@ -143,10 +143,13 @@
 							<td style="color: green;">진행중</td>
 						</c:if>
 						<c:if test="${a.aStatus eq 'Y' }">
-							<td style="color: gray;">완료</td>
+							<td style="color: black;">완료</td>
 						</c:if>
 						<c:if test="${a.aStatus eq 'N' }">
 							<td style="color: red;">반려</td>
+						</c:if>
+						<c:if test="${a.aStatus eq 'S' }">
+							<td style="color: gray;">임시저장</td>
 						</c:if>
                         </tr>
                     </c:forEach>
@@ -162,6 +165,7 @@
 						<c:if test="${ pi.currentPage > 1 }">
 							<c:url var="before" value="asearch.do">
 								<c:param name="page" value="${ pi.currentPage - 1 }"/>
+								<c:param name="search" value="${ search }"/>
 							</c:url>
 							<a class="arrow prev" href="${ before }">&lt;</a>
 						</c:if>
@@ -173,6 +177,7 @@
 							<c:if test="${ p ne pi.currentPage }">
 								<c:url var="pagination" value="asearch.do">
 									<c:param name="page" value="${ p }"/>
+									<c:param name="search" value="${ search }"/>
 								</c:url>
 								<a href="${ pagination }">${ p }</a> &nbsp;
 							</c:if>
@@ -183,6 +188,7 @@
 						<c:if test="${ pi.currentPage < pi.maxPage }">
 							<c:url var="after" value="asearch.do">
 								<c:param name="page" value="${ pi.currentPage + 1 }"/>
+								<c:param name="search" value="${ search }"/>
 							</c:url>
 							<a class="arrow next" href="${ after }">&gt;</a>
 						</c:if>
