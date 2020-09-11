@@ -268,7 +268,7 @@ public class EmployeeController {
 	
 	// 출근 저장하기
 	@RequestMapping(value = "employeeWIn.do")			
-	public String Work(Model model, HttpSession session) {
+	public String employeeWIn(Model model, HttpSession session) {
 		
 		Work w = new Work();
 		Employee e = (Employee) session.getAttribute("loginUser");
@@ -293,11 +293,28 @@ public class EmployeeController {
 	
 	//퇴근 저장하기
 	@RequestMapping("employeeWOut.do")
-	public String employeeWOut(Work w) {
-		return "home";
-	}	
-	
-	
+	public String employeeWOut(Model model, HttpSession session) {
+		
+		Work w = new Work();
+		Employee e = (Employee) session.getAttribute("loginUser");
+		
+		w.seteId(e.geteId());
+		int result = eService.employeeWOut(w);
+				
+		System.out.println("work" + w);
+		
+		if (w != null) {
+			model.addAttribute("worktime", w);
+
+			// 출퇴근 성공시
+			if (logger.isDebugEnabled()) {
+				logger.info(w.geteId() + "퇴근시간이 등록되었습니다.");
+			}
+		} else {
+			throw new EmployeeException("퇴근시간이 등록되지 않았습니다.");
+		}
+		return "redirect:home.do";
+	}
 	
 	// 2. JsonView를 이용한 방법
 	// dependency 라이브러리 추가 후 JsonView, BeanNameViewResolver 빈 등록 후 사용
