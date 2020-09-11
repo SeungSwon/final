@@ -61,11 +61,13 @@
 			$.ajax({
 				url: "addEvent.do",
 				data: {sName:sName, sDate:sDate, fDate:fDate, place:place, memo:memo},
-				dataType: "json",
 				type: "post",
 				success: function(data){
-					opener.location.reload();
-					window.close();
+					if(data == "success"){
+						opener.location.reload();
+						window.close();
+					}
+					
 				},
 				error: function(e){
 					console.log(e);

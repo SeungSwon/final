@@ -105,4 +105,15 @@
 		AND STATUS='Y'
 	</select>
 	
+	<!-- 사내 일정 수정 -->
+	<update id="updateCal">
+		UPDATE SCHEDULE
+		SET SNAME=#{sName},
+			S_DATE=#{sDate},
+			F_DATE=#{fDate},
+			PLACE=#{place},
+			MEMO=#{memo}
+		WHERE SID=#{sId}
+	</update>
+
 </mapper>

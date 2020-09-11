@@ -22,14 +22,19 @@
         left: 'title',
       },
       initialDate: new Date(),
-      navLinks: true, // can click day/week names to navigate views
-      selectable: true,
       selectMirror: true,
      
       // eventclick하면 숨겨진 div => 일정 정보 나옴
       eventClick: function(arg) {
-        console.log(arg);
         var sId = arg.event.extendedProps.sId;
+        var sWidth = window.innerWidth;
+		var sHeight = window.innerHeight;
+		
+		var oWidth = $('#caldetail').width();
+		var oHeight = $('#caldetail').height();
+		
+		var divLeft = event.pageX + 10;
+		var divTop = event.pageY + 5;
         
         $.ajax({
         	url: "personalcaldetail.do",
@@ -37,8 +42,6 @@
         	dataType: "json",
         	type: "post",
         	success: function(data){
-        		console.log(data);
-        		
         		$("#sName").text(data.sName);	
         		$("#sDate").text(data.sDate);
 				$("#fDate").text(data.fDate);
@@ -46,7 +49,12 @@
 				$("#memo").text(data.memo);
         		$("#paramsId").val(data.sId);
         		$("#parameId").val(data.eId);
-       			$("#caldetail").toggle();
+        		
+        		$('#caldetail').css({
+        			"top": divTop,
+        			"left": divLeft,
+        			"position": "absolute"
+        		}).toggle();
         	},
         	error: function(e){
         		console.log(e);
@@ -66,7 +74,8 @@
 	   sId : '<%= c.getsId() %>',
   	   title : '<%= c.getsName() %>',
   	   start : "<%= c.getsDate() %>",
-  	   end : "<%= c.getfDate() %>"
+  	   end : "<%= c.getfDate() %>",
+  	   color : "rgb(100, 110, 120)"
   	   },
 <%
 	}
@@ -78,9 +87,7 @@
 </script>
 <style>
 	#caldetail{
-		border: 1px dotted black;
-	    top: 400px;
-	    left: 100px;
+		border: 1px solid gray;
 	    overflow-y: auto;
 	    overflow-x: hidden;
 	    position: absolute;
@@ -128,6 +135,46 @@
     	position: relative;
     	z-index: 1001;
     }
+    #detailTable{
+    	background: white;
+    	z-index: 100;
+    }
+    #detailTable th{
+    	background: white;
+    	border-bottom: 1px solid gray;
+    	border-right: 1px solid gray;
+    	padding: 5px;
+    }
+    #detailTable td{
+    	background: white;
+    	border-bottom: 1px solid gray;
+    	padding: 10px;
+    }
+    #btns{
+    	margin: auto;
+    	background: white;
+    }
+    
+    #calendar{
+    	z-index: 200;
+    }
+    .fc-col-header-cell-cushion{
+    	all: unset;
+    }
+    .fc-daygrid-day-number{
+    	all: unset;
+    }
+    .fc-col-header-cell-cushion:hover{
+    	text-decoration: none;
+    	color: black;
+    }
+    .fc-daygrid-day-number:hover{
+    	text-decoration: none;
+    	color: black;
+    }
+    .fc-today{
+    	background-color: lightgrey !important;
+    }
 </style>
 </head>
 <body>
@@ -171,18 +218,15 @@
 						<td id="memo"></td>
 					</tr>
 				</table>
-				<div id="btns">
+				<div id="btns" align="center"><br>
 					<input type="hidden" id="paramsId">
 					<input type="hidden" id="parameId">
-					<c:set var="eId" value="$('#parameId').val()"/>
-					<c:url var="modifypopup" value="modifypopup.do">
-						<c:param name="sId" value="$('#paramsId').val()"/>
-					</c:url>
-						<button class="btn btn-secondary" onclick="window.open('${modifypopup}','일정 수정','width=400, height=600,location=no,status=no,scrollbars=yes')">수정</button>
-						<button class="btn btn-secondary" id="delete" onclick="location.href='deletepersonalcal.do?sId='+$('#paramsId').val()">삭제</button>
+					<button class="btn btn-secondary" id="modify" onclick="fn_modify();">수정</button>
+					<button class="btn btn-secondary" id="delete" onclick="location.href='deletepersonalcal.do?sId='+$('#paramsId').val()">삭제</button>
 					<c:if test="${ loginUser.eId eq eId }">					
 					</c:if>
 				</div>
+				<div style="height: 20px; background-color: #FFFFFF"></div>
 			</div>
 		</div>
 	</div>
@@ -192,6 +236,11 @@
 	 		    return false;
 	 		}
 	 	});
+	 	
+	 	function fn_modify(){
+	 		var sId = $("#paramsId").val();
+	 		window.open("<c:url value='updatePersonalCalView.do?sId="+sId+"'/>", "일정 수정", "width=500, height=600");
+	 	}
 	</script>
 </body>
 </html>

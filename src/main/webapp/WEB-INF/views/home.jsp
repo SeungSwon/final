@@ -187,7 +187,7 @@
          <div class="schedule">
             <div class="tabletitle">
                <p class="title">오늘의 일정</p>
-               <img class="plus" src="resources/images/common/plus.png">
+               <img class="plus" src="resources/images/common/plus.png" onclick="location.href='calview.do'">
             </div>
             <table class="table">
                <tr>
