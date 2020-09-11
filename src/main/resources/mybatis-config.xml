@@ -6,6 +6,12 @@
 	</settings>
 
 	<typeAliases>
+		<typeAlias type="com.kh.ourwork.pteam.model.vo.Rank" alias="Rank"/>
+		<typeAlias type="com.kh.ourwork.pteam.model.vo.Department" alias="Department"/>
+		<typeAlias type="com.kh.ourwork.pteam.model.vo.Certifrcate" alias="Certifrcate"/>
+		<typeAlias type="com.kh.ourwork.pteam.model.vo.Career" alias="Career"/>
+		<typeAlias type="com.kh.ourwork.pteam.model.vo.Education" alias="Education"/>
+	
 		<typeAlias type="com.kh.ourwork.pteam.model.vo.Employee1" alias="Employee1"/>
 		<typeAlias type="com.kh.ourwork.notice.model.vo.Reply" alias="Reply"/>
 		<typeAlias type="com.kh.ourwork.notice.model.vo.Notice" alias="Notice"/>

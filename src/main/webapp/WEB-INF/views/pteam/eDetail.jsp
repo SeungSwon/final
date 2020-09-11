@@ -19,67 +19,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
     <style>
-        div {
-            border: 1px solid skyblue;
-
-        }
-
-        body {
-            width: 1400px;
-            height: 800px;
-        }
-
-        .header {
-            width: 100%;
-            height: 10%;
-            border-bottom: 1px solid #003f6e;
-        }
-
-        .section {
-            width: 100%;
-            height: 85%;
-        }
-
-        .aside {
-            height: 100%;
-            width: 6%;
-            background: #01579a;
-        }
-
-        .section1 {
-            width: 14%;
-            height: 100%;
-            border-right: 1px solid #003f6e;
-
-        }
-
-
-        .section2 {
-            text-align: center;
-            width: 80%;
-            height: 100%;
-            
-        }
-
-        .header,
-        .section {
-            display: flex;
-        }
-
-       .logo {
-            width: 20%;
-            border: none;
-        }
-
-        .top_profile {
-            width: 80%;
-        }
-
-        .profile{
-            width: 80px;
-            height: 80px;
-            margin-right: 30px;
-        }
+        
         .approval, .schedule, .notice, .board{
             width: 48%;
             height: 48%;
@@ -170,6 +110,7 @@
        width: 300px;
        height: 30px;
        margin-bottom: 20px;
+       text-align: center;
    }
    .int{
     padding: 0px;
@@ -201,83 +142,54 @@
 </head>
 
 <body>
-    <div class="header">
-        <img class="logo" src="#">
-        <div class="top_profile" align="right">
-            <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">김윤지</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">출근</a>
-                <a class="dropdown-item" href="#">퇴근</a>
-                <a class="dropdown-item" href="#">마이페이지</a>
-                <a class="dropdown-item" href="#">로그아웃</a>
-            </div>
-        </div>
-        <img src="../html/image/profile.png" class="profile">
-    </div>
+    <jsp:include page="../common/menubar.jsp" />
     <div class="section"><br>
-        <div class="aside">
-            <button><img class="icons" src="../html/image/mail.png"><br>메일</button>
-            <button><img class="icons" src="../html/image/stamp.png"><br>결재</button>
-            <button><img class="icons" src="../html/image/calendar.png"><br>일정</button>
-            <button><img class="icons" src="../html/image/board.png"><br>게시판</button>
-            <button><img class="icons" src="../html/image/chat_white.png"><br>메신저</button>
-            <button><img class="icons" src="../html/image/address.png"><br>주소록</button>
-            <button id="selectedMenu"><img class="icons" src="../html/image/group.png"><br>인사관리</button>
-            <button><img class="icons" src="../html/image/texting.png"><br>SNS</button>
-
-        </div>
+       <jsp:include page="../common/noticemenu.jsp" />
         <div class="section1">
             <div class="menubar">
-                    <div class="menubar">
-                        <button>휴가 관리</button>
-                        <button>결재 조회</button>
-                        <button id="selected">사원 관리</button>
-                        <button onclick="window.open('address.html','window_name','width=600,height=500,location=no,status=no,scrollbars=yes');">부서 관리</button>
-                        <button>증명서 관리</button>
-                        <button>근퇴 관리</button>
-                    </div>
-            </div>
+                    <button onclick="location.href='pteam.do'">휴가 관리</button>
+                    <button>결재 조회</button>
+                    <button id="selected" onclick="location.href='employeeE.do'">사원 관리</button>
+                    <button onclick="window.open('address.html','window_name','width=600,height=500,location=no,status=no,scrollbars=yes');">부서
+                        관리</button>
+                    <button>증명서 관리</button>
+                    <button>근퇴 관리</button>
+        </div>
         </div>
         <div class="section2">
             <table id="boardTable">
+            <br>
+            	<h4>${ employee.eName }님의 회원 정보 입니다</h4>
                 <tr>
                     <td class="division">이름</td>
-                    <td class="in"><input type="text" name="bTitle" size="50" class="in"></td>
+                    <td class="in"><input type="text" textalign="center" name="bTitle" size="50" class="in" value="${ employee.eName }"></td>
                     <td class="division">직급</td>
-                    <td class="in"><select class="in">
-                            <option>직급 선택</option>
-                            <option>대리</option>
-                            <option>과장</option>
-                            <option>사원</option>
-                        </select></td></td>
+                    <td class="in">${ employee.rName }
+                        </select>
                 </tr>
                 <tr>
                     <td class="tel1">연락처</td>
-                    <td class="in"><input type="tel" readonly name="bWriter" size="50" class="in"></td>
+                    <td class="in"><input type="tel" readonly name="bWriter" size="50" class="in" value="${ employee.phone }"></td>
                     <td class="division">자격증</td>
                         <td class="in"><input type="file" name="uploadFile" class="in"></td>
                     
                 </tr>
                 <tr>
-                    <td class="division">지역</td>
-                    <td class="in"><input type="text" class="in"></td>
+                    <td class="division">주소</td>
+                    <td class="in"><input type="text" class="in" value="${ employee.address }" readonly="readonly"></td>
                     
                     <td class="division">자격증 수기</td>
                         <td class="in"><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#staticBackdrop2">확인</button></textarea></td>
                 </tr>
                 <tr>
                     <td class="division">부서</td>
-                    <td class="in"><select class="in">
-                            <option>부서선택</option>
-                            <option>인사팀</option>
-                            <option>영업팀</option>
-                        </select></td>
+                    <td class="in">${ employee.dName }</td>
                         <td class="division">학력</td>
                     <td class="in"><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#staticBackdrop">확인</button></td>
                 </tr>
                 <tr>
                         <td class="division">급여</td>
-                        <td class="in"><input type="text" class="in"></td>
+                        <td class="in"><input type="text" class="in" value="${ employee.salary }">원</td>
                         <td class="division">경력</td>
                     <td class="in"><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#staticBackdrop1">확인</button></td>
                         
@@ -286,7 +198,11 @@
             <table class="b12">
                     <tr>
                             <td colspan="2" class="btn1">
-                                <button type="button" class="btn btn-secondary btn-sm">수정</button>
+	                            <c:url var="upe" value="upe.do">
+		                        	<c:param name="eId" value="${ employee.eId }"/>
+		                        	<c:param name="page" value="${ currentPage }"/>
+	                        	</c:url>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${ upe }'">수정</button>
                                 <button type="button" class="btn btn-secondary btn-sm">뒤로가기</button>
                             </td>
                         </tr>
@@ -420,28 +336,27 @@
                 <table>
                     <tr class="mo2">
                         <td class="mo1">자격증명</td>
-                        <td><input type="text"></td>
+                        <td>${ c.ce_Name }</td>
                     </tr>
                     <tr class="mo2">
                         <td class="mo1">등급</td>
-                        <td><input type="text"></td>
+                        <td>${c.rating }</td>
                     </tr>
                     <tr class="mo2">
                         <td class="mo1">발급기관</td>
-                        <td><input type="text"></td>
+                        <td>${c.agency }</td>
                     </tr>
                     <tr class="mo2">
                             <td class="mo1">발급날짜</td>
-                            <td><input type="text"></td>
+                            <td>${c.issueDate }</td>
                         </tr>
                     <tr class="mo2">
                         <td class="mo1">만료기간</td>
-                        <td><input type="text"></td>
+                        <td>${c.exprationDate }</td>
                     </tr>
                 </table>
             </div>
             <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-secondary">등록</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
             </div>
           </div>
