@@ -7,14 +7,16 @@ public class Work {
 	private String eId;
 	
 	public Work() {}
-
+	
 	public Work(int wId, String wIn, String wOut, String eId) {
 		super();
 		this.wId = wId;
 		this.wIn = wIn;
 		this.wOut = wOut;
 		this.eId = eId;
+
 	}
+
 
 	public int getwId() {
 		return wId;
@@ -52,6 +54,6 @@ public class Work {
 	public String toString() {
 		return "Work [wId=" + wId + ", wIn=" + wIn + ", wOut=" + wOut + ", eId=" + eId + "]";
 	}
-	
-	
+
+
 }

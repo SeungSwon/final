@@ -27,6 +27,7 @@
 	    <typeAlias type="com.kh.ourwork.approval.model.vo.Line" alias="Line"/>
 	    <typeAlias type="com.kh.ourwork.notice.model.vo.Reply" alias="Reply"/>
 	    <typeAlias type="com.kh.ourwork.calendar.model.vo.Calendar" alias="Calendar"/>
+      <typeAlias type="com.kh.ourwork.employee.model.vo.Work" alias="Work"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/pteam-mapper.xml"/>
