@@ -1,6 +1,6 @@
 package com.kh.ourwork.calendar.model.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Calendar {
 	private int sId;
@@ -15,7 +15,7 @@ public class Calendar {
 	private String status;
 	
 	public Calendar() {}
-
+	
 	public Calendar(int sId, String eId, int dId, int sort, String sName, Date sDate, Date fDate, String place,
 			String memo, String status) {
 		super();
@@ -117,7 +117,6 @@ public class Calendar {
 				+ ", sDate=" + sDate + ", fDate=" + fDate + ", place=" + place + ", memo=" + memo + ", status=" + status
 				+ "]";
 	}
-	
 	
 	
 	

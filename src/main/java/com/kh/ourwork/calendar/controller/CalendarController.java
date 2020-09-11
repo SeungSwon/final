@@ -8,12 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.kh.ourwork.calendar.exception.CalendarException;
 import com.kh.ourwork.calendar.model.service.CalendarService;
 import com.kh.ourwork.calendar.model.vo.Calendar;
 import com.kh.ourwork.employee.model.vo.Employee;
@@ -57,6 +54,7 @@ public class CalendarController {
 		return "calendar/popup";
 	}
 	
+
 	@RequestMapping("addteampopup.do")
 	public String teamPopupView() {
 		return "calendar/addteampopup";
@@ -103,7 +101,9 @@ public class CalendarController {
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
 		cal.seteId(loginUser.geteId());
+		
 		int result = calService.addEvent(cal);
+
 										
 		if(result>0) {
 			return "success";
@@ -212,6 +212,7 @@ public class CalendarController {
 		}
 			
 	}
+
 	
 	@RequestMapping("deleteteamcal.do")
 	public String deleteTeamCal(int sId) {
