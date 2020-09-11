@@ -112,8 +112,10 @@ public class EmployeeController {
 	// 회원가입 메소드
 	@RequestMapping("memberJoin.do")
 	public String employeeInsert(Employee e, RedirectAttributes rd, HttpServletRequest request,
-			@RequestParam(value = "uploadFile", required = false) MultipartFile file, @RequestParam("post") String post,
-			@RequestParam("address1") String address1, @RequestParam("address2") String address2) {
+			@RequestParam(value = "uploadFile", required = false) MultipartFile file, 
+			@RequestParam("post") String post,
+			@RequestParam("address1") String address1, 
+			@RequestParam("address2") String address2) {
 
 		System.out.println("emplyee : " + e);
 
@@ -264,17 +266,38 @@ public class EmployeeController {
 		return "member/memberMypage";
 	}
 	
-	//출근 저장하기
-	@RequestMapping("employeeWIn.do")
-	public String employeeWIn(Work w) {
-		return "home";
+	// 출근 저장하기
+	@RequestMapping(value = "employeeWIn.do")			
+	public String Work(Model model, HttpSession session) {
+		
+		Work w = new Work();
+		Employee e = (Employee) session.getAttribute("loginUser");
+		
+		w.seteId(e.geteId());
+		int result = eService.employeeWIn(w);
+				
+		System.out.println("work" + w);
+		
+		if (w != null) {
+			model.addAttribute("worktime", w);
+
+			// 출퇴근 성공시
+			if (logger.isDebugEnabled()) {
+				logger.info(w.geteId() + "출근시간이 등록되었습니다.");
+			}
+		} else {
+			throw new EmployeeException("출근시간이 등록되지 않았습니다.");
+		}
+		return "redirect:home.do";
 	}
 	
 	//퇴근 저장하기
 	@RequestMapping("employeeWOut.do")
 	public String employeeWOut(Work w) {
 		return "home";
-	}
+	}	
+	
+	
 	
 	// 2. JsonView를 이용한 방법
 	// dependency 라이브러리 추가 후 JsonView, BeanNameViewResolver 빈 등록 후 사용

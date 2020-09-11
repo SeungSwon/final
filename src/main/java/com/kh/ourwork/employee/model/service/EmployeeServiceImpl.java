@@ -105,7 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public int employeeTime(Work w) {
-		return eDao.employeeWOut(w);
+	public Work selectWork(String eId) {
+		return eDao.selectWork(eId);
 	}
 }

@@ -33,6 +33,13 @@
 		<result column="FILELEVEL" property="fileLevel" />
 	</resultMap>
 	
+	<resultMap type="work" id="replywork">
+		<id column="EID" property="eId" />
+		<result column="WID" property="wId" />
+		<result column="WIN" property="wIn" />
+		<result column="WOUT" property="wOut" />
+	</resultMap>
+	
 	<select id="selectOne" parameterType="Employee" resultMap="employeeResultSet">		
         SELECT *        
 		FROM ATTACHMENT 
@@ -77,7 +84,6 @@
 		FROM ATTACHMENT
 		WHERE EID=#{eId}
 		AND FSTATUS='Y' 
-
 	</select>
 	
 	<!-- 첨부파일 수정 -->
@@ -101,26 +107,26 @@
 		VALUES(SEQ_FID.NEXTVAL, NULL, NULL, NULL, NULL, NULL, #{eId}, NULL, #{filePath}, #{originName}, #{changeName}, SYSDATE, 10, DEFAULT)
 	</insert>
 	
-	<!-- 출근 시간 등록하기 --> 
-   <insert id="employeeWIn" parameterType="Work">
+	<!-- 출근 시간 등록하기 -->
+	<insert id="employeeWIn" parameterType="Work">
       INSERT INTO WORK
-      VALUES(SEQ_FID.NEXTVAL, {wIn}, NULL, #{eId})   
-   </insert>  
+      VALUES(SEQ_FID.NEXTVAL, SYSDATE, NULL, #{eId})   
+   </insert>   
+   
       <!-- 퇴근 시간 등록하기 -->
    <insert id="employeeWOut" parameterType="Work">
       INSERT INTO WORK
-      VALUES(SEQ_FID.NEXTVAL, {wIn}, {wOut}, #{eId})
-   </insert>  
+      VALUES(SEQ_FID.NEXTVAL, NULL, SYSDATE, #{eId})
+   </insert>   
    
-   <!-- 출퇴근 시간 조회 -->
-   <select id="employeeTime" resultType="Work">
-       SELECT *
-      FROM WORK
-      RIGHT JOIN EMPLOYEE USING (EID)
-      WHERE EID= #{eId}
-      AND STATUS='Y' 
+   <!-- 출퇴근 시간 불러오기 -->
+   <select id="selectWork" resultType="Work">
+ 		SELECT *
+		FROM WORK
+		WHERE EID=#{eId}
+		AND FSTATUS='Y'
    </select>
-
+   
 </mapper>
 
 

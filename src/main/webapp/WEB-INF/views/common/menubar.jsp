@@ -29,14 +29,15 @@
         <div class="top_profile" align="right">
             <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <c:out value="${ loginUser.eName }님 "/>
-             <form action="login.do" method="post" >
+            
+            
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a type="time" class="dropdown-item" href="#" name="wIn">출근</a>
-                <a type="time" class="dropdown-item" href="#" name="wOut">퇴근</a>
+                <a class="dropdown-item" onclick="location.href='employeeWIn.do'" name="wIn">출근</a>
+                <a class="dropdown-item" onclick="location.href='employeeWOut.do'" name="wOut">퇴근</a>
                 <a class="dropdown-item" href="#" onclick="location.href='eMypage.do'">마이페이지</a>
                 <a class="dropdown-item" href="#" onclick="location.href='/ourwork'">로그아웃</a>
             </div>
-            </form>
+            
         </div>
         <img  src="${ contextPath }/resources${ loginUser.profile.filePath }/${ loginUser.profile.changeName }" class="profile">
 

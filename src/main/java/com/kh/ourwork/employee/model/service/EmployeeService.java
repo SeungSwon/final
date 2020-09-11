@@ -41,8 +41,7 @@ public interface EmployeeService {
 	
 	//퇴근 시간 저장을 위한 메소드
 	public int employeeWOut(Work w);
-	
-	//출퇴근시간을 출력하기 위한 메소드
-	public int employeeTime(Work w);
+		
+	Work selectWork(String eId);
 	
 }

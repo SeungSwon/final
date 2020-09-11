@@ -66,8 +66,8 @@ public class EmployeeDao {
 		return sqlSession.insert("memberMapper.employeeWOut", w);
 	}
 	
-	public int employeeTime(Work w) {
-		return sqlSession.selectOne("memberMapper.employeeTime", w);
+	public Work selectWork(String eId) {		
+		return sqlSession.selectOne("memberMapper.selectWork", eId);
 	}
 
 
