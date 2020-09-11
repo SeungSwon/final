@@ -23,4 +23,5 @@
    		<button><img class="icons" src="resources/images/common/texting.png"><br>SNS</button>
 	</div>
 </body>
+
 </html>

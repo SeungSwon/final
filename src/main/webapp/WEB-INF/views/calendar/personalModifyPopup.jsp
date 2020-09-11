@@ -16,8 +16,6 @@
 		.group-body{
 			margin: auto;
 		}
-		
-		
 	</style>
 </head>
 <body>

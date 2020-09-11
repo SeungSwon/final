@@ -12,7 +12,6 @@
  <script src='resources/fullcalendar/locales/ko.js'></script>
 <script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
 <script>
-
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 

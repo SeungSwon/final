@@ -61,11 +61,4 @@ public interface NoteService {
 
 	ArrayList<Note> saveSearchList(PageInfo pi, Search search);
 
-
-	
-
-
-
-	
-
 }

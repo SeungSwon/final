@@ -121,8 +121,5 @@ public class ClientServiceImpl implements ClientService{
 		return cDao.selectSearchListCount(search);
 	}
 
-
-
-	
 	
 }

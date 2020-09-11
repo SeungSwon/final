@@ -166,6 +166,5 @@ public class NoteServiceImpl implements NoteService{
 		
 		return ntDao.saveSearchList(pi, search);
 	}
-	
 
 }

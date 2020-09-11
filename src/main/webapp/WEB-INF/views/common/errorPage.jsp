@@ -11,7 +11,8 @@
 		<h1>Error</h1>
 		<h2 style="color:red;">${ msg }<br>
 		<%= request.getAttribute("javax.servlet.error.message") %></h2>
-		<button onclick="location.href='/ourwork'">로그인 페이지로 돌아가기</button>	
+<!-- 		<a href="index.do">시작페이지로 돌아가기</a> -->
+		<button onclick="location.href='index.do'">메인으로 돌아가기</button>	
 	</div>
 
 </body>

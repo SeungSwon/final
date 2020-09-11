@@ -8,7 +8,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-		 
         .menubar button{
             border: none;
             background: none;

@@ -232,6 +232,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<script>
 	 	$("#delete").on("click", function(arg){
 	 		if (confirm("일정을 삭제하시겠습니까?") == false) {

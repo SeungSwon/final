@@ -20,7 +20,6 @@
 		VALUES(SEQ_SID.NEXTVAL, #{eId}, null, 1, #{sName}, #{sDate}, #{fDate}, #{place}, #{memo}, DEFAULT)
 	</insert>
 	
-
 	<!-- 사내 일정 조회 -->
 	<select id="selectList" resultMap="calResultSet">
 		SELECT *
@@ -28,7 +27,7 @@
 		WHERE STATUS='Y'
 		AND SORT=1
 	</select>
-
+	
 	<!-- 사내 일정 상세 조회 -->
 	<select id="selectCal" resultMap="calResultSet">
 		SELECT *

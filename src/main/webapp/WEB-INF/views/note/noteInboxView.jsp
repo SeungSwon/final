@@ -21,7 +21,7 @@
 	        if(msg != ""){
 	            alert(msg);
 	        }
-	    }) 
+	    });
 	</script>
     <style>
        .menubar button {

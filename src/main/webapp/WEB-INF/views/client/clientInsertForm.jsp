@@ -8,7 +8,6 @@
 <title>거래처 등록</title>
 
 <style>
-		 
         .menubar button{
             border: none;
             background: none;
