@@ -12,7 +12,6 @@
 		#selectedEmenu {
 		   background: #1e87e4;
 		}
-       
 </style>
 </head>
 <body>

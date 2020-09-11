@@ -4,7 +4,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="pteamMapper">
 	
-	<resultMap id="employeeResultSet" type="Employee1">
+	<resultMap id="employeeResultSet" type="Employee">
 		<id property="eId" column="EID"/>
  		<result property="dId" column="DID"/>
 		<result property="rId" column="RID"/> 
@@ -103,10 +103,8 @@
 	</select>
 	
 	<select id="selectOne" parameterType="String" resultMap="employeeResultSet">
-		SELECT EID, DID, RNAME, DNAME, ENAME, EMAIL, PHONE, ADDRESS, SALARY, JOIN_DATE, LEAVE_DATE, HOLIDAY, EBIRTH
+		SELECT *
 		FROM EMPLOYEE
-		JOIN RANK USING(RID)
-        JOIN DEPARTMENT USING(DID)
 		WHERE EID=#{eId}
 		AND STATUS='Y'
 	</select>
@@ -129,13 +127,13 @@
 					AND RNAME LIKE #{sv}
 				</when>
 			</choose>
-					AND STATUS='Y'
 		</where>
+		<!-- WHERE STATUS='N' -->
 		ORDER BY RID DESC
 	</select>
 	
 	<!-- 퇴사사원 -->
-	<select id="nsearchList" parameterType="Search" resultMap="employeeResultSet">
+	<!-- <select id="nsearchList" parameterType="Search" resultMap="employeeResultSet">
 		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
 		SELECT * 
 		FROM EMPLOYEE
@@ -153,35 +151,10 @@
 					AND RNAME LIKE #{sv}
 				</when>
 			</choose>
-			AND STATUS='N'
 		</where>
+		WHERE STATUS='N'
 		ORDER BY RID DESC
-	</select>
-	
-	
-	<!-- 재직중 검색 listCount -->
-	<select id="SselectListCount" resultType="_int">
-		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
-		SELECT COUNT(*)
-		FROM EMPLOYEE
-		JOIN RANK USING(RID)
-        JOIN DEPARTMENT USING(DID)
-		<where>
-			<choose>
-				<when test="searchCondition == 'eName'">
-					AND ENAME LIKE #{sv}
-				</when>
-				<when test="searchCondition == 'dName'">
-					AND DNAME LIKE #{sv}
-				</when>
-				<when test="searchCondition == 'rName'">
-					AND RNAME LIKE #{sv}
-				</when>
-			</choose>
-			AND STATUS='Y'
-		</where>
-		ORDER BY RID DESC
-	</select>
+	</select> -->
 	
 	<!-- 직급 list -->
 	<select id="selectrList" resultMap="rankResultSet">

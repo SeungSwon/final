@@ -304,8 +304,6 @@
         OR (RECEIVER=#{eId} AND REC_SAVE='Y')
         ORDER BY NTDATE, RECEIVE_DATE
 	</select>
-	
-	
 </mapper>
 
 

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +21,7 @@
 	        if(msg != ""){
 	            alert(msg);
 	        }
-	    }) 
+	    });
 	</script>
     <style>
        .menubar button {
@@ -144,6 +145,21 @@
         #toDetail{
         	color: black;
         }
+        .badge{
+        	background: red;
+        	color: white;
+        	border-radius: 50%;
+        	padding: 5px;
+        }
+        .badge:hover{
+        	text-decoration: none;
+        	color: white;
+        }
+        .listcount{
+       		color: #1e87e4;
+       		font-weight: bold;
+       		font-size: 13px;
+        }
     </style>
 </head>
 
@@ -155,7 +171,13 @@
             <div class="menubar">
                 <button>채팅</button>
                 <button onclick="location.href='ntwriteView.do'">쪽지 쓰기</button>
-                <button id="selected" onclick="location.href='ntInboxList.do'">받은 쪽지함</button>
+                <c:set var="count" value="0"/>                
+                <c:forEach var="nt" items="${ list }">
+                	<c:if test="${ nt.receiveDate == null }">
+                		<c:set var="count" value="${count + 1}" />
+                	</c:if>
+                </c:forEach>
+                <button id="selected" onclick="location.href='ntInboxList.do'">받은 쪽지함 <a class="badge">${ count }</a></button>
                 <button onclick="location.href='ntOutboxList.do'">보낸 쪽지함</button>
                 <button onclick="location.href='ntsaveList.do'">쪽지 보관함</button>
             </div>
@@ -174,11 +196,14 @@
 	                    </form>
                     </div>
                     <div id="mainContent">
+                    	<c:if test="${ search ne null }">
+                    		<div align="left">검색결과<a class="listcount">(${ listCount })</a> | <a class="listcount">${ search.searchValue }</a></div><br>
+                    	</c:if>
                     	<form action="deleteInSelected.do" method="post">
 	                        <table class="table table-hover">
 	                            <thead>
 	                                <tr>
-	                                    <th></th>
+	                                    <th><input type="checkbox" id="checkall"></th>
 	                                    <th>보낸 사람</th>
 	                                    <th id="mContentHead">내용</th>
 	                                    <th scope="col">날짜</th>
@@ -186,6 +211,11 @@
 	                            </thead>
 	                            <tbody>
 		                            <c:forEach var="nt" items="${ list }">
+		                            	<c:if test="${ fn:length(list) eq null }">
+		                            		<tr>
+		                            			<td colspan="4">받은 쪽지가 없습니다.</td>
+		                            		</tr>
+	                            		</c:if>
 			                                <tr>
 			                                    <td><input name="check" type="checkbox" value="${ nt.ntId }"></td>
 			                                    <td>${ nt.eId }</td>
@@ -264,6 +294,15 @@
             		if(confirm("선택한 쪽지를 삭제하시겠습니까?") == false){
             			return false;
             		}
+            	});
+            	$(document).ready(function(){
+            	    $("#checkall").click(function(){
+            	        if($("#checkall").prop("checked")){
+            	            $("input[name=check]").prop("checked",true);
+            	        }else{
+            	            $("input[name=check]").prop("checked",false);
+            	        }
+            	    })
             	});
             </script>
 		</body>

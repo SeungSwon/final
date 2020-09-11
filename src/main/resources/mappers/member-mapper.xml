@@ -104,9 +104,24 @@
 		VALUES(SEQ_FID.NEXTVAL, NULL, NULL, NULL, NULL, NULL, #{eId}, NULL, #{filePath}, #{originName}, #{changeName}, SYSDATE, 10, DEFAULT)
 	</insert>
 	
+	<!-- 출근 시간 등록하기 -->
+	<insert id="employeeWIn" parameterType="Work">
+      INSERT INTO WORK
+      VALUES(SEQ_FID.NEXTVAL, TO_CHAR(SYSDATE,'YY/MM/DD HH:MM'), TO_CHAR(SYSDATE,'YY/MM/DD HH:MM'), #{eId})  
+   </insert>   
+   
+      <!-- 퇴근 시간 등록하기 -->
+   <insert id="employeeWOut" parameterType="Work">
+      INSERT INTO WORK
+      VALUES(SEQ_FID.NEXTVAL, NULL, TO_CHAR(SYSDATE,'YY/MM/DD HH:MM'), #{eId})
+   </insert>   
+   
+   <!-- 출퇴근 시간 불러오기 -->
+   <select id="selectWork" resultType="Work">
+ 		SELECT *
+		FROM WORK
+		WHERE EID=#{eId}
+		AND FSTATUS='Y'
+   </select>
+   
 </mapper>
-
-
-
-
-

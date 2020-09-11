@@ -142,11 +142,15 @@
 					<tbody>
 					<c:forEach var="a" items="${list}">
 						<tr>
-						<c:if test="${loginUser.eId eq a.eId}">
 							<td>${a.astartDate}</td>
 							<td>${a.aName}</td>
 							<td>${a.aTitle}</td>
+							<c:if test="${ a.atNum ne 0 }">
+							<td>${a.atNum }</td>
+							</c:if>
+							<c:if test="${a.atNum eq 0 }">
 							<td></td>
+							</c:if>
 							<td>${a.aendDate }</td>
 						<c:if test="${a.aStatus eq 'I' }">
 							<td style="color: green;">진행중</td>
@@ -156,7 +160,6 @@
 						</c:if>
 						<c:if test="${a.aStatus eq 'N' }">
 							<td style="color: red;">반려</td>
-						</c:if>
 						</c:if>
 						</tr>
 					</c:forEach>
@@ -208,14 +211,17 @@
 					<tbody>
 						<c:forEach var="i" items="${ilist}">
 						<tr>
-						<c:if test="${loginUser.eId eq i.eId}">
 							<td>${i.astartDate}</td>
 							<td>${i.aName}</td>
 							<td>${i.aTitle}</td>
+							<c:if test="${ i.atNum ne 0 }">
+							<td>${i.atNum }</td>
+							</c:if>
+							<c:if test="${i.atNum eq 0 }">
 							<td></td>
+							</c:if>
 							<td>${i.aendDate }</td>
 							<td style="color: green;">진행중</td>
-						</c:if>
 						</tr>
 					</c:forEach>
 					</tbody>
@@ -265,14 +271,17 @@
 					<tbody>
 						<c:forEach var="y" items="${ylist}">
 						<tr>
-						<c:if test="${loginUser.eId eq y.eId}">
 							<td>${y.astartDate}</td>
 							<td>${y.aName}</td>
 							<td>${y.aTitle}</td>
+							<c:if test="${ y.atNum ne 0 }">
+							<td>${y.atNum }</td>
+							</c:if>
+							<c:if test="${y.atNum eq 0 }">
 							<td></td>
+							</c:if>
 							<td>${y.aendDate }</td>
 							<td style="color: gray;">완료</td>
-						</c:if>
 						</tr>
 					</c:forEach>
 					</tbody>
@@ -322,14 +331,17 @@
 					<tbody>
 						<c:forEach var="n" items="${nlist}">
 						<tr>
-						<c:if test="${loginUser.eId eq a.eId}">
 							<td>${n.astartDate}</td>
 							<td>${n.aName}</td>
 							<td>${n.aTitle}</td>
+							<c:if test="${ n.atNum ne 0 }">
+							<td>${n.atNum }</td>
+							</c:if>
+							<c:if test="${n.atNum eq 0 }">
 							<td></td>
+							</c:if>
 							<td>${n.aendDate }</td>
 							<td style="color: red;">반려</td>
-						</c:if>
 						</tr>
 					</c:forEach>
 					</tbody>

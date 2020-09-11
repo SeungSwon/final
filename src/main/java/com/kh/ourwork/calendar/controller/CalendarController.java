@@ -18,19 +18,39 @@ import com.kh.ourwork.calendar.model.service.CalendarService;
 import com.kh.ourwork.calendar.model.vo.Calendar;
 import com.kh.ourwork.employee.model.vo.Employee;
 
+
 @Controller
 public class CalendarController {
 	@Autowired
 	private CalendarService calService;
 	
 	@RequestMapping("calview.do")
-	public String calList(Model model) {
+	public String calList(Model model, ModelAndView mv) {
 		ArrayList<Calendar> list = calService.selectList();
 		model.addAttribute("list", list);
-		
+
 		return "calendar/calendar";
 	}
-
+	
+	@RequestMapping("teamcalview.do")
+	public String teamcalList(Model model, HttpSession session) {
+		Employee e = (Employee)session.getAttribute("loginUser");
+		
+		ArrayList<Calendar> list = calService.selectTeamCalList(e);
+		model.addAttribute("list", list);
+		
+		return "calendar/teamcalendar";
+	}
+	
+	@RequestMapping("personalcalview.do")
+	public String personalcalList(Model model, HttpSession session) {
+		Employee e = (Employee)session.getAttribute("loginUser");
+		ArrayList<Calendar> list = calService.selectPersonalList(e);
+		
+		model.addAttribute("list", list);
+		
+		return "calendar/personalcalendar";
+	}
 	
 	
 	@RequestMapping("addpopup.do")
@@ -38,49 +58,147 @@ public class CalendarController {
 		return "calendar/popup";
 	}
 	
-	@RequestMapping("modifypopup.do")
-	public String modifyView() {
+	@RequestMapping("addteampopup.do")
+	public String teamPopupView() {
+		return "calendar/addteampopup";
+	}
+
+	@RequestMapping("addpersonalpopup.do")
+	public String personalPopupView() {
+		return "calendar/addpersonalpopup";
+	}
+	
+	@RequestMapping("updatecalView.do")
+	public String modifyView(int sId, Model model) {
+		
+		Calendar cal = calService.selectCal(sId);
+			
+		model.addAttribute("cal", cal);
+		
 		return "calendar/modifypopup";
 	}
-	/*
-	 * @RequestMapping("addEvent.do")
-	 * 
-	 * @ResponseBody public String addEvent(Calendar cal, HttpSession session) {
-	 * Employee loginUser = (Employee)session.getAttribute("loginUser");
-	 * cal.seteId(loginUser.geteId());
-	 * 
-	 * 
-	 * }
-	 */
 	
+	@RequestMapping("updateTeamCalView.do")
+	public String modifyTeamView(int sId, Model model) {
+		
+		Calendar cal = calService.selectTeamCal(sId);
+		
+		model.addAttribute("cal", cal);
+		
+		return "calendar/teamModifyPopup";
+	}
+	
+	@RequestMapping("updatePersonalCalView.do")
+	public String modifyPersonalView(int sId, Model model) {
+		Calendar cal = calService.selectPersonalCal(sId);
+		
+		model.addAttribute("cal", cal);
+		
+		return "calendar/personalModifyPopup";
+	}
+	
+	// 일정 추가
 	@RequestMapping("addEvent.do")
-	public ModelAndView addEvent(Calendar cal, HttpSession session, ModelAndView mv) {
+	@ResponseBody
+	public String addEvent(Calendar cal, HttpSession session, ModelAndView mv) {
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
 		cal.seteId(loginUser.geteId());
 		int result = calService.addEvent(cal);
+										
+		if(result>0) {
+			return "success";
+		} else { 
+			return "fail";
+		}
+	}
+	
+	// 일정 수정
+	@RequestMapping("updatecal.do")
+	@ResponseBody
+	public String updateCal(Calendar cal, HttpSession session) {
+								
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
 				
-		String msg = "일정이 등록되었습니다.";
+		cal.setdId(loginUser.getdId());
+		int result = calService.updateCal(cal);
+				
+		if(result>0) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+
+		
+	
+	@RequestMapping("addteamEvent.do")
+	@ResponseBody
+	public String addTeamEvent(Calendar cal, HttpSession session, ModelAndView mv) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
+		cal.seteId(loginUser.geteId());
+		cal.setdId(loginUser.getdId());
+		int result = calService.addTeamEvent(cal);
 		
 		if(result>0) {
-			mv.addObject("msg", msg).setViewName("redirect:calview.do");
-		} else { 
-			throw new CalendarException("일정 등록에 실패하였습니다."); 
+			mv.addObject("cal", cal);
+			return "success";
+		}else {
+			return "fail";
 		}
-		return mv;
 	}
+	
+	@RequestMapping("addpersonalEvent.do")
+	@ResponseBody
+	public String addPersonalEvent(Calendar cal, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
+		cal.seteId(loginUser.geteId());
+		int result = calService.addPersonalEvent(cal);
+		
+		if(result>0) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+	
+	// 상세 조회
 	
 	@RequestMapping("caldetail.do")
 	@ResponseBody
-	public String calDetail(int sId, HttpSession session) {
+	public String calDetail(int sId, HttpSession session, Model model) {
 		
 		Calendar cal = calService.selectCal(sId);
-		
+		model.addAttribute("cal", cal);
+				
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 				
 		return gson.toJson(cal);
 	}
 	
+	@RequestMapping("teamcaldetail.do")
+	@ResponseBody
+	public String teamCalDetail(int sId) {
+		Calendar cal = calService.selectTeamCal(sId);
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		
+		return gson.toJson(cal);
+	}
+	
+	@RequestMapping("personalcaldetail.do")
+	@ResponseBody
+	public String personalCalDetail(int sId) {
+		Calendar cal = calService.selectPersonalCal(sId);
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		
+		return gson.toJson(cal);
+	}
+	
+	// 삭제
 	@RequestMapping("deletecal.do")
 	public String deleteCal(int sId) {
 		
@@ -96,7 +214,29 @@ public class CalendarController {
 			
 	}
 	
+	@RequestMapping("deleteteamcal.do")
+	public String deleteTeamCal(int sId) {
+		int result = calService.deleteTeamCal(sId);
+		
+		if(result>0) {
+			return "redirect:teamcalview.do";
+		}else {
+			throw new CalendarException("일정 삭제에 실패하였습니다.");
+		}
+			
+	}
 	
+	@RequestMapping("deletepersonalcal.do")
+	public String deletePersonalCal(int sId) {
+		
+		int result = calService.deletePersonalCal(sId);
+		
+		if(result>0) {
+			return "redirect:personalcalview.do";
+		}else {
+			throw new CalendarException("일정 삭제에 실패하였습니다.");
+		}
+	}
 	
 	
 	

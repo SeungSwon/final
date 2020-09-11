@@ -27,6 +27,7 @@ import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Pagination;
 
+
 @Controller
 public class ClientController {
 	@Autowired
@@ -275,6 +276,7 @@ public class ClientController {
 		mv.addObject("list", searchList);
 		mv.addObject("search", search);
 		mv.addObject("pi", pi);
+		mv.addObject("listCount", listCount);
 		mv.setViewName("client/clientListView");
 		
 		return mv;

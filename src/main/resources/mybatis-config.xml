@@ -23,16 +23,17 @@
 		<typeAlias type="com.kh.ourwork.note.model.vo.NoteReceiver" alias="NoteReceiver"/>
 		<typeAlias type="com.kh.ourwork.email.model.vo.Email" alias="Email"/>
 		<typeAlias type="com.kh.ourwork.email.model.vo.Ereceiver" alias="Ereceiver"/>
-		<typeAlias type="com.kh.ourwork.email.model.vo.ReceiveEmail" alias="ReceiveEmail"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.RsEmail" alias="RsEmail"/>
 		<typeAlias type="com.kh.ourwork.employee.model.vo.Employee" alias="Employee"/>
 		<typeAlias type="com.kh.ourwork.email.model.vo.EmailAddr" alias="EmailAddr"/>
-    <typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
-    <typeAlias type="com.kh.ourwork.approval.model.vo.ApprovalPeople" alias="ApprovalPeople"/>
-    <typeAlias type="com.kh.ourwork.approval.model.vo.Approval" alias="Approval"/>
-    <typeAlias type="com.kh.ourwork.approval.model.vo.Holiday" alias="Holiday"/>
-    <typeAlias type="com.kh.ourwork.approval.model.vo.Line" alias="Line"/>
-    <typeAlias type="com.kh.ourwork.notice.model.vo.Reply" alias="Reply"/>
-    <typeAlias type="com.kh.ourwork.calendar.model.vo.Calendar" alias="Calendar"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.ApprovalPeople" alias="ApprovalPeople"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.Approval" alias="Approval"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.Holiday" alias="Holiday"/>
+	    <typeAlias type="com.kh.ourwork.approval.model.vo.Line" alias="Line"/>
+	    <typeAlias type="com.kh.ourwork.notice.model.vo.Reply" alias="Reply"/>
+	    <typeAlias type="com.kh.ourwork.calendar.model.vo.Calendar" alias="Calendar"/>
+      <typeAlias type="com.kh.ourwork.employee.model.vo.Work" alias="Work"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/pteam-mapper.xml"/>
@@ -40,8 +41,8 @@
 		<mapper resource="mappers/client-mapper.xml"/>
 		<mapper resource="mappers/note-mapper.xml"/>
 		<mapper resource="mappers/email-mapper.xml"/>
-	  <mapper resource="mappers/approval-mapper.xml"/>
-	  <mapper resource="mappers/member-mapper.xml"/>
-	  <mapper resource="mappers/calendar-mapper.xml"/>
+	    <mapper resource="mappers/approval-mapper.xml"/>
+	    <mapper resource="mappers/member-mapper.xml"/>
+	    <mapper resource="mappers/calendar-mapper.xml"/>
 	</mappers>	
 </configuration>

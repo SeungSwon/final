@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import com.kh.ourwork.approval.model.vo.LineList;
 import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Pagination;
+import com.kh.ourwork.employee.model.vo.Employee;
 
 @Controller
 public class ApprovalController {
@@ -39,23 +41,26 @@ public class ApprovalController {
 	
 	//기안함
 	@RequestMapping("aRequestList.do")
-	public ModelAndView approvalRequestList(ModelAndView mv, @RequestParam(value="page", required=false) Integer page, String tabValue) {
+	public ModelAndView approvalRequestList(ModelAndView mv, @RequestParam(value="page", required=false) Integer page, String tabValue, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
 		int currentPage = page !=null ? page : 1;
 	
-		int listCount = aService.selectRequestListCount();
-		int ilistCount = aService.selectRequestiListCount();
-		int ylistCount = aService.selectRequestyListCount();
-		int nlistCount = aService.selectRequestnListCount();
+		int listCount = aService.selectRequestListCount(loginUser);
+		int ilistCount = aService.selectRequestiListCount(loginUser);
+		int ylistCount = aService.selectRequestyListCount(loginUser);
+		int nlistCount = aService.selectRequestnListCount(loginUser);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		PageInfo ipi = Pagination.getPageInfo(currentPage, ilistCount);
 		PageInfo ypi = Pagination.getPageInfo(currentPage, ylistCount);
 		PageInfo npi = Pagination.getPageInfo(currentPage, nlistCount);
 		
-		ArrayList<Approval> list = aService.selectRequestList(pi);
-		ArrayList<Approval> ilist = aService.selectRequestiList(ipi);
-		ArrayList<Approval> ylist = aService.selectRequestyList(ypi);
-		ArrayList<Approval> nlist = aService.selectRequestnList(npi);
+		ArrayList<Approval> list = aService.selectRequestList(pi,loginUser);
+		ArrayList<Approval> ilist = aService.selectRequestiList(ipi,loginUser);
+		ArrayList<Approval> ylist = aService.selectRequestyList(ypi,loginUser);
+		ArrayList<Approval> nlist = aService.selectRequestnList(npi,loginUser);
+				
 		
 		if(list != null) {
 			mv.addObject("list", list);
@@ -128,54 +133,104 @@ public class ApprovalController {
 	
 	// 휴가원
 	@RequestMapping("holidayInsert.do")
-	public String holidayInsert(Approval a, Holiday h, String[] leId, String[] lLevel, HttpServletRequest request,
-			@RequestParam(value = "uploadFile", required = false) MultipartFile[] file) {
-		
-		System.out.println(file.length);
+	public String holidayInsert(Approval a, Holiday h, String aStatus, String[] leId, String[] lLevel, HttpServletRequest request,
+			@RequestParam(value = "uploadFile", required = false) MultipartFile[] files) {
 
+		System.out.println(aStatus + a.getaId());
+		System.out.println(a);
+		
 		ArrayList<Attachment> list = new ArrayList<Attachment>();
 		ArrayList<Line> llist = new ArrayList<Line>();
 		
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\auploadFiles";
 		File folder = new File(savePath);
-		
-		if (file.length > 0) {
 			
-			for (int i = 0; i < file.length; i++) {
-				String renameFileName = saveFile(file[i], request);
+			for (MultipartFile file : files) {
+				if(!file.getOriginalFilename().isEmpty()) {
+				String renameFileName = saveFile(file, request);
 				String renamePath = folder + "\\" + renameFileName;
 				
 				if (renameFileName != null) {
 					Attachment at = new Attachment();
-					at.setOriginName(file[i].getOriginalFilename());
+					at.setOriginName(file.getOriginalFilename());
 					at.setChangeName(renameFileName);
 					at.setFilePath(renamePath);
+					at.setaId(a.getaId());
 					list.add(at);
 				}
 			}
 		}
-		
-		int j=1;
-		for(int i=0; i<leId.length; i++) {
-			Line l = new Line();
-			l.setLeId(leId[i]);
-			if(lLevel[i].equals("결재")) {
-				l.setlLevel(j);
-				j++;
-			}else {
-				l.setlLevel(0);
+		if(leId != null) {
+			int j=1;
+			for(int i=0; i<leId.length; i++) {
+				Line l = new Line();
+				l.setLeId(leId[i]);
+				l.setaId(a.getaId());
+				if(lLevel[i].equals("결재")) {
+					l.setlLevel(j);
+					j++;
+				}else {
+					l.setlLevel(0);
+				}
+				llist.add(l);
 			}
-			llist.add(l);
 		}
 		
-		int aresult = aService.insertApproval(a);
-		int hresult = aService.insertHoliday(h);
-		int atresult = aService.insertAttachment(list);
-		int result = aService.insertLine(llist);
+		// 임시저장->결재요청
+		if ((!a.getaId().equals("")) && (aStatus.equals("I"))) {
+			a.setaStatus("I");
+			int aresult = aService.updateApproval(a);
+			int hresult = aService.updateHoliday(h);
+			int lresult = aService.deleteSaveLine(a.getaId());
+			int lresult2 = aService.inserSavetLine(llist);
+			if(!list.isEmpty()) {
+				int atresult = aService.deleteAttachment(a.getaId());
+				int atresult2 = aService.insertSaveAttachment(list);
+			}
+			
+
+		// 임시저장 -> 임시저장
+		} else if ((!a.getaId().equals("")) && (aStatus.equals("S"))) {
+			a.setaStatus("S");
+			int aresult = aService.updateApproval(a);
+			int hresult = aService.updateHoliday(h);
+			int lresult = aService.deleteSaveLine(a.getaId());
+			if(!llist.isEmpty()) {
+				int lresult2 = aService.inserSavetLine(llist);
+			}
+			if(!list.isEmpty()) {
+				int atresult = aService.deleteAttachment(a.getaId());
+				int atresult2 = aService.insertSaveAttachment(list);
+			}
+			return "redirect:aSaveList.do";
+
+		// 임시저장
+		} else if (aStatus.equals("S")) {
+			a.setaStatus("S");
+			int aresult = aService.insertApproval(a);
+			int hresult = aService.insertHoliday(h);
+			if(!llist.isEmpty()) {
+				int lresult = aService.insertLine(llist);
+				int atresult = aService.insertAttachment(list);
+			}
+			if(!list.isEmpty()) {
+				int atresult = aService.insertAttachment(list);
+			}
+			return "redirect:aSaveList.do";
+			
+		//결재요청
+		}else {
+			a.setaStatus("I");
+			int aresult = aService.insertApproval(a);
+			int hresult = aService.insertHoliday(h);
+			int lresult = aService.insertLine(llist);
+			if(!list.isEmpty()) {
+				int atresult = aService.insertAttachment(list);
+			}
+		}
 
 		return "redirect:aRequestList.do";
-
 	}
 
 	// 파일 저장을 위한 별도 메소드
@@ -217,15 +272,9 @@ public class ApprovalController {
 	public String ApprovalSearch(String search, Model model,  @RequestParam(value="page", required=false) Integer page) {
 		int currentPage = page !=null ? page : 1;
 		
-		System.out.println(currentPage);
-		
 		int listCount = aService.selectSearchListCount(search);
 		
-		System.out.println(listCount);
-		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		
-		System.out.println(pi);
 		
 		ArrayList<Approval> searchList = aService.selectSearchList(search, pi);
 		
@@ -235,8 +284,96 @@ public class ApprovalController {
 		model.addAttribute("pi", pi);
 		
 		return "approval/searchList";
-		
 	}
 	
+	//임시저장함
+	@RequestMapping("aSaveList.do")
+	public ModelAndView ApprovalSave(ModelAndView mv, @RequestParam(value="page", required=false) Integer page, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
+		int currentPage = page !=null ? page : 1;
+		
+		int listCount = aService.selectSaveListCount(loginUser);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Approval> list = aService.selectSaveList(pi,loginUser);
+		
+		if(list != null) {
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
+			mv.setViewName("approval/approvalSave");
+		}
+		return mv;
+	}
+	
+	//임시저장 삭제
+	@RequestMapping("aSaveDelete.do")
+	public String ApprovalSaveDelete(String check) {
+		String[] aId = check.split(",");
+		
+		int result1 = aService.deleteSaveApproval(aId);
+		int result2 = aService.deleteLine(aId);
+		
+		return "redirect:aSaveList.do";
+	}
+	
+	//임시저장 상세
+	@RequestMapping("aSavedetail.do")
+	public ModelAndView ApprovalSaveDetail(ModelAndView mv, String aId, String aName, @RequestParam("page") Integer page) {
+		Approval a = aService.selectApproval(aId);
+		ArrayList<Line> llist = aService.selectLine(aId);
+		ArrayList<Attachment> at = aService.selectAttachment(aId);
+		
+		if(aName.equals("휴가원")) {
+			Holiday h = aService.selectHoliday(aId);
+			 mv.addObject("a", a)
+			 	.addObject("llist",llist)
+			 	.addObject("h",h)
+			 	.addObject("currentPage", page)
+			 	.addObject("at", at)
+			 	.setViewName("approval/holidayForm"); 
+		}
+		
+		return mv;
+	}
+	
+	// 결재대기함
+	@RequestMapping("aWaitingList.do")
+	public ModelAndView approvalWaitingList(ModelAndView mv,
+			@RequestParam(value = "page", required = false) Integer page, String tabValue, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
+		int currentPage = page != null ? page : 1;
 
+		int listCount = aService.selectWaitingListCount(loginUser);
+		int ilistCount = aService.selectWaitingiListCount(loginUser);
+		int ylistCount = aService.selectWaitingyListCount(loginUser);
+		int nlistCount = aService.selectWaitingnListCount(loginUser);
+
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		PageInfo ipi = Pagination.getPageInfo(currentPage, ilistCount);
+		PageInfo ypi = Pagination.getPageInfo(currentPage, ylistCount);
+		PageInfo npi = Pagination.getPageInfo(currentPage, nlistCount);
+
+		ArrayList<Approval> list = aService.selectWaitingList(pi,loginUser);
+		ArrayList<Approval> ilist = aService.selectWaitingiList(ipi,loginUser);
+		ArrayList<Approval> ylist = aService.selectWaitingyList(ypi,loginUser);
+		ArrayList<Approval> nlist = aService.selectWaitingnList(npi,loginUser);
+
+		if (list != null) {
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
+			mv.addObject("ilist", ilist);
+			mv.addObject("ipi", ipi);
+			mv.addObject("ylist", ylist);
+			mv.addObject("ypi", ypi);
+			mv.addObject("nlist", nlist);
+			mv.addObject("npi", npi);
+			mv.addObject("tabValue", tabValue);
+			mv.setViewName("approval/approvalRequest");
+		}
+		return mv;
+	}
+		
 }

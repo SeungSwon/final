@@ -7,11 +7,12 @@ public class Approval {
 	private String eId;
 	private String aName;
 	private String aTitle;
-	private String aStatus;	//I:진행  Y:완료  N:반려
+	private String aStatus;	//S:임시저장 I:진행  Y:완료  N:반려
 	private Date astartDate;
 	private Date aendDate;
 	private String eName;
 	private String dName;
+	private int atNum; //첨부파일 갯수
 	
 	public Approval() {}
 
@@ -87,12 +88,22 @@ public class Approval {
 	public void setdName(String dName) {
 		this.dName = dName;
 	}
+	
+	public int getAtNum() {
+		return atNum;
+	}
+
+	public void setAtNum(int atNum) {
+		this.atNum = atNum;
+	}
 
 	@Override
 	public String toString() {
 		return "Approval [aId=" + aId + ", eId=" + eId + ", aName=" + aName + ", aTitle=" + aTitle + ", aStatus="
 				+ aStatus + ", astartDate=" + astartDate + ", aendDate=" + aendDate + ", eName=" + eName + ", dName="
-				+ dName + "]";
+				+ dName + ", atNum=" + atNum + "]";
 	}
+
+	
 
 }

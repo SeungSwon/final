@@ -28,14 +28,13 @@ public class NoteController {
 		int currentPage = page != null ? page : 1;
 		
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
-		
-		
+				
 		int listCount = ntService.selectInboxListCount(loginUser);
 	
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Note> list = ntService.selectInboxList(pi, loginUser);
-	
+			
 		if(list != null) {
 			mv.addObject("list", list).addObject("pi", pi).setViewName("note/noteInboxView");
 		}else {
@@ -44,8 +43,7 @@ public class NoteController {
 		
 		return mv;
 	}
-	
-	
+
 	@RequestMapping("ntIndetail.do")
 	public ModelAndView noteInboxDetail(ModelAndView mv, int ntId, @RequestParam("page") Integer page) {
 		int currentPage = page != null ? page : 1;
@@ -255,7 +253,7 @@ public class NoteController {
 		
 		ArrayList<Note> list = ntService.inboxSearchList(pi, search);
 		
-		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).setViewName("note/noteInboxView");
+		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).addObject("listCount", listCount).setViewName("note/noteInboxView");
 		return mv;
 	}
 	
@@ -272,7 +270,7 @@ public class NoteController {
 		
 		ArrayList<Note> list = ntService.outboxSearchList(pi, search);
 		
-		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).setViewName("note/noteOutboxView");
+		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).addObject("listCount", listCount).setViewName("note/noteOutboxView");
 		return mv;
 	}
 	
@@ -288,7 +286,7 @@ public class NoteController {
 		
 		ArrayList<Note> list = ntService.saveSearchList(pi, search);
 		
-		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).setViewName("note/noteSaveView");
+		mv.addObject("list", list).addObject("search", search).addObject("pi", pi).addObject("listCount", listCount).setViewName("note/noteSaveView");
 		return mv;
 	}
 	
@@ -304,7 +302,7 @@ public class NoteController {
 		}
 
 		String msg = result+"개의 쪽지가 삭제되었습니다.";
-		mv.addObject("msg", msg).setViewName("note/noteInboxView");
+		mv.setViewName("redirect:ntInboxList.do");
 		return mv;
 		
 	}
@@ -318,7 +316,7 @@ public class NoteController {
 			result++;
 		}
 		String msg = result+"개의 쪽지가 삭제되었습니다.";
-		mv.addObject("msg", msg).setViewName("note/noteOutboxView");
+		mv.setViewName("redirect:ntOutboxList.do");
 		return mv;
 		
 	}

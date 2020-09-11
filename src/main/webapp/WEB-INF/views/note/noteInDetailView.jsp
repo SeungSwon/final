@@ -14,7 +14,6 @@
 		   height: 50px;
 		   margin-top: 20px;
 		}
-		
 		.menubar button:hover {
 		   color: #1e87e4;
 		   font-weight: bold;

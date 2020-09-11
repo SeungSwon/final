@@ -117,15 +117,16 @@
 	    <div class="section"><br>
         <jsp:include page="../common/approvalmenu.jsp"/>
 	<div class="section2">
-	<form action="holidayInsert.do" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="eId" value="${apeople.eId}">
+	<form name="fm" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="eId" value="${apeople.eId}${a.eId}">
+	<input type="hidden" name="aId" value="${a.aId}">
 	<input type="hidden" name="aName" value="휴가원">
 		<div class="content1">
 			<div id="buttongroup">
-				<button class="btn1" type="submit">
+				<button class="btn1" id="btn1" type="button">
 					<img class="icon1" src="resources/images/approval/edit.png">결재요청
 				</button>
-				<button type="button"class="btn1">
+				<button type="submit"class="btn1" id="btn2" onclick="javascript: form.action='holidayInsert.do?aStatus=S'">
 					<img class="icon1" src="resources/images/approval/save.png">임시저장
 				</button>
 				<button type="button" class="btn1" onclick="location.href='ahome.do'">
@@ -175,7 +176,7 @@
 												<span
 													class="comp_item"
 													style="font-family: &amp; quot; malgun gothic&amp;quot; , dotum , arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
-													${apeople.eName}</span><br>
+													${apeople.eName}${a.eName }</span><br>
 											</td>
 										</tr>
 										<tr>
@@ -186,7 +187,7 @@
 											<td
 												style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
 												<span class="comp_item" style="font-family: &amp; quot; malgun gothic&amp;quot; , dotum , arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
-												${apeople.dName}</span><br>
+												${apeople.dName}${a.dName }</span><br>
 											</td>
 										</tr>
 										<tr>
@@ -207,7 +208,7 @@
 												문서번호</td>
 											<td
 												style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-												<span class="comp_item" style="font-family: &amp; quot; malgun gothic&amp;quot; , dotum , arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"></span><br>
+												<span class="comp_item" style="font-family: &amp; quot; malgun gothic&amp;quot; , dotum , arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">${a.aId }</span><br>
 											</td>
 										</tr>
 									</tbody>
@@ -274,10 +275,9 @@
 								<input class="ipt_editor ipt_editor_date" type="date" name="hstartDate" > ~ <input class="ipt_editor ipt_editor_date" type="date" name="hendDate" >
 							</td>
 							<td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; height: 25px; text-align: center; color: rgb(0, 0, 0); font-size: 14px; font-weight: bold; vertical-align: middle;">
-
 								사용일</td>
 							<td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; ">
-								<input class="ipt_editor" type="number" min="1" name="hterm" >일
+								<input class="ipt_editor" type="number" min="1" name="hterm" value="${h.hterm }">일
 							</td>
 						</tr>
 						<tr>
@@ -288,7 +288,7 @@
 							<td
 								style="background: rgb(255, 255, 255); border-width: medium 1px 1px; border-style: none solid solid; border-color: currentColor black black; padding: 5px; height: 25px; text-align: left; color: rgb(0, 0, 0); font-size: 14px; font-weight: normal; vertical-align: middle;"
 								colspan="3" class="dext_table_border_t">
-								<textarea rows="5" cols="70" class="ipt_editor" type="text" name="hReason" ></textarea><br></td>
+								<textarea rows="5" cols="70" class="ipt_editor" type="text" name="hReason" >${h.hReason }</textarea><br></td>
 						</tr>
 						<tr>
 							<td
@@ -304,15 +304,41 @@
 			<p id="notice"><span class="notice">[당일 반차 신청시]</span> 시작일만 오전/오후 체크 (0.5일)<br>
 			<span class="notice">[예비군/민방위 신청시]</span> 통지서 스캔하여 파일 첨부<br>
 			<span class="notice">[경조휴가 신청시]</span> 증빙서류 스캔하여 파일 첨부 (예: 청첩장 등본 등)</p>
-            <input multiple="multiple" type="file" name="uploadFile">
+            <input multiple="multiple" type="file" name="uploadFile"><br>
+            <c:if test="${ !empty at }">
+            <c:forEach var="at" items="${at}">
+				<a href="${at.filePath }" download>${ at.originName }</a>
+            </c:forEach>
+			</c:if> 
 		</div>
 		<div class="content2">
 			<div id="radiobox">
 				<input type="radio" name="info" id="info1" onchange="setDisplay()" checked="checked"><label for="info1">결재선</label> 
 				<input type="radio" name="info" id="info2" onchange="setDisplay()"><label for="info2">참조</label>
 			</div>
-			<div id="approvalinfo"></div>
-			<div id="referenceinfo" style="display: none"></div>
+			<div id="approvalinfo"><c:forEach var="l" items="${llist}"><c:if test="${l.lLevel ne 0 }"><div class="peopleinfo"><div id="line"><img src='resources/images/common/profile_none.png'><span class="name1"><span calss="ename">${l.eName}${l.rName}</span><p class="deptname">${l.dName }</p><button type="button" class="dBtn" id="deleteImg"><input type="hidden" name="leId" class="user1" value=${ l.leId }><img id='dbtn' src='resources/images/approval/trash.png'></button><input type="hidden" name="lLevel" value="결재"><span class="status">결재</span></span></div></div></c:if></c:forEach></div>
+			
+			<div id="referenceinfo" style="display: none">
+			<c:forEach var="l" items="${llist}">
+			<c:if test="${l.lLevel eq 0 }">
+				<div class="peopleinfo">
+					<div id="line">
+					<img src='resources/images/common/profile_none.png'>
+					<span class="name2">
+						<span calss="ename">${l.eName}${l.rName}</span>
+						<p class="deptname">${l.dName }</p>
+						<button type="button" class="dBtn" id="deleteImg">
+						<input type="hidden" name="leId" class="user1" value=${ l.leId }>
+						<img id='dbtn' src='resources/images/approval/trash.png'>
+						</button>
+						<input type="hidden" name="lLevel" value="참조">
+						<span class="status">참조</span>
+					</span>
+					</div>
+				</div>
+			</c:if>
+			</c:forEach>
+			</div>
 		</div>
         </form>
 	</div>
@@ -336,6 +362,22 @@
                 // window.open('addr.html','window_name','width=850,height=600,location=no,status=no,scrollbars=yes');
                 window.open('lList.do', '조직도', 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
         }
+        
+        $('#btn1').on('click', function() { 
+        	if( $('#approvalinfo').is(':empty') ) {
+        		alert("결재선이 지정되지 않았습니다. 결재선을 지정해주세요");
+        	}else{
+        		var formObj = $("form[name='fm']");  
+        		formObj.attr("action", "holidayInsert.do?aStatus=I");   
+        		formObj.submit(); 
+        	}
+        });
+        
+        window.onload = function(){
+        	$("select[name=hdType]").val("${h.hdType}").attr("selected", "selected");
+        	$("input[name=hstartDate]").val("${h.hstartDate}");
+        	$("input[name=hendDate]").val("${h.hendDate}");
+   		}  
     </script>
 </body>
 
