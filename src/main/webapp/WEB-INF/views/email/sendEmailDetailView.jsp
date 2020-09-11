@@ -75,6 +75,7 @@ td button {
                     <button type="button" class="btn btn-secondary btn-sm">전달</button>
                     <button type="button" class="btn btn-secondary btn-sm">삭제</button>
                 </div>
+                
 				<div id="table-wrapper">
 					<table>
 						<tr align="left">

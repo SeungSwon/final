@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
 <style>
 #receiver {
 	width: 800px;
@@ -14,6 +17,8 @@
 .content {
 	min-height: 400px;
 	width: 960px;
+	resize: none;
+	overflow: auto;
 }
 
 .rc1:focus {
@@ -34,15 +39,16 @@
 	margin-top: 30px;
 }
 
-.aside button:first-child {
-	background: #1e87e4;
+#email1 {
+	color: #1e87e4;
+	font-weight: bold;
 }
 
 ul {
 	list-style-type: none;
 }
 
-#receiverArea1, #receiverArea2, #receiverArea3 {
+#receiverArea1, #receiverArea2, #receiverArea3, #title {
 	width: 833px;
 	height: 100%;
 	position: relative;
@@ -61,6 +67,7 @@ li div {
 
 p {
 	font-size: 12px;
+	font-weight: bold;
 }
 
 #dbtn {
@@ -91,11 +98,11 @@ ul {
 		<br>
 		<jsp:include page="../common/emailMenubar.jsp" />
 		<div class="section2">
-			<form>
+			<form method="post" name="form" enctype="multipart/form-data">
 				<div id="btn-wrapper" align="left">
 
-					<button type="button" class="btn btn-secondary btn-sm">보내기</button>
-					<button type="button" class="btn btn-secondary btn-sm">임시저장</button>
+					<button type="button" class="btn btn-secondary btn-sm" id="letsgo">보내기</button>
+					<button type="submit" class="btn btn-secondary btn-sm" onclick="javascript: form.action='etemp.do'">임시저장</button>
 					<button type="button" class="btn btn-secondary btn-sm">취소</button>
 				</div>
 				<div id="table-wrapper">
@@ -106,6 +113,17 @@ ul {
 								<div id="receiverArea1"
 									style="border: 1px solid rgb(179, 179, 179)" class="rc1">
 									<ul id="mailArea">
+										<c:if test="${ !empty eId }">
+											<li>
+												<div id="addMail" class="mgr">
+													<span class="Madd" id="fff">${ eId }</span>
+													<input type='hidden' name='reId' value="${ eId }">
+													<button type="button" class="dBtn" id="deleteImg">
+														<img id="dbtn" src="resources/images/common/delete.png">
+													</button>
+												</div>
+											</li>
+										</c:if>
 										<li id="test1">
 											<div>
 												<textarea name="autoW" wrap="off" id="ra1"
@@ -117,7 +135,7 @@ ul {
 									</ul>
 								</div>
 							</td>
-							<td><button class="btn btn-secondary btn-sm"
+							<td><button type="button"  class="btn btn-secondary btn-sm"
 									onclick="openAddr();">주소록</button></td>
 						</tr>
 						<tr align="left">
@@ -138,7 +156,8 @@ ul {
 									</ul>
 								</div>
 							</td>
-							<td><button class="btn btn-secondary btn-sm">주소록</button></td>
+							<td><button type="button"  class="btn btn-secondary btn-sm"
+									onclick="openAddr();">주소록</button></td>
 						</tr>
 						<tr align="left">
 							<td><p>숨은참조</p></td>
@@ -158,7 +177,8 @@ ul {
 									</ul>
 								</div>
 							</td>
-							<td><button class="btn btn-secondary btn-sm">주소록</button></td>
+							<td><button type="button"  class="btn btn-secondary btn-sm"
+									onclick="openAddr();">주소록</button></td>
 						</tr>
 						<tr align="left">
 							<td><p>파일첨부</p></td>
@@ -169,7 +189,16 @@ ul {
 								</div></td>
 						</tr>
 						<tr>
-							<td colspan="3"><textarea class="rc2 content"></textarea></td>
+							<td><p>제목</p></td>
+							<td colspan="2">
+								<div id="title" style="border: 1px solid rgb(179, 179, 179)">
+									<textarea name="mTitle" wrap="off" id="ra3" autocomplete="false" style="width: 800px; border: none; resize: none; overflow: hidden; display: inline;" rows="1"></textarea>
+								</div>
+							</td>
+						</tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr>
+							<td colspan="3"><textarea class="rc2 content" name="mContent"></textarea></td>
 						</tr>
 					</table>
 				</div>
@@ -216,7 +245,8 @@ ul {
 	                var $li = $("<li>");
 	                var $div = $("<div id='addMail' class='mgr'>");
 	                var str = $("#ra1").val().substring(0, $("#ra1").val().length - 1);
-	                var $span = $("<span>").text(str);
+	                var $span = $("<span class='Madd' id='fff'>").text(str);
+	                var $input = $("<input type='hidden' name='reId'>").val(str);
 	                var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
 	                var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
 	                
@@ -224,6 +254,7 @@ ul {
 	                $div.append($span);
 	                $div.append($button);
 	                $li.append($div);
+	                $test.append($input);
 	                $test.before($li);
 	                $("#ra1").val("");
 	            	} else{
@@ -248,11 +279,13 @@ ul {
         textarea.addEventListener('focusout', (e) => {
             const keyCode = e.keyCode;
             var $test = $("#test1");
+            if(textarea.value != ""){
 	            	if(isEmail(textarea.value)){
 	                var $li = $("<li>");
 	                var $div = $("<div id='addMail' class='mgr'>");
 	                var str = $("#ra1").val();
-	                var $span = $("<span>").text(str);
+	                var $span = $("<span class='Madd' id='fff'>").text(str);
+	                var $input = $("<input type='hidden' name='reId'>").val(str);
 	                var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
 	                var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
 	                
@@ -261,6 +294,7 @@ ul {
 	                $div.append($button);
 	                $li.append($div);
 	                $test.before($li);
+	                $test.append($input);
 	                $("#ra1").val("");
 	            	} else{
 	            		var $li = $("<li>");
@@ -277,6 +311,7 @@ ul {
 		                $test.before($li);
 		                $("#ra1").val("");
 	            	}
+            }
         });
         
         /* 참조 키이벤트 */
@@ -290,6 +325,7 @@ ul {
                 var $div = $("<div id='addMail' class='mgr'>");
                 var str = $("#ra2").val().substring(0, $("#ra2").val().length - 1);
                 var $span = $("<span>").text(str);
+                var $input = $("<input type='hidden' name='feId'>").val(str);
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
                 
@@ -297,6 +333,7 @@ ul {
                 $div.append($span);
                 $div.append($button);
                 $li.append($div);
+                $test.append($input);
                 $test.before($li);
                 $("#ra2").val("");
             	} else {
@@ -321,11 +358,13 @@ ul {
         textarea2.addEventListener('focusout', (e) => {
             const keyCode = e.keyCode;
             var $test = $("#test2");
+            if(textarea2.value != ""){
             	if(isEmail(textarea2.value)){
                 var $li = $("<li>");
                 var $div = $("<div id='addMail' class='mgr'>");
                 var str = $("#ra2").val();
                 var $span = $("<span>").text(str);
+                var $input = $("<input type='hidden' name='feId'>").val(str);
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
                 
@@ -333,6 +372,7 @@ ul {
                 $div.append($span);
                 $div.append($button);
                 $li.append($div);
+                $test.append($input);
                 $test.before($li);
                 $("#ra2").val("");
             	} else {
@@ -350,6 +390,7 @@ ul {
                     $test.before($li);
                     $("#ra2").val("");
             	}
+            }
         });
 
         /* 숨은참조 키이벤트 */
@@ -363,6 +404,7 @@ ul {
                 var $div = $("<div id='addMail' class='mgr'>");
                 var str = $("#ra3").val().substring(0, $("#ra3").val().length - 1);
                 var $span = $("<span>").text(str);
+                var $input = $("<input type='hidden' name='heId'>").val(str);
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
                 
@@ -370,6 +412,7 @@ ul {
                 $div.append($span);
                 $div.append($button);
                 $li.append($div);
+                $test.append($input);
                 $test.before($li);
                 $("#ra3").val("");
             } else{
@@ -394,11 +437,13 @@ ul {
         textarea3.addEventListener('focusout', (e) => {
             const keyCode = e.keyCode;
             var $test = $("#test3");
+            if(textarea3.value != ""){
             	if(isEmail(textarea3.value)){
                 var $li = $("<li>");
                 var $div = $("<div id='addMail' class='mgr'>");
                 var str = $("#ra3").val();
                 var $span = $("<span>").text(str);
+                var $input = $("<input type='hidden' name='heId'>").val(str);
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
                 
@@ -406,6 +451,7 @@ ul {
                 $div.append($span);
                 $div.append($button);
                 $li.append($div);
+                $test.append($input);
                 $test.before($li);
                 $("#ra3").val("");
             } else{
@@ -423,6 +469,7 @@ ul {
                 $test.before($li);
                 $("#ra3").val("");
             }
+            }
         });
         
         $(document).on("click", ".dBtn", function(){
@@ -430,7 +477,16 @@ ul {
             $(this).parents("li").remove();
         });
         
-        
+        $("#letsgo").on('click', function(){
+        	var hi = $("#fff").text();
+        	if(hi == ""){
+        		alert("받는사람을 입력하시기 바랍니다.");
+        	} else {
+        		var formObj = $("form[name='form']");
+        		formObj.attr("action", "esend.do");
+        		formObj.submit();
+        	}
+        });
     </script>
 </body>
 </html>

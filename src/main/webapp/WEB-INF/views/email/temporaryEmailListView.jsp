@@ -103,6 +103,11 @@ th {
 	color: #1e87e4;
 	font-weight: bold;
 }
+
+#cp{
+	text-decoration: none;
+    color: black;
+}
 </style>
 </head>
 
@@ -126,7 +131,7 @@ th {
                             <th></th>
                             <th>받는 사람</th>
                             <th id="mContentHead">제목</th>
-                            <th scope="col">날짜</th>
+                            <th scope="col">저장한 날짜</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,11 +155,14 @@ th {
 										</c:if>
 									</td>
 									<td id="mContent">
+										<c:url var="tempDetail" value="tempDetail.do">
+											<c:param name="mId" value="${ e.mId }"/>
+										</c:url>
 										<c:if test="${ !empty e.mTitle }">
-											${ e.mTitle }
+											<a href="${ tempDetail }" id="cp">${ e.mTitle }</a>
 										</c:if>
 										<c:if test="${ empty e.mTitle }">
-											(제목 없음)
+											<a href="${ tempDetail }" id="cp">(제목 없음)</a>
 										</c:if>
 									</td>
 									<td>${ e.sendDate }</td>
