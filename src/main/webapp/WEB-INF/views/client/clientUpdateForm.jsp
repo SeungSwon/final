@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>거래처 수정</title>
-
 <style> 
         .menubar button{
             border: none;

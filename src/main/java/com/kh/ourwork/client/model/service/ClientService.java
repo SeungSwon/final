@@ -45,6 +45,4 @@ public interface ClientService {
 
 	// 검색한 리스트 개수
 	int selectSearchListCount(Search search);
-
-
 }
