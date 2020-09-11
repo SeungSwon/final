@@ -17,7 +17,7 @@
 		<typeAlias type="com.kh.ourwork.note.model.vo.NoteReceiver" alias="NoteReceiver"/>
 		<typeAlias type="com.kh.ourwork.email.model.vo.Email" alias="Email"/>
 		<typeAlias type="com.kh.ourwork.email.model.vo.Ereceiver" alias="Ereceiver"/>
-		<typeAlias type="com.kh.ourwork.email.model.vo.ReceiveEmail" alias="ReceiveEmail"/>
+		<typeAlias type="com.kh.ourwork.email.model.vo.RsEmail" alias="RsEmail"/>
 		<typeAlias type="com.kh.ourwork.employee.model.vo.Employee" alias="Employee"/>
 		<typeAlias type="com.kh.ourwork.email.model.vo.EmailAddr" alias="EmailAddr"/>
 	    <typeAlias type="com.kh.ourwork.approval.model.vo.LineList" alias="LineList"/>

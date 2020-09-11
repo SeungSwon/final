@@ -40,12 +40,16 @@ public class EmailController {
 	}
 	
 	@RequestMapping("sendMailList.do")
-	public ModelAndView sendEmailList( ModelAndView mv,
-			@RequestParam(value="page", required=false) Integer page) {
+	public ModelAndView sendEmailList( ModelAndView mv, RsEmail r,
+			@RequestParam(value="page", required=false) Integer page, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
+		r.setEeId(id);
 		int currentPage = page != null ? page : 1;
-		int listCount = eService.selectSendListCount();
+		int listCount = eService.selectSendListCount(id);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		ArrayList<ReceiveEmail> list = eService.selectSendList(pi);
+		ArrayList<RsEmail> list = eService.selectSendList(r, pi);
+
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
@@ -78,10 +82,47 @@ public class EmailController {
 		return "email/sendEmailForm";
 	}
 	
-	/*@RequestMapping("emailAddr.do")
-	public String emailAddrView() {
-		return "email/emailAddr";
-	}*/
+	@RequestMapping("sendEmailDetailView.do")
+	public String sendEmailDetailView(int mId, RsEmail r, Model model) {
+		ArrayList<Ereceiver> receiver = eService.receiverList(mId);
+		ArrayList<Ereceiver> ref = eService.refList(mId);
+		ArrayList<Ereceiver> hide = eService.hideList(mId);
+		r = eService.sEmailDetail(mId);
+		
+		if(r != null) {
+			model.addAttribute("receiver", receiver);
+			model.addAttribute("ref", ref);
+			model.addAttribute("hide", hide);
+			model.addAttribute("email", r);
+			return "email/sendEmailDetailView";
+		} else {
+			model.addAttribute("msg", "보낸메일 상세보기 실패했습니다.");
+			return "common/errorPage";
+		}
+	}
+	
+	@RequestMapping("receiveEmailDetailView.do")
+	public String receiveEmailDetailView(int mId, RsEmail r, Model model, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
+		String sendId = eService.selectSendId(mId);
+		ArrayList<Ereceiver> receiver = eService.receiverList(mId);
+		ArrayList<Ereceiver> ref = eService.refList(mId);
+		ArrayList<Ereceiver> hide = eService.hideList(mId);
+		r = eService.sEmailDetail(mId);
+		if(r != null) {
+			model.addAttribute("sendId", sendId);
+			model.addAttribute("id", id);
+			model.addAttribute("receiver", receiver);
+			model.addAttribute("ref", ref);
+			model.addAttribute("hide", hide);
+			model.addAttribute("email", r);
+			return "email/receiveEmailDetailView";
+		} else {
+			model.addAttribute("msg", "받은메일 상세보기 실패했습니다.");
+			return "common/errorPage";
+		}
+	}
 	
 	@RequestMapping("emailAddr.do")
 	public ModelAndView emailAddrView(ModelAndView mv) {
@@ -94,43 +135,246 @@ public class EmailController {
 		}
 		return mv;
 	}
+
+	@RequestMapping("sendEmailGoId.do")
+	public String sendEmailGoId(String eId, Model model, RsEmail r) {
+		model.addAttribute("eId", eId);
+		return "email/sendEmailForm";
+	}
 	
-	/*@RequestMapping("emailAddr.do")
-	public ModelAndView testemailAddrView(ModelAndView mv,
-			@RequestParam(value="page", required=false) Integer page) {
-		int currentPage = page != null ? page : 1;
-		int listCount = eService.testselectEmpListCount();
-		PageInfo pi = AddrPagination.getPageInfo(currentPage, listCount);
-		ArrayList<EmailAddr> list = eService.testselectEmpAddrList(pi);
-		if(list != null) {
-			mv.addObject("list", list);
-			mv.addObject("pi", pi);
-			mv.setViewName("email/testAddr");
-		} else {
-			throw new EmailException("주소록 조회 실패");
+	@RequestMapping("esend.do")
+	public String emailInsert(String[] reId, String[] feId, String[] heId, Email e, HttpServletRequest request,
+			@RequestParam(value="uploadFile", required=false) MultipartFile file, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
+		e.setEeId(id);
+		ArrayList<Ereceiver> rlist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> flist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> hlist = new ArrayList<Ereceiver>();
+		/*System.out.println(e.toString());
+		for(int i = 0; i < reId.length; i++) {
+			System.out.println(reId[i]);
 		}
-		return mv;
-	}*/
+		for(int i = 0; i < feId.length; i++) {
+			System.out.println(feId[i]);
+		}
+		for(int i = 0; i < heId.length; i++) {
+			System.out.println(heId[i]);
+		}
+		return null;*/
+		int eresult = eService.insertEmail(e);
+		
+		if(reId != null) {
+			for(int i = 0; i < reId.length; i++) {
+				Ereceiver r = new Ereceiver();
+				String[] rr = reId[i].split("@");
+				r.seteId(rr[0]);
+				rlist.add(r);
+			}
+			int rresult = eService.insertRec(rlist);
+		}
+		
+		if(feId != null) {
+			for(int i = 0; i < feId.length; i++) {
+				Ereceiver f = new Ereceiver();
+				String[] ff = feId[i].split("@");
+				f.seteId(ff[0]);
+				flist.add(f);
+			}
+			int fresult = eService.insertRef(flist);
+		}
+		
+		if(heId != null) {
+			for(int i = 0; i < heId.length; i++) {
+				Ereceiver h = new Ereceiver();
+				String[] hh = heId[i].split("@");
+				h.seteId(hh[0]);
+				hlist.add(h);
+			}
+			int hresult = eService.insertHid(hlist);
+		}
+		return "email/sendEmailListView";
+	}
 	
-	/*@RequestMapping(value="emailAddr.do")
-    public ResponseEntity<Map<String,Object>> testemailAddrView(@PathVariable("board_num") int board_num,
-            @PathVariable("page") int page){
-        //ResponseEntity 쓰면 list는물론 HttpStatus(접속 상태)도 같이 보낼 수 있다.
-        ResponseEntity<Map<String,Object>> entity = null;
-        PageInfo pi = new PageInfo();
-        PageInfo.setPage(page);
-        PageInfo.setTotalCount(eService.testselectEmpListCount(board_num));
-        try{
-            Map<String,Object> map = new HashMap<String,Object>();
-            //map 구조: {board_num:1, paging:{startNum:1, endNum:10,...}, list:{} }
-            map.put("paging", paging);
-            map.put("board_num", board_num);
-            map.put("list", dao.list(map));
-            entity = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-        }catch(Exception e){
-            entity = new ResponseEntity<Map<String,Object>>(HttpStatus.BAD_REQUEST);
-        }
-        return entity;
-    }*/
+	@RequestMapping("etemp.do")
+	public String tempInsert(String[] reId, String[] feId, String[] heId, Email e, HttpServletRequest request,
+			@RequestParam(value="uploadFile", required=false) MultipartFile file, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
+		e.setEeId(id);
+		ArrayList<Ereceiver> rlist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> flist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> hlist = new ArrayList<Ereceiver>();
+		
+		int eresult = eService.insertTemp(e);
+		
+		if(reId != null) {
+			for(int i = 0; i < reId.length; i++) {
+				Ereceiver r = new Ereceiver();
+				String[] rr = reId[i].split("@");
+				r.seteId(rr[0]);
+				rlist.add(r);
+			}
+			int rresult = eService.insertRec(rlist);
+		}
+		
+		if(feId != null) {
+			for(int i = 0; i < feId.length; i++) {
+				Ereceiver f = new Ereceiver();
+				String[] ff = feId[i].split("@");
+				f.seteId(ff[0]);
+				flist.add(f);
+			}
+			int fresult = eService.insertRef(flist);
+		}
+		
+		if(heId != null) {
+			for(int i = 0; i < heId.length; i++) {
+				Ereceiver h = new Ereceiver();
+				String[] hh = heId[i].split("@");
+				h.seteId(hh[0]);
+				hlist.add(h);
+			}
+			int hresult = eService.insertHid(hlist);
+		}
+		return "email/temporaryEmailListView";
+	}
+	
+	@RequestMapping("tempDetail.do")
+	public String tempDetail(int mId, RsEmail r, Model model, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
+		String sendId = eService.selectSendId(mId);
+		ArrayList<Ereceiver> receiver = eService.receiverList(mId);
+		ArrayList<Ereceiver> ref = eService.refList(mId);
+		ArrayList<Ereceiver> hide = eService.hideList(mId);
+		r = eService.sEmailDetail(mId);
+		if(r != null) {
+			model.addAttribute("sendId", sendId);
+			model.addAttribute("id", id);
+			model.addAttribute("receiver", receiver);
+			model.addAttribute("ref", ref);
+			model.addAttribute("hide", hide);
+			model.addAttribute("email", r);
+			return "email/tempEmailDetailForm";
+		} else {
+			model.addAttribute("msg", "받은메일 상세보기 실패했습니다.");
+			return "common/errorPage";
+		}
+	}
+	
+	/* 임시저장 또다시 임시저장 */
+	@RequestMapping("updateTemp.do")
+	public String updateTemp(String[] reId, String[] feId, String[] heId, Email e, HttpServletRequest request,
+			@RequestParam(value="uploadFile", required=false) MultipartFile file, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
+		ArrayList<Email> elist = new ArrayList<Email>();
+		elist = eService.checkmId(id);
+		e.setEeId(id);
+		ArrayList<Ereceiver> rlist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> flist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> hlist = new ArrayList<Ereceiver>();
+		
+		int m = e.getmId();
+		System.out.println(m);
+		int eresult = eService.againTemp(e);
+		
+		if(eresult > 0) {
+			int deleteResult = eService.deleteReceiver(m);
+		}
+			
+		if(reId != null) {
+			for(int i = 0; i < reId.length; i++) {
+				Ereceiver r = new Ereceiver();
+				String[] rr = reId[i].split("@");
+				r.setmId(m);
+				r.seteId(rr[0]);
+				rlist.add(r);
+			}
+			int rresult = eService.updateTempRec(rlist);
+		}
+		
+		if(feId != null) {
+			for(int i = 0; i < feId.length; i++) {
+				Ereceiver f = new Ereceiver();
+				String[] ff = feId[i].split("@");
+				f.setmId(m);
+				f.seteId(ff[0]);
+				flist.add(f);
+			}
+			int fresult = eService.updateTempRef(flist);
+		}
+		
+		if(heId != null) {
+			for(int i = 0; i < heId.length; i++) {
+				Ereceiver h = new Ereceiver();
+				String[] hh = heId[i].split("@");
+				h.setmId(m);
+				h.seteId(hh[0]);
+				hlist.add(h);
+			}
+			int hresult = eService.updateTempHid(hlist);
+		}
+		
+		return "email/temporaryEmailListView";
+	}
+	
+	/* 임시저장 또다시 임시저장 */
+	@RequestMapping("updateTempToSend.do")
+	public String updateTempToSend(String[] reId, String[] feId, String[] heId, Email e, HttpServletRequest request,
+			@RequestParam(value="uploadFile", required=false) MultipartFile file, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String id = loginUser.geteId();
+		ArrayList<Email> elist = new ArrayList<Email>();
+		elist = eService.checkmId(id);
+		e.setEeId(id);
+		ArrayList<Ereceiver> rlist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> flist = new ArrayList<Ereceiver>();
+		ArrayList<Ereceiver> hlist = new ArrayList<Ereceiver>();
+		
+		int m = e.getmId();
+		System.out.println(m);
+		int eresult = eService.updateTempToSend(e);
+		
+		if(eresult > 0) {
+			int deleteResult = eService.deleteReceiver(m);
+		}
+			
+		if(reId != null) {
+			for(int i = 0; i < reId.length; i++) {
+				Ereceiver r = new Ereceiver();
+				String[] rr = reId[i].split("@");
+				r.setmId(m);
+				r.seteId(rr[0]);
+				rlist.add(r);
+			}
+			int rresult = eService.updateTempRec(rlist);
+		}
+		
+		if(feId != null) {
+			for(int i = 0; i < feId.length; i++) {
+				Ereceiver f = new Ereceiver();
+				String[] ff = feId[i].split("@");
+				f.setmId(m);
+				f.seteId(ff[0]);
+				flist.add(f);
+			}
+			int fresult = eService.updateTempRef(flist);
+		}
+		
+		if(heId != null) {
+			for(int i = 0; i < heId.length; i++) {
+				Ereceiver h = new Ereceiver();
+				String[] hh = heId[i].split("@");
+				h.setmId(m);
+				h.seteId(hh[0]);
+				hlist.add(h);
+			}
+			int hresult = eService.updateTempHid(hlist);
+		}
+		
+		return "email/temporaryEmailListView";
+	}
 
 }

@@ -59,6 +59,12 @@
         	background: lightgrey;
         	text-align:center;
         }
+        #preview{
+        	z-index: 1;
+        	position: absolute;
+        	background: #999999;
+        	padding: 2px;
+        }
 </style>
 </head>
 <body>
@@ -154,7 +160,7 @@
                             <th>사업자등록증</th>
                             <td>
                             	<c:if test="${ !empty at.originName }">
-                            		<a href="${ contextPath }/resources/images/clientUploadFiles/${ at.changeName }" download>${ at.originName }</a>
+                            		<a class="pic" href="${ contextPath }/resources/images/clientUploadFiles/${ at.changeName }" download>${ at.originName }</a>
                             	</c:if>               
                             </td>
                         </tr>
@@ -206,6 +212,42 @@
 			}
 		});
        
+	    $(document).ready(function(){
+	    	var xOffset = 10;
+	    	var yOffset = 30;
+	    	
+	    	$(document).on("mouseover", ".pic", function(){
+	    		var div = $("<div>", {id:"preview"});
+	    		var img = $("<img>", {src: $(this).attr("href")});
+	    		div.append(img);
+	    		$("body").append(div);
+	    		
+	    		
+	    	});
+	    	
+	    	$(document).on("mouseout", ".pic", function(){
+	    		$("#preview").remove();
+	    	});
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    });
     </script>
 </body>
 </html>

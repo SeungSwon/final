@@ -179,11 +179,14 @@
 	                    </form>
                     </div>
                     <div id="mainContent">
+                    	<c:if test="${ search ne null }">
+                    		<div align="left">검색결과<a class="listcount">(${ listCount })</a> | <a class="listcount">${ search.searchValue }</a></div><br>
+                    	</c:if>
                     	<form action="deleteSaveSelected.do" method="post">
 	                        <table class="table table-hover">
 	                            <thead>
 	                                <tr>
-	                                    <th></th>
+	                                    <th><input type="checkbox" id="checkall"></th>
 	                                    <th>받는 사람/보낸 사람</th>
 	                                    <th id="mContentHead">내용</th>
 	                                    <th scope="col">날짜</th>
@@ -281,6 +284,16 @@
             		if(confirm("선택한 쪽지를 삭제하시겠습니까?") == false){
             			return false;
             		}
+            	});
+            	
+            	$(document).ready(function(){
+            	    $("#checkall").click(function(){
+            	        if($("#checkall").prop("checked")){
+            	            $("input[name=check]").prop("checked",true);
+            	        }else{
+            	            $("input[name=check]").prop("checked",false);
+            	        }
+            	    })
             	});
             </script>
 	</html>

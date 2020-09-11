@@ -19,51 +19,11 @@ public class Employee1 {
 	private int holiday;
 	private String eBirth;
 	
-	private String rName;
-	private String dName;
+	private String rName; // 직급이름
 	
 	public Employee1() {}
 	
 	
-
-
-	public String getdName() {
-		return dName;
-	}
-
-
-
-
-	public void setdName(String dName) {
-		this.dName = dName;
-	}
-
-
-
-
-	public Employee1(String eId, int dId, int rId, String ePwd, String eName, String email, String phone,
-			String address, int salary, Date join_date, Date leave_date, String status, int holiday, String eBirth,
-			String rName, String dName) {
-		super();
-		this.eId = eId;
-		this.dId = dId;
-		this.rId = rId;
-		this.ePwd = ePwd;
-		this.eName = eName;
-		this.email = email;
-		this.phone = phone;
-		this.address = address;
-		this.salary = salary;
-		this.join_date = join_date;
-		this.leave_date = leave_date;
-		this.status = status;
-		this.holiday = holiday;
-		this.eBirth = eBirth;
-		this.rName = rName;
-		this.dName = dName;
-	}
-
-
 
 
 	public Employee1(String eId, int dId, int rId, String ePwd, String eName, String email, String phone, String address,
@@ -241,13 +201,14 @@ public class Employee1 {
 
 	@Override
 	public String toString() {
-		return "Employee1 [eId=" + eId + ", dId=" + dId + ", rId=" + rId + ", ePwd=" + ePwd + ", eName=" + eName
+		return "Employee [eId=" + eId + ", dId=" + dId + ", rId=" + rId + ", ePwd=" + ePwd + ", eName=" + eName
 				+ ", email=" + email + ", phone=" + phone + ", address=" + address + ", salary=" + salary
 				+ ", join_date=" + join_date + ", leave_date=" + leave_date + ", status=" + status + ", holiday="
-				+ holiday + ", eBirth=" + eBirth + ", rName=" + rName + ", dName=" + dName + "]";
+				+ holiday + ", eBirth=" + eBirth + ", dName=" + rName + "]";
 	}
 
-
+	
+	
 
 }
 
