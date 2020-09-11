@@ -44,6 +44,17 @@
 		<result property="erLevel" column="ERLEVEL"/>
 		<result property="receiveDate" column="RECEIVE_DATE"/>
 	</resultMap>
+	<resultMap type="Email" id="checkResultSet">
+		<id property="mId" column="MID"/>
+		<result property="eeId" column="EEID"/>
+		<result property="mTitle" column="MTITLE"/>
+		<result property="mContent" column="MCONTENT"/>
+		<result property="mReceipt" column="MRECEIPT"/>
+		<result property="sendDate" column="SENDDATE"/>
+		<result property="mStatus" column="MSTATUS"/>
+		<result property="sendStatus" column="SENDSTATUS"/>
+		<result property="mLevel" column="MLEVEL"/>
+	</resultMap>
 	
 	<!-- 받은메일리스트 개수 -->
 	<select id="selectReceiveListCount" resultType="_int">
@@ -59,10 +70,11 @@
 	<select id="selectSendListCount" resultType="_int">
 		SELECT COUNT(DISTINCT E.MID)
 		FROM EMAIL E
-		JOIN ERECEIVER R ON(E.MID = R.MID)
+		LEFT JOIN ERECEIVER R ON(E.MID = R.MID)
 		WHERE E.EID = #{id}
 		AND SENDSTATUS = 'Y'
 		AND MSTATUS = 'Y'
+		AND R.ERLEVEL = 1
 	</select>
 	
 	<!-- 임시저장리스트 개수 -->
@@ -86,7 +98,7 @@
 		WHERE R.EID = #{id}
 		AND SENDSTATUS = 'Y'
 		AND E.MSTATUS = 'Y'
-		ORDER BY E.MID DESC
+		ORDER BY SENDDATE DESC, E.MID DESC, R.ERLEVEL ASC, REID ASC
 	</select>
 	
 	<!-- 보낸메일리스트 목록 셀렉트 -->
@@ -97,10 +109,15 @@
 		JOIN ERECEIVER R ON(E.MID = R.MID)
 		JOIN EMPLOYEE L ON(R.EID = L.EID)
 		JOIN DEPARTMENT D ON(L.DID = D.DID)
-		WHERE E.EID = #{id}
+		WHERE E.EID = #{eeId}
 		AND SENDSTATUS = 'Y'
 		AND E.MSTATUS = 'Y'
-		ORDER BY E.MID DESC, R.ERLEVEL ASC, REID ASC
+		AND R.ERLEVEL = 1
+        AND (E.MID, R.EID) IN (SELECT MID, MIN(EID)
+                                FROM ERECEIVER
+                                WHERE ERLEVEL = 1
+                                GROUP BY MID)
+		ORDER BY SENDDATE DESC, E.MID DESC, R.ERLEVEL ASC, REID ASC
 	</select>
 	
 	<!-- 임시저장메일리스트 목록 셀렉트 -->
@@ -108,13 +125,19 @@
 		SELECT E.MID, E.EID AS EEID, E.MTITLE, E.MCONTENT, E.MRECEIPT, E.SENDDATE, E.MSTATUS, E.SENDSTATUS, E.MLEVEL,
 				R.MID, R.EID AS REID, R.ERLEVEL, R.RECEIVE_DATE, L.ENAME, D.DNAME
 		FROM EMAIL E
-		JOIN ERECEIVER R ON(E.MID = R.MID)
+		LEFT JOIN ERECEIVER R ON(E.MID = R.MID)
 		LEFT JOIN EMPLOYEE L ON(R.EID = L.EID)
 		LEFT JOIN DEPARTMENT D ON(L.DID = D.DID)
 		WHERE E.EID = #{id}
 		AND SENDSTATUS = 'N'
 		AND E.MSTATUS = 'Y'
-		ORDER BY E.MID DESC
+		AND R.ERLEVEL = 1
+		AND (E.MID, R.EID) IN (SELECT MID, MIN(EID)
+                                FROM ERECEIVER
+                                WHERE ERLEVEL = 1
+                                GROUP BY MID)
+        OR R.EID IS NULL
+		ORDER BY SENDDATE DESC, E.MID DESC, R.ERLEVEL ASC, REID ASC
 	</select>
 	
 	<select id="selectEmpListCount" resultType="_int">
@@ -139,43 +162,25 @@
 		WHERE MID = #{mId}
 	</select>
 	
-	<select id="sreceiverList" resultMap = "receiverResultSet">
+	<select id="receiverList" resultMap = "receiverResultSet">
 		SELECT *
 		FROM ERECEIVER
 		WHERE MID = #{mId}
 		AND ERLEVEL = 1
 	</select>
-	<select id="srefList" resultMap = "receiverResultSet">
+	<select id="refList" resultMap = "receiverResultSet">
 		SELECT *
 		FROM ERECEIVER
 		WHERE MID = #{mId}
 		AND ERLEVEL = 2
 	</select>
-	<select id="shideList" resultMap = "receiverResultSet">
+	<select id="hideList" resultMap = "receiverResultSet">
 		SELECT *
 		FROM ERECEIVER
 		WHERE MID = #{mId}
 		AND ERLEVEL = 3
 	</select>
 	
-	<select id="rreceiverList" resultMap = "receiverResultSet">
-		SELECT *
-		FROM ERECEIVER
-		WHERE MID = #{mId}
-		AND ERLEVEL = 1
-	</select>
-	<select id="rrefList" resultMap = "receiverResultSet">
-		SELECT *
-		FROM ERECEIVER
-		WHERE MID = #{mId}
-		AND ERLEVEL = 2
-	</select>
-	<select id="rhideList" resultMap = "receiverResultSet">
-		SELECT *
-		FROM ERECEIVER
-		WHERE MID = #{mId}
-		AND ERLEVEL = 3
-	</select>
 	<select id="selectSendId" resultType="string">
 		SELECT EID
 		FROM EMAIL
@@ -186,14 +191,76 @@
 	<insert id="insertEmail" parameterType="Email">
 		INSERT INTO EMAIL VALUES(
 			SEQ_MID.NEXTVAL, #{eeId}, #{mTitle}, #{mContent},
-			DEFAULT, SYSDATE, DEFAULT, DEFAULT, NULL
+			DEFAULT, SYSDATE, DEFAULT, DEFAULT, 10)
+	</insert>
+	
+	<insert id="insertRec" parameterType="java.util.List">
+			<foreach collection="list" item="rlist" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "> 
+		INTO ERECEIVER (MID, EID, ERLEVEL, RECEIVE_DATE) VALUES (SEQ_MID.CURRVAL, #{rlist.eId}, 1, NULL)
+		</foreach>
+	</insert>
+	<insert id="insertRef" parameterType="java.util.List">
+			<foreach collection="list" item="flist" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "> 
+		INTO ERECEIVER (MID, EID, ERLEVEL, RECEIVE_DATE) VALUES (SEQ_MID.CURRVAL, #{flist.eId}, 2, NULL)
+		</foreach>
+	</insert>
+	<insert id="insertHid" parameterType="java.util.List">
+			<foreach collection="list" item="hlist" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "> 
+		INTO ERECEIVER (MID, EID, ERLEVEL, RECEIVE_DATE) VALUES (SEQ_MID.CURRVAL, #{hlist.eId}, 3, NULL)
+		</foreach>
+	</insert>
+	
+	<!-- insert 임시저장 -->
+	<insert id="insertTemp" parameterType="Email">
+		INSERT INTO EMAIL VALUES(
+			SEQ_MID.NEXTVAL, #{eeId}, #{mTitle}, #{mContent},
+			DEFAULT, SYSDATE, DEFAULT, 'N', 10
 		)
 	</insert>
 	
-	<insert id="insertRec" parameterType="Ereceiver">
-		INSERT INTO ERECEIVER VALUES
-		<foreach collection="rlist" item="item" separator=",">
-			()
+	<!-- *** 임시저장 하는것들 *** -->
+	<!-- 임시저장 전에 있는지 확인 -->
+	<select id="checkmId" resultMap = "checkResultSet">
+		SELECT *
+		FROM EMAIL
+		WHERE EID = #{id}
+	</select>
+	<!-- 받는사람 삭제 후 재등록 할것임 -->
+	<delete id="deleteReceiver" parameterType="_int">
+		DELETE FROM ERECEIVER
+		WHERE MID=#{m}
+	</delete>
+	<!-- 임시저장되어있는 메일 제목, 내용 수정  -->
+	<update id="againTemp" parameterType="Email">
+		UPDATE EMAIL
+		SET MTITLE=#{mTitle},
+		    MCONTENT=#{mContent},
+		    SENDDATE=SYSDATE
+		WHERE MID=#{mId}
+	</update>
+	<insert id="updateTempRec" parameterType="java.util.List">
+			<foreach collection="list" item="rlist" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "> 
+		INTO ERECEIVER (MID, EID, ERLEVEL, RECEIVE_DATE) VALUES (#{rlist.mId}, #{rlist.eId}, 1, NULL)
 		</foreach>
 	</insert>
+	<insert id="updateTempRef" parameterType="java.util.List">
+			<foreach collection="list" item="flist" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "> 
+		INTO ERECEIVER (MID, EID, ERLEVEL, RECEIVE_DATE) VALUES (#{flist.mId}, #{flist.eId}, 2, NULL)
+		</foreach>
+	</insert>
+	<insert id="updateTempHid" parameterType="java.util.List">
+			<foreach collection="list" item="hlist" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "> 
+		INTO ERECEIVER (MID, EID, ERLEVEL, RECEIVE_DATE) VALUES (#{hlist.mId}, #{hlist.eId}, 3, NULL)
+		</foreach>
+	</insert>
+	
+	<!-- 임시저장 이제 전송하는거다!! -->
+	<update id="updateTempToSend" parameterType="Email">
+		UPDATE EMAIL
+		SET MTITLE=#{mTitle},
+		    MCONTENT=#{mContent},
+		    SENDSTATUS='Y',
+		    SENDDATE=SYSDATE
+		WHERE MID=#{mId}
+	</update>
 </mapper>

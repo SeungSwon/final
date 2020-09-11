@@ -36,11 +36,11 @@ public class EmailDao {
 		return (ArrayList)sqlSession.selectList("emailMapper.selectReceiveList", id, rowBounds);
 	}
 
-	public ArrayList<RsEmail> selectSendList(String id, PageInfo pi) {
+	public ArrayList<RsEmail> selectSendList(RsEmail r, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		System.out.println(rowBounds);
-		return (ArrayList)sqlSession.selectList("emailMapper.selectSendList", id, rowBounds);
+		return (ArrayList)sqlSession.selectList("emailMapper.selectSendList", r, rowBounds);
 	}
 
 	public ArrayList<RsEmail> selectTempList(String id, PageInfo pi) {
@@ -61,28 +61,16 @@ public class EmailDao {
 		return sqlSession.selectOne("emailMapper.sEmailDetail", mId);
 	}
 
-	public ArrayList<Ereceiver> sreceiverList(int mId) {
-		return (ArrayList)sqlSession.selectList("emailMapper.sreceiverList", mId);
+	public ArrayList<Ereceiver> receiverList(int mId) {
+		return (ArrayList)sqlSession.selectList("emailMapper.receiverList", mId);
 	}
 
-	public ArrayList<Ereceiver> srefList(int mId) {
-		return (ArrayList)sqlSession.selectList("emailMapper.srefList", mId);
+	public ArrayList<Ereceiver> refList(int mId) {
+		return (ArrayList)sqlSession.selectList("emailMapper.refList", mId);
 	}
 
-	public ArrayList<Ereceiver> shideList(int mId) {
-		return (ArrayList)sqlSession.selectList("emailMapper.shideList", mId);
-	}
-
-	public ArrayList<Ereceiver> rreceiverList(int mId) {
-		return (ArrayList)sqlSession.selectList("emailMapper.rreceiverList", mId);
-	}
-
-	public ArrayList<Ereceiver> rrefList(int mId) {
-		return (ArrayList)sqlSession.selectList("emailMapper.rrefList", mId);
-	}
-
-	public ArrayList<Ereceiver> rhideList(int mId) {
-		return (ArrayList)sqlSession.selectList("emailMapper.rhideList", mId);
+	public ArrayList<Ereceiver> hideList(int mId) {
+		return (ArrayList)sqlSession.selectList("emailMapper.hideList", mId);
 	}
 
 	public String selectSendId(int mId) {
@@ -103,6 +91,38 @@ public class EmailDao {
 
 	public int insertHid(ArrayList<Ereceiver> hlist) {
 		return sqlSession.insert("emailMapper.insertHid", hlist);
+	}
+
+	public int insertTemp(Email e) {
+		return sqlSession.insert("emailMapper.insertTemp", e);
+	}
+
+	public ArrayList<Email> checkmId(String id) {
+		return (ArrayList)sqlSession.selectList("emailMapper.checkmId", id);
+	}
+
+	public int deleteReceiver(int m) {
+		return sqlSession.delete("emailMapper.deleteReceiver", m);
+	}
+
+	public int againTemp(Email e) {
+		return sqlSession.update("emailMapper.againTemp", e);
+	}
+
+	public int updateTempRec(ArrayList<Ereceiver> rlist) {
+		return sqlSession.insert("emailMapper.updateTempRec", rlist);
+	}
+
+	public int updateTempRef(ArrayList<Ereceiver> flist) {
+		return sqlSession.insert("emailMapper.updateTempRef", flist);
+	}
+
+	public int updateTempHid(ArrayList<Ereceiver> hlist) {
+		return sqlSession.insert("emailMapper.updateTempHid", hlist);
+	}
+
+	public int updateTempToSend(Email e) {
+		return sqlSession.update("emailMapper.updateTempToSend", e);
 	}
 
 }

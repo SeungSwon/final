@@ -126,6 +126,7 @@ th {
 				<button type="button" class="btn btn-secondary btn-sm"
 					data-toggle="modal" data-target="#deleteMail" data-whatever="@mdo">선택삭제</button>
 			</div>
+			
 			<div id="mainContent">
 				<div id="messageList">
 					<table class="table table-hover">

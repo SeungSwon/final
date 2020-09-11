@@ -18,7 +18,7 @@ public interface EmailService {
 
 	public ArrayList<RsEmail> selectReceiveList(String id, PageInfo pi);
 
-	public ArrayList<RsEmail> selectSendList(String id, PageInfo pi);
+	public ArrayList<RsEmail> selectSendList(RsEmail r, PageInfo pi);
 
 	public ArrayList<RsEmail> selectTempList(String id, PageInfo pi);
 
@@ -28,17 +28,11 @@ public interface EmailService {
 
 	public RsEmail sEmailDetail(int mId);
 
-	public ArrayList<Ereceiver> sreceiverList(int mId);
+	public ArrayList<Ereceiver> receiverList(int mId);
 
-	public ArrayList<Ereceiver> srefList(int mId);
+	public ArrayList<Ereceiver> refList(int mId);
 
-	public ArrayList<Ereceiver> shideList(int mId);
-
-	public ArrayList<Ereceiver> rreceiverList(int mId);
-
-	public ArrayList<Ereceiver> rrefList(int mId);
-
-	public ArrayList<Ereceiver> rhideList(int mId);
+	public ArrayList<Ereceiver> hideList(int mId);
 
 	public String selectSendId(int mId);
 
@@ -49,5 +43,21 @@ public interface EmailService {
 	public int insertRef(ArrayList<Ereceiver> flist);
 
 	public int insertHid(ArrayList<Ereceiver> hlist);
+
+	public int insertTemp(Email e);
+
+	public ArrayList<Email> checkmId(String id);
+
+	public int deleteReceiver(int m);
+
+	public int againTemp(Email e);
+
+	public int updateTempRec(ArrayList<Ereceiver> rlist);
+
+	public int updateTempRef(ArrayList<Ereceiver> flist);
+
+	public int updateTempHid(ArrayList<Ereceiver> hlist);
+
+	public int updateTempToSend(Email e);
 
 }

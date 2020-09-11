@@ -94,7 +94,7 @@
                     	<tr>
 	                        <td>
 	                            <input type="checkbox" name="checkRow" class="checkRow">
-	                            <label>${ d.eName }(${ d.rName })/${ d.email }</label>
+	                            <label>${ d.eName }(${ d.rName })/${ d.eId }@ourwork.com</label>
 	                        </td>
 	                    </tr>
                     </c:forEach>
@@ -114,7 +114,7 @@
                         <th>받는사람</th>
                     </tr>
                     <tr align="center">
-                        <td><div class="rdiv" id="rArea" cols="30" rows="5" style="resize: none;" disabled></div></td>
+                        <td><div class="rdiv" id="rArea" cols="30" rows="5" style="resize: none; overflow: auto;" disabled></div></td>
                     </tr>
                 </table>
                 <table>
@@ -122,7 +122,7 @@
                         <th>참조</th>
                     </tr>
                     <tr align="center">
-                        <td><div class="rdiv" id="rRefer" cols="30" rows="5" style="resize: none;" disabled></div></td>
+                        <td><div class="rdiv" id="rRefer" cols="30" rows="5" style="resize: none; overflow: auto;" disabled></div></td>
                     </tr>
                 </table>
                 <table>
@@ -130,7 +130,7 @@
                         <th>숨은참조</th>
                     </tr>
                     <tr align="center">
-                        <td><div class="rdiv" id="rHide" cols="30" rows="5" style="resize: none;" disabled></div></td>
+                        <td><div class="rdiv" id="rHide" cols="30" rows="5" style="resize: none; overflow: auto;" disabled></div></td>
                     </tr>
                 </table>
         </div>
@@ -147,7 +147,7 @@
              var check = "";
              $(".checkRow:checked").each(function () {
                 var $rArea = $("#rArea");
-                var $span = $("<span class='user1 adad'>").text($(this).next().text());
+                var $span = $("<span class='user1 adad' id='fff'>").text($(this).next().text());
                 var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                 var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
                 var $br = $("<br>");
@@ -230,7 +230,7 @@
         	   var $li = $("<li>");
                var $div = $("<div id='addMail' class='mgr'>");
                var str = $("#ra1").val();
-               var $span = $("<span class='Madd'>").text(arr[1]);
+               var $span = $("<span class='Madd' id='fff'>").text(arr[1]);
                var $input = $("<input type='hidden' name='reId'>").val(arr[1]);
                var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
                var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");

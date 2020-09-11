@@ -38,8 +38,8 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public ArrayList<RsEmail> selectSendList(String id, PageInfo pi) {
-		return mDao.selectSendList(id, pi);
+	public ArrayList<RsEmail> selectSendList(RsEmail r, PageInfo pi) {
+		return mDao.selectSendList(r, pi);
 	}
 
 	@Override
@@ -63,33 +63,18 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public ArrayList<Ereceiver> sreceiverList(int mId) {
-		return mDao.sreceiverList(mId);
+	public ArrayList<Ereceiver> receiverList(int mId) {
+		return mDao.receiverList(mId);
 	}
 
 	@Override
-	public ArrayList<Ereceiver> srefList(int mId) {
-		return mDao.srefList(mId);
+	public ArrayList<Ereceiver> refList(int mId) {
+		return mDao.refList(mId);
 	}
 
 	@Override
-	public ArrayList<Ereceiver> shideList(int mId) {
-		return mDao.shideList(mId);
-	}
-
-	@Override
-	public ArrayList<Ereceiver> rreceiverList(int mId) {
-		return mDao.rreceiverList(mId);
-	}
-
-	@Override
-	public ArrayList<Ereceiver> rrefList(int mId) {
-		return mDao.rrefList(mId);
-	}
-
-	@Override
-	public ArrayList<Ereceiver> rhideList(int mId) {
-		return mDao.rhideList(mId);
+	public ArrayList<Ereceiver> hideList(int mId) {
+		return mDao.hideList(mId);
 	}
 
 	@Override
@@ -115,6 +100,46 @@ public class EmailServiceImpl implements EmailService {
 	@Override
 	public int insertHid(ArrayList<Ereceiver> hlist) {
 		return mDao.insertHid(hlist);
+	}
+
+	@Override
+	public int insertTemp(Email e) {
+		return mDao.insertTemp(e);
+	}
+
+	@Override
+	public ArrayList<Email> checkmId(String id) {
+		return mDao.checkmId(id);
+	}
+
+	@Override
+	public int deleteReceiver(int m) {
+		return mDao.deleteReceiver(m);
+	}
+
+	@Override
+	public int againTemp(Email e) {
+		return mDao.againTemp(e);
+	}
+
+	@Override
+	public int updateTempRec(ArrayList<Ereceiver> rlist) {
+		return mDao.updateTempRec(rlist);
+	}
+
+	@Override
+	public int updateTempRef(ArrayList<Ereceiver> flist) {
+		return mDao.updateTempRef(flist);
+	}
+
+	@Override
+	public int updateTempHid(ArrayList<Ereceiver> hlist) {
+		return mDao.updateTempHid(hlist);
+	}
+
+	@Override
+	public int updateTempToSend(Email e) {
+		return mDao.updateTempToSend(e);
 	}
 
 }

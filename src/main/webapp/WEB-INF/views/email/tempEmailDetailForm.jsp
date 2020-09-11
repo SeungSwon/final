@@ -102,9 +102,10 @@ ul {
 				<div id="btn-wrapper" align="left">
 
 					<button type="button" class="btn btn-secondary btn-sm" id="letsgo">보내기</button>
-					<button type="submit" class="btn btn-secondary btn-sm" onclick="javascript: form.action='etemp.do'">임시저장</button>
+					<button type="submit" class="btn btn-secondary btn-sm" onclick="javascript: form.action='updateTemp.do'">임시저장</button>
 					<button type="button" class="btn btn-secondary btn-sm">취소</button>
 				</div>
+				<input type="hidden" name="mId" value="${ email.mId }">
 				<div id="table-wrapper">
 					<table>
 						<tr align="left">
@@ -113,17 +114,17 @@ ul {
 								<div id="receiverArea1"
 									style="border: 1px solid rgb(179, 179, 179)" class="rc1">
 									<ul id="mailArea">
-										<c:if test="${ !empty eId }">
+										<c:forEach var="r" items="${ receiver }">
 											<li>
 												<div id="addMail" class="mgr">
-													<span class="Madd" id="fff">${ eId }</span>
-													<input type='hidden' name='reId' value="${ eId }">
+													<span class="Madd" id="fff">${ r.eId }@ourwork.com</span>
+													<input type='hidden' name='reId' value="${ r.eId }">
 													<button type="button" class="dBtn" id="deleteImg">
 														<img id="dbtn" src="resources/images/common/delete.png">
 													</button>
 												</div>
 											</li>
-										</c:if>
+										</c:forEach>
 										<li id="test1">
 											<div>
 												<textarea name="autoW" wrap="off" id="ra1"
@@ -145,6 +146,17 @@ ul {
 								<div id="receiverArea2"
 									style="border: 1px solid rgb(179, 179, 179)" class="rc1">
 									<ul id="mailArea">
+										<c:forEach var="f" items="${ ref }">
+											<li>
+												<div id="addMail" class="mgr">
+													<span>${ f.eId }@ourwork.com</span>
+													<input type='hidden' name='feId' value="${ f.eId }">
+													<button type="button" class="dBtn" id="deleteImg">
+														<img id="dbtn" src="resources/images/common/delete.png">
+													</button>
+												</div>
+											</li>
+										</c:forEach>
 										<li id="test2">
 											<div>
 												<textarea name="autoW" wrap="off" id="ra2"
@@ -166,6 +178,17 @@ ul {
 								<div id="receiverArea3"
 									style="border: 1px solid rgb(179, 179, 179)" class="rc1">
 									<ul id="mailArea">
+										<c:forEach var="h" items="${ hide }">
+											<li>
+												<div id="addMail" class="mgr">
+													<span>${ h.eId }@ourwork.com</span>
+													<input type='hidden' name='heId' value="${ h.eId }">
+													<button type="button" class="dBtn" id="deleteImg">
+														<img id="dbtn" src="resources/images/common/delete.png">
+													</button>
+												</div>
+											</li>
+										</c:forEach>
 										<li id="test3">
 											<div>
 												<textarea name="autoW" wrap="off" id="ra3"
@@ -192,13 +215,13 @@ ul {
 							<td><p>제목</p></td>
 							<td colspan="2">
 								<div id="title" style="border: 1px solid rgb(179, 179, 179)">
-									<textarea name="mTitle" wrap="off" id="ra3" autocomplete="false" style="width: 800px; border: none; resize: none; overflow: hidden; display: inline;" rows="1"></textarea>
+									<textarea name="mTitle" wrap="off" id="ra3" autocomplete="false" style="width: 800px; border: none; resize: none; overflow: hidden; display: inline;" rows="1">${ email.mTitle }</textarea>
 								</div>
 							</td>
 						</tr>
 						<tr><td>&nbsp;</td></tr>
 						<tr>
-							<td colspan="3"><textarea class="rc2 content" name="mContent"></textarea></td>
+							<td colspan="3"><textarea class="rc2 content" name="mContent">${ email.mContent }</textarea></td>
 						</tr>
 					</table>
 				</div>
@@ -245,7 +268,7 @@ ul {
 	                var $li = $("<li>");
 	                var $div = $("<div id='addMail' class='mgr'>");
 	                var str = $("#ra1").val().substring(0, $("#ra1").val().length - 1);
-	                var $span = $("<span class='Madd' id='fff'>").text(str);
+	                var $span = $("<span class='Madd'> id='fff'").text(str);
 	                var $input = $("<input type='hidden' name='reId'>").val(str);
 	                var $button = $("<button type='button' class='dBtn' id='deleteImg'>");
 	                var $img = $("<img id='dbtn'src='resources/images/common/delete.png'>");
@@ -483,7 +506,7 @@ ul {
         		alert("받는사람을 입력하시기 바랍니다.");
         	} else {
         		var formObj = $("form[name='form']");
-        		formObj.attr("action", "esend.do");
+        		formObj.attr("action", "updateTempToSend.do");
         		formObj.submit();
         	}
         });
