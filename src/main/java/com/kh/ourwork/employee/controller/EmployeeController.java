@@ -30,6 +30,7 @@ import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.employee.model.exception.EmployeeException;
 import com.kh.ourwork.employee.model.service.EmployeeService;
 import com.kh.ourwork.employee.model.vo.Employee;
+import com.kh.ourwork.employee.model.vo.Work;
 
 @SessionAttributes({ "loginUser", "msg" })
 @Controller
@@ -98,11 +99,10 @@ public class EmployeeController {
 		if (loginUser != null) {
 			model.addAttribute("loginUser", loginUser);
 
-//			// 로그인 성공 시 로그 출력
-//			if (logger.isDebugEnabled()) {
-//
-//				logger.info(loginUser.geteId() + " 로그인");
-//			}
+			// 로그인 성공 시 로그 출력
+			if (logger.isDebugEnabled()) {
+				logger.info(loginUser.geteId() + " 로그인");
+			}
 		} else {
 			throw new EmployeeException("로그인에 실패하였습니다.");
 		}
@@ -112,8 +112,10 @@ public class EmployeeController {
 	// 회원가입 메소드
 	@RequestMapping("memberJoin.do")
 	public String employeeInsert(Employee e, RedirectAttributes rd, HttpServletRequest request,
-			@RequestParam(value = "uploadFile", required = false) MultipartFile file, @RequestParam("post") String post,
-			@RequestParam("address1") String address1, @RequestParam("address2") String address2) {
+			@RequestParam(value = "uploadFile", required = false) MultipartFile file, 
+			@RequestParam("post") String post,
+			@RequestParam("address1") String address1, 
+			@RequestParam("address2") String address2) {
 
 		System.out.println("emplyee : " + e);
 
@@ -257,7 +259,46 @@ public class EmployeeController {
 		System.out.println("deleteFile : " + deleteFile);
 		System.out.println("---------------");
 	}
+	
+	//주소록 불러오기
+	@RequestMapping("searchAddress.do")
+	public String searchEmployee(Employee e) {
+		return "member/memberMypage";
+	}
+	
+	// 출근 저장하기
+	@RequestMapping(value = "employeeWIn.do")			
+	public String Work(Model model, HttpSession session) {
+		
+		Work w = new Work();
+		Employee e = (Employee) session.getAttribute("loginUser");
+		
+		w.seteId(e.geteId());
+		int result = eService.employeeWIn(w);
+				
+		System.out.println("work" + w);
+		
+		if (w != null) {
+			model.addAttribute("worktime", w);
 
+			// 출퇴근 성공시
+			if (logger.isDebugEnabled()) {
+				logger.info(w.geteId() + "출근시간이 등록되었습니다.");
+			}
+		} else {
+			throw new EmployeeException("출근시간이 등록되지 않았습니다.");
+		}
+		return "redirect:home.do";
+	}
+	
+	//퇴근 저장하기
+	@RequestMapping("employeeWOut.do")
+	public String employeeWOut(Work w) {
+		return "home";
+	}	
+	
+	
+	
 	// 2. JsonView를 이용한 방법
 	// dependency 라이브러리 추가 후 JsonView, BeanNameViewResolver 빈 등록 후 사용
 	@RequestMapping("dupid.do")
