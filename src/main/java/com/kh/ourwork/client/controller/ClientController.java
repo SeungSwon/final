@@ -275,6 +275,7 @@ public class ClientController {
 		mv.addObject("list", searchList);
 		mv.addObject("search", search);
 		mv.addObject("pi", pi);
+		mv.addObject("listCount", listCount);
 		mv.setViewName("client/clientListView");
 		
 		return mv;

@@ -63,8 +63,6 @@ public class PteamController {
 			int listCount = pService.selectListCount();
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			
-			System.out.println("재직사원 listCount; : " + listCount);
-			
 			// 퇴직사원 countlist
 			int nListCount = pService.selectnListCount();
 			PageInfo pin = Pagination.getPageInfo(currentPagen, nListCount);
@@ -72,12 +70,10 @@ public class PteamController {
 			
 			
 			// 재직중인 사원select 부분
-			ArrayList<Employee1> Ylist = pService.selectList(pi);
-			
-			System.out.println("Ylist : " + Ylist);
+			ArrayList<Employee> Ylist = pService.selectList(pi);
 			
 			// 퇴직사원 select부분
-			ArrayList<Employee1> Nlist = pService.selectNList(pin);
+			ArrayList<Employee> Nlist = pService.selectNList(pin);
 			
 			if(Ylist != null) {
 				mv.addObject("Ylist", Ylist);
@@ -100,17 +96,14 @@ public class PteamController {
 			@RequestParam("page") Integer page,
 			HttpServletRequest request, HttpServletResponse response) {
 		int currentPage = page != null ? page : 1;
-		
-		System.out.println("디테일.do eId : " + eId);
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 
 		
-		Employee1 employee = null;
+		Employee employee = null;
 //		Attachment at =pService.selectAttachment(eId);
 		
 		employee = pService.selectEmployee(eId);
 		
-		System.out.println("employee: " + employee);
 		
 		if(employee != null) {
 			mv.addObject("employee", employee)
@@ -132,17 +125,13 @@ public class PteamController {
 		System.out.println("page : " + page);
 		int currentPage = page != null ? page : 1;
 		
-		int listCount = pService.SselectListCount(search);
-		
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		
-		ArrayList<Employee1> searchList = pService.searchList(search, pi);
+		System.out.println("들어는 왔니? 친구야?");
+		ArrayList<Employee> searchList = pService.searchList(search);
 		
 		System.out.println("search1 : " + search);
 		model.addAttribute("Ylist", searchList);
-		model.addAttribute("pi", pi);
 		model.addAttribute("search1", search);
-		return "pteam/employeeSearchE";
+		return "pteam/employeeE";
 	}
 	
 	// 검색 기능 퇴사사원!

@@ -123,8 +123,17 @@
         #toDetail{
         	color: black;
         }
+        .listcount{
+       		color: #1e87e4;
+       		font-weight: bold;
+       		font-size: 13px;
+        }
+        
     </style>
-    <script src="src/jquery.table2excel.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="libs/FileSaver/FileSaver.min.js"></script>
+    <script type="text/javascript" src="libs/js-xlsx/xlsx.core.min.js"></script>
+    
 </head>
 
 <body>
@@ -153,6 +162,9 @@
             	</form>
             </div>
             <div class="mainContent">
+            	<c:if test="${ search ne null }">
+                    <br><div>검색결과<a class="listcount">(${ listCount })</a> | <a class="listcount">${ search.searchValue }</a></div><br>
+                </c:if>
                 <table class="table table-hover table2excel" id="clientTable">
                     <thead>
                         <tr>
@@ -248,12 +260,13 @@
 </body>
 <script>
 	$("#getExcel").click(function (e) {
-	    window.open('data:application/vnd.ms-excel,' + $('.mainContent').html());
+		if(confirm("엑셀로 다운로드하시겠습니까?") == false){
+			return false;
+		}
+	    window.open('data:application/vnd.ms-excel,' + $('#clientTable').html());
 	    e.preventDefault();
 	});
-
-
-
+	
 </script>
 
 </html>

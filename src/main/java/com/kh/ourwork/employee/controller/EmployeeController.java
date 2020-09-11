@@ -30,6 +30,7 @@ import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.employee.model.exception.EmployeeException;
 import com.kh.ourwork.employee.model.service.EmployeeService;
 import com.kh.ourwork.employee.model.vo.Employee;
+import com.kh.ourwork.employee.model.vo.Work;
 
 @SessionAttributes({ "loginUser", "msg" })
 @Controller
@@ -93,16 +94,15 @@ public class EmployeeController {
 	public String employeeLogin(Employee e, Model model) {
 		Employee loginUser = eService.loginEmployee(e);
 
-//		System.out.println("login.do" + e);
+		System.out.println("login.do" + e);
 
 		if (loginUser != null) {
 			model.addAttribute("loginUser", loginUser);
 
-//			// 로그인 성공 시 로그 출력
-//			if (logger.isDebugEnabled()) {
-//
-//				logger.info(loginUser.geteId() + " 로그인");
-//			}
+			// 로그인 성공 시 로그 출력
+			if (logger.isDebugEnabled()) {
+				logger.info(loginUser.geteId() + " 로그인");
+			}
 		} else {
 			throw new EmployeeException("로그인에 실패하였습니다.");
 		}
@@ -111,12 +111,13 @@ public class EmployeeController {
 
 	// 회원가입 메소드
 	@RequestMapping("memberJoin.do")
+	public String employeeInsert(Employee e, RedirectAttributes rd, HttpServletRequest request,
+			@RequestParam(value = "uploadFile", required = false) MultipartFile file, 
+			@RequestParam("post") String post,
+			@RequestParam("address1") String address1, 
+			@RequestParam("address2") String address2) {
 
-	public String employeeInsert(Employee e, RedirectAttributes rd, HttpServletRequest request, 
-			   @RequestParam(value="uploadFile", required=false) MultipartFile file, 
-			   @RequestParam("post") String post,
-			   @RequestParam("address1") String address1, 
-			   @RequestParam("address2") String address2) {
+		System.out.println("emplyee : " + e);
 
 		String root = request.getSession().getServletContext().getRealPath("resources");
 
@@ -151,10 +152,11 @@ public class EmployeeController {
 		// 해당 resources는 webapp 하위의 resources
 		String root = request.getSession().getServletContext().getRealPath("resources");
 
+		String savePath = root + "\\images\\profileUploadFiles";
+
 		File folder = new File(savePath);
 		// savePath 폴더를 불러와서
 		// 해당 폴더 경로가 존재하는지 확인하고
-
 
 		if (!folder.exists()) {
 			folder.mkdirs();
@@ -177,7 +179,6 @@ public class EmployeeController {
 	// --------------------------------------------------------------------------------
 	// 회원정보 수정 메소드
 	@RequestMapping("memberUpdate.do")
-
 	public String employeeUpdate(Model model, HttpServletRequest request,
 			@RequestParam(value = "reloadFile", required = false) MultipartFile reloadFile, HttpSession session,
 			@RequestParam("post") String post, @RequestParam("address1") String addr1,
@@ -185,6 +186,7 @@ public class EmployeeController {
 			@RequestParam("phone") String phone, RedirectAttributes rd) {
 
 		Employee e = (Employee) session.getAttribute("loginUser");
+
 		e.setAddress(post + "," + addr1 + "," + addr2);
 		e.setEmail(email);
 		e.setPhone(phone);
@@ -205,12 +207,10 @@ public class EmployeeController {
 				at = new Attachment(e.geteId(), savePath, reloadFile.getOriginalFilename(), renameFileName);
 				int result4 = eService.insertAttachment2(at);
 
-
 				System.out.println("Attachment : " + at);
 				System.out.println("Employee : " + e);
 				System.out.println("savePath : " + savePath);
 				System.out.println("---------------");
-
 
 			} else { // 등록된 프로필 사진이 있는 경우 & 변경하기 위해 파일을 업로드 한 경우
 				if (at.getChangeName() != null) {
@@ -259,7 +259,46 @@ public class EmployeeController {
 		System.out.println("deleteFile : " + deleteFile);
 		System.out.println("---------------");
 	}
+	
+	//주소록 불러오기
+	@RequestMapping("searchAddress.do")
+	public String searchEmployee(Employee e) {
+		return "member/memberMypage";
+	}
+	
+	// 출근 저장하기
+	@RequestMapping(value = "employeeWIn.do")			
+	public String Work(Model model, HttpSession session) {
+		
+		Work w = new Work();
+		Employee e = (Employee) session.getAttribute("loginUser");
+		
+		w.seteId(e.geteId());
+		int result = eService.employeeWIn(w);
+				
+		System.out.println("work" + w);
+		
+		if (w != null) {
+			model.addAttribute("worktime", w);
 
+			// 출퇴근 성공시
+			if (logger.isDebugEnabled()) {
+				logger.info(w.geteId() + "출근시간이 등록되었습니다.");
+			}
+		} else {
+			throw new EmployeeException("출근시간이 등록되지 않았습니다.");
+		}
+		return "redirect:home.do";
+	}
+	
+	//퇴근 저장하기
+	@RequestMapping("employeeWOut.do")
+	public String employeeWOut(Work w) {
+		return "home";
+	}	
+	
+	
+	
 	// 2. JsonView를 이용한 방법
 	// dependency 라이브러리 추가 후 JsonView, BeanNameViewResolver 빈 등록 후 사용
 	@RequestMapping("dupid.do")
@@ -271,6 +310,8 @@ public class EmployeeController {
 		mv.addAllObjects(map);
 
 		mv.setViewName("jsonView");
+
+		System.out.println(eId);
 
 		return mv;
 	}

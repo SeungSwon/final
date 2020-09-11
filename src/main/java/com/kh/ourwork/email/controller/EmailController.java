@@ -2,25 +2,19 @@ package com.kh.ourwork.email.controller;
 
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Pagination;
 import com.kh.ourwork.email.model.exception.EmailException;
 import com.kh.ourwork.email.model.service.EmailService;
-import com.kh.ourwork.email.model.vo.Email;
 import com.kh.ourwork.email.model.vo.EmailAddr;
-import com.kh.ourwork.email.model.vo.Ereceiver;
-import com.kh.ourwork.email.model.vo.RsEmail;
+import com.kh.ourwork.email.model.vo.ReceiveEmail;
 import com.kh.ourwork.employee.model.vo.Employee;
 
 @Controller
@@ -30,13 +24,11 @@ public class EmailController {
 	
 	@RequestMapping("receiveMailList.do")
 	public ModelAndView receiveEmailList(ModelAndView mv,
-			@RequestParam(value="page", required=false) Integer page, HttpSession session) {
-		Employee loginUser = (Employee)session.getAttribute("loginUser");
-		String id = loginUser.geteId();
+			@RequestParam(value="page", required=false) Integer page) {
 		int currentPage = page != null ? page : 1;
-		int listCount = eService.selectReceiveListCount(id);
+		int listCount = eService.selectReceiveListCount();
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		ArrayList<RsEmail> list = eService.selectReceiveList(id, pi);
+		ArrayList<ReceiveEmail> list = eService.selectReceiveList(pi);
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
@@ -57,7 +49,7 @@ public class EmailController {
 		int listCount = eService.selectSendListCount(id);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		ArrayList<RsEmail> list = eService.selectSendList(r, pi);
-		
+
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
@@ -70,13 +62,11 @@ public class EmailController {
 	
 	@RequestMapping("temporaryEmailList.do")
 	public ModelAndView temporaryEmailList(ModelAndView mv,
-			@RequestParam(value="page", required=false) Integer page, HttpSession session) {
-		Employee loginUser = (Employee)session.getAttribute("loginUser");
-		String id = loginUser.geteId();
+			@RequestParam(value="page", required=false) Integer page) {
 		int currentPage = page != null ? page : 1;
-		int listCount = eService.selectTempListCount(id);
+		int listCount = eService.selectTempListCount();
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		ArrayList<RsEmail> list = eService.selectTempList(id, pi);
+		ArrayList<ReceiveEmail> list = eService.selectTempList(pi);
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
@@ -145,7 +135,7 @@ public class EmailController {
 		}
 		return mv;
 	}
-	
+
 	@RequestMapping("sendEmailGoId.do")
 	public String sendEmailGoId(String eId, Model model, RsEmail r) {
 		model.addAttribute("eId", eId);

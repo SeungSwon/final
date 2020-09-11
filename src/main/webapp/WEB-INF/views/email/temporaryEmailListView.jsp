@@ -1,14 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+
 
 <style>
 .fa-caret-down {
@@ -33,7 +31,6 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	cursor: pointer;
 }
 
 td {
@@ -150,13 +147,8 @@ th {
 													${ e.dName } ${ e.eName }&lt;${ e.reId }@ourwork.com&gt;
 											</button>
 										</c:if>
-										
-										<c:url var="sEmailWithId" value="sendEmailGoId.do">
-											<c:param name="eId" value="${ e.reId }@ourwork.com"/>
-										</c:url>
-										
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-											<a class="dropdown-item" href="${ sEmailWithId }">메일 쓰기</a>
+											<a class="dropdown-item" href="#">메일 쓰기</a>
 										</div>
 										<c:if test="${ empty e.reId }">
 												(받는이없음)
@@ -173,7 +165,7 @@ th {
 											<a href="${ tempDetail }" id="cp">(제목 없음)</a>
 										</c:if>
 									</td>
-									<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ e.sendDate }"/></td>
+									<td>${ e.sendDate }</td>
 								</tr>
 							</c:forEach>
                     </tbody>

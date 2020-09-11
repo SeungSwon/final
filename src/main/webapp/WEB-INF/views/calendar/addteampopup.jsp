@@ -59,7 +59,7 @@
 			var memo = $("#memo").val();
 			
 			$.ajax({
-				url: "addEvent.do",
+				url: "addteamEvent.do",
 				data: {sName:sName, sDate:sDate, fDate:fDate, place:place, memo:memo},
 				type: "post",
 				success: function(data){
@@ -67,7 +67,6 @@
 						opener.location.reload();
 						window.close();
 					}
-					
 				},
 				error: function(e){
 					console.log(e);

@@ -6,7 +6,7 @@
 %>
 <html>
 <head>
-
+<title>팀별 캘린더</title>
 <link href='resources/fullcalendar/main.css' rel='stylesheet'/>
 <script src='resources/fullcalendar/main.js'></script>
  <script src='resources/fullcalendar/locales/ko.js'></script>
@@ -17,17 +17,16 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-    	
       headerToolbar: {
         right: 'prev,next today',
         left: 'title',
       },
       initialDate: new Date(),
       selectMirror: true,
-      // eventclick하면 숨겨진 div => 일정 정보 나옴
       
+      // eventclick하면 숨겨진 div => 일정 정보 나옴
       eventClick: function(arg) {
-    	      	  
+        console.log(arg);
         var sId = arg.event.extendedProps.sId;
         var sWidth = window.innerWidth;
 		var sHeight = window.innerHeight;
@@ -39,7 +38,7 @@
 		var divTop = event.pageY + 5;
         
         $.ajax({
-        	url: "caldetail.do",
+        	url: "teamcaldetail.do",
         	data: {sId:sId},
         	dataType: "json",
         	type: "post",
@@ -65,7 +64,7 @@
         });
         
       },
-      locales: 'ko',
+      locale: 'ko',
       editable: true,
       events: [
 <% 
@@ -89,7 +88,6 @@
 });
 </script>
 <style>
-	
 	#caldetail{
 		border: 1px solid gray;
 	    overflow-y: auto;
@@ -152,7 +150,7 @@
     #detailTable td{
     	background: white;
     	border-bottom: 1px solid gray;
-    	padding: 5px;
+    	padding: 10px;
     }
     #btns{
     	margin: auto;
@@ -184,15 +182,15 @@
 		<c:import url="../common/calendarmenu.jsp"/>
 		<div class="section1">
 			<div class="menubar">
-                <button id="selected" onclick="location.href='calview.do'">전체 캘린더</button>
-                <button onclick="location.href='teamcalview.do'">팀별 캘린더</button>
+                <button onclick="location.href='calview.do'">전체 캘린더</button>
+                <button id="selected" onclick="location.href='teamcalview.do'">팀별 캘린더</button>
                 <button onclick="location.href='personalcalview.do'">개인 캘린더</button>
             </div>
 		</div>
 		<div class="section2">
 		<br>	
 			<div align="right">
-				<button class="btn btn-secondary" type="button" onclick="window.open('addpopup.do','일정 추가','width=400, height=600,location=no,status=no,scrollbars=yes')">일정 추가</button>							
+				<button class="btn btn-secondary" type="button" onclick="window.open('addteampopup.do','일정 추가','width=400, height=600,location=no,status=no,scrollbars=yes')">일정 추가</button>							
 			</div>
 			<br>
 			<div id="calendar"></div>
@@ -219,14 +217,13 @@
 						<td id="memo"></td>
 					</tr>
 				</table>
-				<div id="btns" align="center">
-					<br>
-					<c:if test="${ loginUser.eId eq eId }">					
-					</c:if>
+				<div id="btns" align="center"><br>
 					<input type="hidden" id="paramsId">
 					<input type="hidden" id="parameId">
 					<button class="btn btn-secondary" id="modify" onclick="fn_modify();">수정</button>
-					<button class="btn btn-secondary" id="delete" onclick="location.href='deletecal.do?sId='+$('#paramsId').val()">삭제</button>
+					<button class="btn btn-secondary" id="delete" onclick="location.href='deleteteamcal.do?sId='+$('#paramsId').val()">삭제</button>
+					<c:if test="${ loginUser.eId eq eId }">					
+					</c:if>
 				</div>
 				<div style="height: 20px; background-color: #FFFFFF"></div>
 			</div>
@@ -241,9 +238,8 @@
 	 	
 	 	function fn_modify(){
 	 		var sId = $("#paramsId").val();
-	 		window.open("<c:url value='updatecalView.do?sId="+sId+"'/>", "일정 수정", "width=500, height=600");
+	 		window.open("<c:url value='updateTeamCalView.do?sId="+sId+"'/>", "일정 수정", "width=500, height=600");
 	 	}
 	</script>
 </body>
 </html>
-

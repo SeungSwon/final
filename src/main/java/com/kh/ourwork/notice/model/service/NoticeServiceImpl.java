@@ -64,8 +64,8 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public ArrayList<Notice> searchList(Search search,PageInfo pi) {
-		return nDao.searchList(search, pi);
+	public ArrayList<Notice> searchList(Search search) {
+		return nDao.searchList(search);
 	}
 
 	@Override

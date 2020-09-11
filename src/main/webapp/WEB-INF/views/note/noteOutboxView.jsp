@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -147,6 +148,11 @@
         #toDetail{
         	color: black;
         }
+        .listcount{
+       		color: #1e87e4;
+       		font-weight: bold;
+       		font-size: 13px;
+        }
     </style>
 </head>
 
@@ -177,11 +183,14 @@
 	                    </form>
                     </div>
                     <div id="mainContent">
+                    	<c:if test="${ search ne null }">
+                    		<div align="left">검색결과<a class="listcount">(${ listCount })</a> | <a class="listcount">${ search.searchValue }</a></div><br>
+                    	</c:if>
                     	<form action="deleteOutSelected.do" method="post">
 	                        <table class="table table-hover">
 	                            <thead>
 	                                <tr>
-	                                    <th></th>
+	                                    <th><input type="checkbox" id="checkall"></th>
 	                                    <th>받는 사람</th>
 	                                    <th id="mContentHead">내용</th>
 	                                    <th scope="col">날짜</th>
@@ -189,8 +198,8 @@
 	                            </thead>
 	                            <tbody>
 	                            	<c:forEach var="nt" items="${ list }">
-	                            		
-	                            		<c:if test="${ list.size() eq 0 }">
+	                            		  
+	                            		<c:if test="${ fn:length(list) eq null }">
 		                            		<tr>
 		                            			<td colspan="4">보낸 쪽지가 없습니다.</td>
 		                            		</tr>
@@ -280,6 +289,15 @@
             		if(confirm("선택한 쪽지를 삭제하시겠습니까?") == false){
             			return false;
             		}
+            	});
+            	$(document).ready(function(){
+            	    $("#checkall").click(function(){
+            	        if($("#checkall").prop("checked")){
+            	            $("input[name=check]").prop("checked",true);
+            	        }else{
+            	            $("input[name=check]").prop("checked",false);
+            	        }
+            	    })
             	});
             </script>
 	</html>

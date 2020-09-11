@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>일정 추가</title>
+<title>일정 수정</title>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
@@ -21,37 +23,38 @@
 <body>
 	<div class="group" id="popupGroup">
 		<div class="group-head">
-			<h1 class="zTree-h1">일정 추가</h1>
+			<h1 class="zTree-h1">일정 수정</h1>
 		</div>
 		<div class="group-body">
-			<form id="scheduleData" action="addEvent.do" method="post">
+			<form id="scheduleData" action="updatecal.do" method="post">
+				<input type="hidden" id="sId" value="${ cal.sId }">
 				<div class="top">
-					<input type="text" id="sName" name="sName" size="40" placeholder="제목을 입력해주세요">
+					<input class="subject" id="sName" type="text" name="sName" size="40" placeholder="제목을 입력해주세요" value="${ cal.sName }">
 				</div>
 				<div class="domain"><h3 class="zTree-h3">시작 </h3></div>
 				<div class="domain">
-					<input class="date" type="date" id="sDate" name="sDate" size="40" >
+					<input class="date" type="date" id="sDate" name="sDate" size="40" value="${ cal.sDate }">
 				</div>
 				<div class="domain"><h3 class="zTree-h3">종료 </h3></div>
 				<div class="domain">
-					<input class="date" type="date" id="fDate" name="fDate" size="40" >
+					<input class="date" type="date" id="fDate" name="fDate" size="40" value="${ cal.fDate }">
 				</div>
 				<div class="domain"><h3 class="zTree-h3">장소 </h3></div>
 				<div class="domain">
-					<input id="place" type="text" name="place" size="40" >
+					<input id="place" type="text" name="place" size="40" value="${ cal.place }" >
 				</div>
 				<div class="domain"><h3 class="zTree-h3">메모 </h3></div>
 				<div class="domain">
-					<textarea class="memo" id="memo" name="memo" rows="5" cols="34"></textarea>
+					<textarea class="memo" id="memo" name="memo" rows="5" cols="34">${ cal.memo }</textarea>
 				</div>
 			<input class="ok-button" type="button" value="확인">		
 			<input class="cancel" type="button" onclick="window.close()" value="취소">
 			</form>
 		</div>
 	</div>
-	
 	<script>
 		$(".ok-button").click(function(){
+			var sId = $("#sId").val();
 			var sName = $("#sName").val();
 			var sDate = $("#sDate").val();
 			var fDate = $("#fDate").val();
@@ -59,21 +62,18 @@
 			var memo = $("#memo").val();
 			
 			$.ajax({
-				url: "addEvent.do",
-				data: {sName:sName, sDate:sDate, fDate:fDate, place:place, memo:memo},
+				url: "updatecal.do",
+				data: {sId:sId, sName:sName, sDate:sDate, fDate:fDate, place:place, memo:memo},
 				type: "post",
 				success: function(data){
 					if(data == "success"){
 						opener.location.reload();
 						window.close();
 					}
-					
 				},
 				error: function(e){
 					console.log(e);
 				}
-				
-				
 			});
 		});
 	</script>

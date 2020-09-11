@@ -7,8 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+
 
 <style>
 .fa-caret-down {
@@ -33,7 +32,6 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	cursor: pointer;
 }
 
 td {
@@ -106,10 +104,6 @@ th {
 	color: #1e87e4;
 	font-weight: bold;
 }
-#cp{
-	text-decoration: none;
-    color: black;
-}
 </style>
 </head>
 
@@ -146,19 +140,15 @@ th {
 									<td><button class="dropdown-toggle" type="button"
 											data-toggle="dropdown" aria-haspopup="true"
 											aria-expanded="false">${ e.dName } ${ e.eName }&lt;${ e.eeId }@ourwork.com&gt;</button>
-										
-										<c:url var="sEmailWithId" value="sendEmailGoId.do">
-											<c:param name="eId" value="${ e.eeId }@ourwork.com"/>
-										</c:url>
-										
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-											<a class="dropdown-item" href="${ sEmailWithId }">메일 쓰기</a>
+											<a class="dropdown-item" href="#">메일 쓰기</a>
 										</div></td>
-										<c:url var="receiveEmailDetailView" value="receiveEmailDetailView.do">
-											<c:param name="mId" value="${ e.mId }"/>
-										</c:url>
-									<td id="mContent"><a href="${ receiveEmailDetailView }" id="cp">${ e.mTitle }</a></td>
-									<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ e.sendDate }"/></td>
+									<td id="mContent">${ e.mTitle }</td>
+									<td>
+										<%-- <fmt:parseDate type = "both" value = "${ e.sendDate }" pattern = "yyyy-MM-dd HH:mm" var = "date"/>
+										${ date } --%>
+										${ e.sendDate }
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>

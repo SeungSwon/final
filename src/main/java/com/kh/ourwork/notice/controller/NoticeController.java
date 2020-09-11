@@ -312,11 +312,9 @@ public class NoticeController {
 			@RequestParam(value="page", required=false) Integer page) {
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
-		
-		
+		System.out.println("들어는 오니?");
 		int currentPage = page != null ? page : 1;
 		
-		System.out.println("controller : " + search);
 		// 검색된거 카운트 가져오기
 		int listCount = nService.SselectListCount(search);
 		
@@ -325,18 +323,15 @@ public class NoticeController {
 		// 갯수 가저오기
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		System.out.println("pit : " + pi);
-
-		ArrayList<Notice> searchList = nService.searchList(search, pi);
 		
+		ArrayList<Notice> searchList = nService.searchList(search);
 		
 		model.addAttribute("list", searchList);
 		model.addAttribute("search", search);
 		model.addAttribute("pi", pi);
 		model.addAttribute("loginUser", loginUser);
 		
-		return "notice/noticeSearchList";
-		
+		return "notice/noticeMain";
 	}
 	
 	@RequestMapping("addReply.do")

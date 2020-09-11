@@ -1,10 +1,11 @@
 package com.kh.ourwork.client.model.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
+import lombok.Data;
 
 public class UpdateClient {
-	private int ucId;
+	private String ucId;
 	private int clId;
 	private String eId;
 	private String reason;
@@ -12,7 +13,7 @@ public class UpdateClient {
 	
 	public UpdateClient() {}
 
-	public UpdateClient(int ucId, int clId, String eId, String reason, Date modifyDate) {
+	public UpdateClient(String ucId, int clId, String eId, String reason, Date modifyDate) {
 		super();
 		this.ucId = ucId;
 		this.clId = clId;
@@ -28,12 +29,11 @@ public class UpdateClient {
 		this.reason = reason;
 	}
 
-	
-	public int getUcId() {
+	public String getUcId() {
 		return ucId;
 	}
 
-	public void setUcId(int ucId) {
+	public void setUcId(String ucId) {
 		this.ucId = ucId;
 	}
 
