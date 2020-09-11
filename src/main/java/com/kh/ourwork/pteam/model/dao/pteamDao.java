@@ -11,7 +11,12 @@ import com.kh.ourwork.common.Attachment;
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Search;
 import com.kh.ourwork.employee.model.vo.Employee;
+import com.kh.ourwork.pteam.model.vo.Career;
+import com.kh.ourwork.pteam.model.vo.Certifrcate;
+import com.kh.ourwork.pteam.model.vo.Department;
+import com.kh.ourwork.pteam.model.vo.Education;
 import com.kh.ourwork.pteam.model.vo.Employee1;
+import com.kh.ourwork.pteam.model.vo.Rank;
 
 @Repository("pDao")
 public class pteamDao {
@@ -62,6 +67,43 @@ public class pteamDao {
 
 	public int sselectListCount(Search search) {
 		return sqlSession.selectOne("pteamMapper.SselectListCount", search);
+	}
+
+	public ArrayList<Rank> selectRList() {
+		return (ArrayList)sqlSession.selectList("pteamMapper.selectrList");
+	}
+
+	public ArrayList<Department> selectDList() {
+		return (ArrayList)sqlSession.selectList("pteamMapper.selectdList");
+	}
+
+	public int insertCe(Certifrcate c) {
+		return sqlSession.insert("pteamMapper.insertCe",c);
+	}
+
+	public Certifrcate selectC(String eId) {
+		return sqlSession.selectOne("pteamMapper.selectCe", eId);
+	}
+
+	public int updateCe(Certifrcate c) {
+		return sqlSession.update("pteamMapper.updateCe", c);
+	}
+
+	public int insertCa(Career ca) {
+		return sqlSession.insert("pteamMapper.insertCa", ca);
+	}
+
+	public Career selectCa(String eId) {
+		return sqlSession.selectOne("pteamMapper.selectCa", eId);
+	}
+
+	public int ed1insert(Education ed1) {
+		return sqlSession.insert("pteamMapper.insered1", ed1);
+	}
+
+	public Education selected1(String eId) {
+		System.out.println("다오까진 들어옴?? " + eId);
+		return sqlSession.selectOne("pteamMapper.selectde1", eId);
 	}
 
 }

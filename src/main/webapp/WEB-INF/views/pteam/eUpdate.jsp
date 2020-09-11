@@ -137,6 +137,13 @@
    .modal-content{
        width: 500px;
    }
+   .Name{
+   	width: 95%;
+   	height: 30px;
+   }
+   .ops{
+   	text-align: center;
+   }
         
     </style>
 </head>
@@ -159,31 +166,44 @@
         <div class="section2">
             <table id="boardTable">
             <br>
-            	<h4>${ employee.eName }님의 회원 정보 입니다</h4>
+            	<h4>${ employee.eName }님의 회원 정보 수정</h4>
                 <tr>
                     <td class="division">이름</td>
-                    <td class="in"><input type="text" textalign="center" name="bTitle" size="50" class="in" value="${ employee.eName }"></td>
+                    <td class="in"><input type="text" textalign="center" name="bTitle" size="50" class="in" value="${ employee.eName }" readonly="readonly"></td>
                     <td class="division">직급</td>
-                    <td class="in">${ employee.rName }
-                        </select>
+                    <td class="in">
+                    	<select id="rName" class="Name">
+						<option class="ops" value="${ employee.rName }">${ employee.rName }</option>
+						<c:forEach var="r" items="${ rName }">
+							<option class="ops" value="${ r.rName }">${ r.rName }</option>
+						</c:forEach>
+						</select>
+                    </td>    
                 </tr>
                 <tr>
                     <td class="tel1">연락처</td>
-                    <td class="in"><input type="tel" readonly name="bWriter" size="50" class="in" value="${ employee.phone }"></td>
+                    <td class="in"><input type="tel" name="bWriter" size="50" class="in" value="${ employee.phone }"></td>
                     <td class="division">자격증</td>
                         <td class="in"><input type="file" name="uploadFile" class="in"></td>
                     
                 </tr>
                 <tr>
                     <td class="division">주소</td>
-                    <td class="in"><input type="text" class="in" value="${ employee.address }" readonly="readonly"></td>
+                    <td class="in"><input type="text" class="in" value="${ employee.address }"></td>
                     
                     <td class="division">자격증 수기</td>
                         <td class="in"><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#staticBackdrop2">확인</button></textarea></td>
                 </tr>
                 <tr>
                     <td class="division">부서</td>
-                    <td class="in">${ employee.dName }</td>
+                    <td class="in">
+						<select id="dName" class="Name">
+						<option class="ops" value="${ employee.dName }">${ employee.dName }</option>
+						<c:forEach var="d" items="${ dName }">
+							<option class="ops" value="${ d.dName }">${ d.dName }</option>
+						</c:forEach>
+						</select>
+					</td>
                         <td class="division">학력</td>
                     <td class="in"><button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#staticBackdrop">확인</button></td>
                 </tr>
@@ -198,12 +218,8 @@
             <table class="b12">
                     <tr>
                             <td colspan="2" class="btn1">
-	                            <c:url var="upe" value="upe.do">
-		                        	<c:param name="eId" value="${ employee.eId }"/>
-		                        	<c:param name="page" value="${ currentPage }"/>
-	                        	</c:url>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${ upe }'">수정</button>
-                                <button type="button" class="btn btn-secondary btn-sm">뒤로가기</button>
+                                <button type="button" class="btn btn-secondary btn-sm">수정</button>
+                                <button type="button" class="btn btn-secondary btn-sm">취소</button>
                             </td>
                         </tr>
             </table>
@@ -293,31 +309,34 @@
               </button>
             </div>
             <div class="modal-body">
+            <form action="cainsert.do" name="caForm" method="get">
+            <input type="hidden" value="${ currentPage }" name="page">
+            <input type="hidden" value="${ employee.eId }" name="eId">
                     <table>
                             <tr class="mo2">
                                 <td class="mo1">직장</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" name="rectal"></td>
                             </tr>
                             <tr class="mo2">
                                 <td class="mo1">부서</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" name="c_Department"></td>
                             </tr>
                             <tr class="mo2">
                                 <td class="mo1">직급</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" name="rank"></td>
                             </tr>
                             <tr class="mo2">
                                     <td class="mo1">입사일</td>
-                                    <td><input type="text"></td>
+                                    <td><input type="text" name="employmentDate"></td>
                                 </tr>
                             <tr class="mo2">
                                 <td class="mo1">퇴사일</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" name="resignation"></td>
                             </tr>
                         </table>
-            </div>
-            <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-secondary">등록</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </form>
             </div>
           </div>
         </div>
@@ -333,31 +352,34 @@
               </button>
             </div>
             <div class="modal-body">
+            <form action="ceinsert.do" name="cForm" method="get">
+            <input type="hidden" value="${ currentPage }" name="page">
+            <input type="hidden" value="${ employee.eId }" name="eId">
                 <table>
                     <tr class="mo2">
                         <td class="mo1">자격증명</td>
-                        <td>${ c.ce_Name }</td>
+                        <td><input type="text" name="ce_Name"></td>
                     </tr>
                     <tr class="mo2">
                         <td class="mo1">등급</td>
-                        <td>${c.rating }</td>
+                        <td><input type="text" name="rating"></td>
                     </tr>
                     <tr class="mo2">
                         <td class="mo1">발급기관</td>
-                        <td>${c.agency }</td>
+                        <td><input type="text" name="agency"></td>
                     </tr>
                     <tr class="mo2">
                             <td class="mo1">발급날짜</td>
-                            <td>${c.issueDate }</td>
+                            <td><input type="text" name="issueDate"></td>
                         </tr>
                     <tr class="mo2">
                         <td class="mo1">만료기간</td>
-                        <td>${c.exprationDate }</td>
+                        <td><input type="text" name="exprationDate"></td>
                     </tr>
                 </table>
-            </div>
-            <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-secondary">등록</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </form>
             </div>
           </div>
         </div>

@@ -23,6 +23,51 @@
  		<result property="dName" column="DNAME"/>	
 	</resultMap>
 	
+	<resultMap id="rankResultSet" type="Rank">
+		<id property="rId" column="RID"/>
+		<result property="rName" column="RNAME"/>
+	</resultMap>
+	
+	<resultMap id="departmentResultSet" type="Department">
+		<id property="dId" column="DID"/>
+		<result property="dName" column="DNAME"/>
+	</resultMap>
+	
+	
+	<resultMap id="ceResultSet" type="Certifrcate">
+		<id property="lId" column="LID"/>
+		<result property="eId" column="EID"/>
+		<result property="ce_Name" column="CE_NAME"/>
+		<result property="rating" column="RATING"/>
+		<result property="agency" column="AGENCY"/>
+		<result property="issueDate" column="ISSUEDATE"/>
+		<result property="exprationDate" column="EXPRATIONDATE"/>
+	</resultMap>
+	
+	
+	<resultMap id="CareerResultSet" type="Career">
+		<id property="cId" column="CID"/>
+		<result property="eId" column="EID"/>
+		<result property="c_Department" column="C_DEPARTMENT"/>
+		<result property="rank" column="RANK"/>
+		<result property="employmentDate" column="EMPLOYMENTDATE"/>
+		<result property="resignation" column="RESIGNATION"/>
+		<result property="rectal" column="RECTAL"/>
+	</resultMap>
+	
+	
+	<resultMap id="EducationResultSet" type="Education">
+		<id property="edId" column="EDID"/>
+		<result property="eId" column="EID"/>
+		<result property="sName" column="SNAME"/>
+		<result property="admissonDate" column="ADMISSIONDATE"/>
+		<result property="graduationDay" column="GRADUATIONDAY"/>
+		<result property="sType" column="STYPE"/>
+		<result property="department" column="DEPARTMENT"/>
+		<result property="sdivision" column="SDIVISION"/>
+	</resultMap>
+	
+	
 	
 	<select id="EselectListCount" resultType="_int">
 		SELECT COUNT(*)
@@ -138,4 +183,65 @@
 		ORDER BY RID DESC
 	</select>
 	
+	<!-- 직급 list -->
+	<select id="selectrList" resultMap="rankResultSet">
+		SELECT RID, RNAME
+		FROM RANK
+		ORDER BY RID DESC
+	</select>
+	
+	<!-- 부서 list -->
+	<select id="selectdList" resultMap="departmentResultSet">
+		SELECT DID, DNAME
+		FROM DEPARTMENT
+		ORDER BY DID
+	</select>
+	
+	<insert id="insertCe" parameterType="Certifrcate">
+		INSERT INTO CERTIFRCATE
+		VALUES(SEQ_LID.NEXTVAL, #{eId}, #{ce_Name}, #{rating}, #{agency}, #{issueDate}, #{exprationDate})
+	</insert>
+	
+	<select id="selectCe" resultMap="ceResultSet">
+		SELECT *
+		FROM CERTIFRCATE
+		WHERE EID=#{eId}
+	</select>
+	
+	<!-- 자격증 수정 -->
+	<update id="updateCe" parameterType="Certifrcate">
+		UPDATE CERTIFRCATE
+		SET CE_NAME=#{ce_Name},
+			RATING=#{rating},
+			AGENCY=#{agency},
+			ISSUEDATE=#{issueDate},
+			EXPRATIONDATE=#{exprationDate}
+		WHERE EID=#{eId}
+	</update>
+	
+	<!-- 경력 insert -->
+	<insert id="insertCa" parameterType="Career">
+		INSERT INTO CAREER
+		VALUES(SEQ_CID.NEXTVAL, #{eId}, #{c_Department}, #{rank}, #{employmentDate}, #{resignation}, #{rectal})
+	</insert>
+	
+	
+	<select id="selectCa" resultMap="CareerResultSet">
+		SELECT *
+		FROM CAREER
+		WHERE EID=#{eId}
+	</select>
+	
+	<!-- 고등학교 학력 -->
+	<insert id="insered1" parameterType="Education">
+		INSERT INTO EDUCATION
+		VALUES(SEQ_EDID.NEXTVAL, #{eId}, #{sName}, #{admissonDate}, #{graduationDay}, #{sType}, DEFAULT, 1)
+	</insert>
+	
+	<select id="selectde1" resultMap="EducationResultSet">
+		SELECT *
+		FROM EDUCATION
+		WHERE EID=#{eId}
+		AND SDIVISION=1
+	</select>	
 </mapper>

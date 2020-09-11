@@ -34,7 +34,12 @@ import com.kh.ourwork.notice.model.vo.Notice;
 import com.kh.ourwork.notice.model.vo.Reply;
 import com.kh.ourwork.pteam.model.exception.PteamException;
 import com.kh.ourwork.pteam.model.service.pteamService;
+import com.kh.ourwork.pteam.model.vo.Career;
+import com.kh.ourwork.pteam.model.vo.Certifrcate;
+import com.kh.ourwork.pteam.model.vo.Department;
+import com.kh.ourwork.pteam.model.vo.Education;
 import com.kh.ourwork.pteam.model.vo.Employee1;
+import com.kh.ourwork.pteam.model.vo.Rank;
 
 @Controller
 public class PteamController {
@@ -108,6 +113,8 @@ public class PteamController {
 		Employee1 employee = null;
 //		Attachment at =pService.selectAttachment(eId);
 		
+		Certifrcate c = pService.selectC(eId);
+		
 		employee = pService.selectEmployee(eId);
 		
 		System.out.println("employee: " + employee);
@@ -115,6 +122,7 @@ public class PteamController {
 		if(employee != null) {
 			mv.addObject("employee", employee)
 			  .addObject("loginUser", loginUser)
+			  .addObject("c", c)
 			  .addObject("currentPage", currentPage)
 			  .setViewName("pteam/eDetail");
 			
@@ -158,6 +166,156 @@ public class PteamController {
 		return "pteam/employeeE";
 	}*/
 	
+	// detail에서 수정하기 눌렀을 때
+	@RequestMapping("upe.do")
+	public ModelAndView employeeUpdate(ModelAndView mv, String eId, Education ed1,
+										@RequestParam("page") Integer page,
+										HttpServletRequest request, HttpServletResponse response) {
+		
+		int currentPage = page != null ? page : 1;
+
+		
+		Employee1 employee = pService.selectEmployee(eId);
+		
+		// 부서, 직급 list 가져오기
+		ArrayList<Rank> rNameList = pService.selectRList();
+
+		ArrayList<Department> dNameList = pService.selectDList();
+
+		Certifrcate c = pService.selectC(eId);
+		System.out.println("ed1 : " + ed1);
+		
+		Education ed2 = pService.selected1(eId);
+		System.out.println("ed2 : " + ed2);
+		
+		if(c == null) {
+			mv.addObject("employee", employee)
+			.addObject("page", currentPage)
+			.addObject("rName", rNameList)
+			.addObject("dName", dNameList)
+			.addObject("c", c)
+			.setViewName("pteam/eUpdate");
+		}else {
+			mv.addObject("employee", employee)
+			.addObject("page", currentPage)
+			.addObject("rName", rNameList)
+			.addObject("dName", dNameList)
+			.addObject("c", c)
+			.addObject("ed1", ed1)
+			.setViewName("pteam/eCUpdate");
+		}
+		
+		return mv;
+	}
 	
+	// 자격증 등록 메소드
+	@RequestMapping("ceinsert.do")
+	public String cInsert(Certifrcate c, HttpServletRequest resquest,Model model,
+			HttpSession session, String rName, String dName, String eId,
+			@RequestParam("page") Integer page) {
+		
+		int currentPage = page != null ? page : 1;
+		
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		
+		Employee1 employee = pService.selectEmployee(eId);
+		
+		int result = pService.cinsert(c);
+		
+		c = pService.selectC(eId);
+		
+		if(result > 0) {
+			model.addAttribute("eId", eId);
+			model.addAttribute("employee", employee);
+			model.addAttribute("rName", rName);
+			model.addAttribute("dName", dName);
+			model.addAttribute("c", c);
+			model.addAttribute("page", currentPage);
+			return "redirect:upe.do";
+		}else {
+			throw new PteamException("자격증 등록에 실패하였습니다");
+		}
+		
+	}
+	
+	// 고등학교 입력
+	@RequestMapping("edhinsert.do")
+	public String deInsert1(Education ed1, HttpServletRequest resquest,Model model,
+			HttpSession session, String rName, String dName, String eId,
+			@RequestParam("page") Integer page) {
+		int currentPage = page != null ? page : 1;
+		Employee1 employee = pService.selectEmployee(eId);
+		
+		int result = pService.ed1insert(ed1);
+		
+		System.out.println("ed1 : " + ed1);
+		
+		if(result > 0) {
+			System.out.println("여긴 고등학교 입력 : result 1");
+			model.addAttribute("eId", eId);
+			model.addAttribute("employee", employee);
+			model.addAttribute("rName", rName);
+			model.addAttribute("dName", dName);
+			model.addAttribute("ed1", ed1);
+			model.addAttribute("page", currentPage);
+			return "redirect:upe.do";
+		}else {
+			System.out.println("여긴 고등학교 입력 : result 0");
+			throw new PteamException("학력 등록에 실패하였습니다.");
+		}
+	}
+	
+	
+	// 경력
+	@RequestMapping("cainsert.do")
+	public String caInsert(Career ca, HttpServletRequest resquest,Model model,
+			HttpSession session, String rName, String dName, String eId,
+			@RequestParam("page") Integer page) {
+		int currentPage = page != null ? page : 1;
+		
+		Employee1 employee = pService.selectEmployee(eId);
+		
+		int result = pService.cainsert(ca);
+		
+		ca = pService.selectCa(eId);
+		
+		if(result >0) {
+			model.addAttribute("eId", eId);
+			model.addAttribute("employee", employee);
+			model.addAttribute("rName", rName);
+			model.addAttribute("dName", dName);
+			model.addAttribute("ca", ca);
+			model.addAttribute("page", currentPage);
+			return "redirect:upe.do";
+		}else {
+			throw new PteamException("격력 등록에 실패하였습니다.");
+		}
+		
+	}
+	
+	
+	
+	@RequestMapping("ceupdate.do")
+	public ModelAndView CeUpdateV(Certifrcate c,ModelAndView mv, String eId,
+			HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("page") Integer page) {
+		
+		int currentPage = page != null ? page : 1;
+		
+		Employee1 employee = pService.selectEmployee(eId);
+		
+		int result = pService.updateCe(c);
+		
+		if(result > 0) {
+			mv.addObject("page", currentPage)
+			.addObject("emplpyee", employee)
+			.addObject("eId", eId)
+			.setViewName("redirect:upe.do");
+		}else {
+			throw new PteamException("자격증 수정에 실패하였습니다.");
+		}
+		
+		return mv;
+	}
 	
 }

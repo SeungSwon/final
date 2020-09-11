@@ -97,6 +97,7 @@ public class Education {	//학력
 				+ ", graduationDay=" + graduationDay + ", sType=" + sType + ", department=" + department
 				+ ", sdivision=" + sdivision + "]";
 	}
+
 	
 	
 
