@@ -34,8 +34,8 @@
 		<mapper resource="mappers/client-mapper.xml"/>
 		<mapper resource="mappers/note-mapper.xml"/>
 		<mapper resource="mappers/email-mapper.xml"/>
-	  <mapper resource="mappers/approval-mapper.xml"/>
-	  <mapper resource="mappers/member-mapper.xml"/>
-	  <mapper resource="mappers/calendar-mapper.xml"/>
+	    <mapper resource="mappers/approval-mapper.xml"/>
+	    <mapper resource="mappers/member-mapper.xml"/>
+	    <mapper resource="mappers/calendar-mapper.xml"/>
 	</mappers>	
 </configuration>
