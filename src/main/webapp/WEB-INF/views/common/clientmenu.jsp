@@ -12,6 +12,7 @@
 </style>
 </head>
 <body>
+
  	<div class="aside">
 		<button onclick="location.href='receiveMailList.do'"><img class="icons" src="resources/images/common/mail.png"><br>메일</button>
        	<button onclick="location.href='ahome.do'"><img class="icons" src="resources/images/common/stamp.png"><br>결재</button>

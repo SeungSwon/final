@@ -81,10 +81,10 @@
                     	<c:url var="returnNote" value="returnNote.do">
                     		<c:param name="ntId" value="${ nt.ntId }"/>
                     	</c:url>
-                        <button type="button" id="save" class="btn btn-secondary btn-sm" onclick="location.href='${ntsave}'">보관</button>                        
-                        <button type="button" id="delete" class="btn btn-secondary btn-sm" onclick="location.href='${ntOutDelete}'">삭제</button>
-                        <c:if test="${ nt.receiveDate eq null || nt.status eq 'Y'} ">
-                             <button type="button" id="returnNote" class="btn btn-secondary btn-sm" onclick="location.href='${ returnNote }'">발송취소</button>
+                    	<button type="button" id="save" class="btn btn-secondary btn-sm" onclick="return saveNote();">보관</button>                        
+                        <button type="button" id="delete" class="btn btn-secondary btn-sm" onclick="return deleteNote();">삭제</button>
+                        <c:if test="${ nt.receiveDate eq null && nt.status eq 'Y'} ">
+                             <button type="button" id="returnNote" class="btn btn-secondary btn-sm" onclick="return returnNote();">발송취소</button>
                         </c:if>
                         <button type="button" id="toList" class="btn btn-secondary btn-sm" onclick="history.back();">목록으로</button>
                     </div>
@@ -93,16 +93,29 @@
         </div>
         </div>
     <script>
-	   	$("#delete").click(function(){
-	   		if(confirm("쪽지를 삭제하시겠습니까?") == false){
+	    function saveNote(){
+	   		if(confirm("쪽지를 보관하시겠습니까?") == false){
 	   			return false;
+	   		}else{
+	   			location.href='${ntsave}';
 	   		}
-	   	});
-	   	$("#save").click(function(){
-	   		if(confirm("쪽지를 보관함으로 이동하시겠습니까?") == false){
-	   			return false;
-	   		}
-	   	});		
+	   	}
+	   
+	    function deleteNote(){
+	    	if(confirm("쪽지를 삭제하시겠습니까?") == false){
+	    		return false;
+	    	}else{
+	    		location.href='${ntOutDelete}';
+	    	}
+	    }
+	    
+	    function returnNote(){
+	    	if(confirm("발송취소하시겠습니까?") == false){
+	    		return false;
+	    	}else{
+	    		location.href='${ returnNote }';
+	    	}
+	    }
     </script>	
 </body>
 </html>

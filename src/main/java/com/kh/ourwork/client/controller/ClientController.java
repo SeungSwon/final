@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.ourwork.client.exception.ClientException;
 import com.kh.ourwork.client.model.service.ClientService;
@@ -72,9 +73,7 @@ public class ClientController {
 		for(UpdateClient uc : list) {
 			sdf.format(uc.getModifyDate());
 		}
-		
-		System.out.println("list="+list);
-		
+				
 		if(c != null) {
 			mv.addObject("c", c).addObject("list", list).addObject("at", at).addObject("currentPage", currentPage).setViewName("client/clientDetailView");
 		}else {
@@ -90,8 +89,8 @@ public class ClientController {
 	}
 	
 	@RequestMapping("cinsert.do")
-	public String clientInsert(Client c, HttpServletRequest request, 
-							   @RequestParam(value="uploadFile", required=false) MultipartFile file,
+	public ModelAndView clientInsert(Client c, HttpServletRequest request, ModelAndView mv,
+							   @RequestParam(value="uploadFile", required=false) MultipartFile file, RedirectAttributes ra,
 							   @RequestParam("post") String post,
 							   @RequestParam("address1") String address1,
 							   @RequestParam("address2") String address2) {
@@ -114,18 +113,16 @@ public class ClientController {
 			if(renameFileName != null) {
 				Attachment at = new Attachment(renamePath, file.getOriginalFilename(), renameFileName, new Date(), 60);
 				int result2 = cService.insertAttachment(at);
-				System.out.println("at="+at);
 			}
 		}		
-		
-		
 		if(result1>0 && result3>0) {
-			return "redirect:clist.do";
-
+			String msg = "거래처가 성공적으로 등록되었습니다.";
+			ra.addFlashAttribute("msg", msg);
+			mv.setViewName("redirect:clist.do");
 		}else {
 			throw new ClientException("거래처 등록에 실패하였습니다.");
 		}
-				
+		return mv;
 	}
 
 		
@@ -156,7 +153,7 @@ public class ClientController {
 	}
 	
 	@RequestMapping("cdelete.do")
-	public String clientDelete(int clId, HttpServletRequest request) {
+	public ModelAndView clientDelete(int clId, HttpServletRequest request, ModelAndView mv, RedirectAttributes ra) {
 		
 		Attachment at = cService.selectAttachment(clId);
 		
@@ -167,10 +164,13 @@ public class ClientController {
 		int result3 = cService.deleteAttachment(at);
 		
 		if(result>0) {
-			return "redirect:clist.do";
+			String msg = "거래처가 성공적으로 삭제되었습니다.";
+			ra.addFlashAttribute("msg", msg);
+			mv.setViewName("redirect:clist.do");
 		}else {
 			throw new ClientException("거래처 삭제에 실패하였습니다.");
 		}
+		return mv;
 	}
 	
 	@RequestMapping("cupView.do")
@@ -183,8 +183,8 @@ public class ClientController {
 	}
 	
 	@RequestMapping("cupdate.do")
-	public String clientUpdate(Client c, HttpServletRequest request, @RequestParam(value="page") Integer page,
-					@RequestParam(value="reloadFile", required=false) MultipartFile reloadFile,
+	public ModelAndView clientUpdate(Client c, HttpServletRequest request, @RequestParam(value="page") Integer page,
+					@RequestParam(value="reloadFile", required=false) MultipartFile reloadFile, RedirectAttributes ra,
 					  ModelAndView mv, @RequestParam("post") String post,
 				         @RequestParam("address1") String address1,
 				         @RequestParam("address2") String address2,
@@ -210,8 +210,13 @@ public class ClientController {
 			}
 			
 		}
-		
-        if(reloadFile != null && !reloadFile.isEmpty()) {	// at가 있고 재업로드한 파일이 있을 때
+		// 원래 파일이 있고 재업로드한 파일이 없을 때
+		if(at != null && reloadFile == null) {
+			if(at.getChangeName() != null) {
+				deleteFile(at.getChangeName(), request);
+			}
+		}
+        if(at != null && reloadFile != null && !reloadFile.isEmpty()) {	// 원래 파일이 있고 재업로드한 파일이 있을 때
 			if(at.getChangeName() != null) {
 				deleteFile(at.getChangeName(), request);
 				
@@ -232,7 +237,10 @@ public class ClientController {
 				at.setFilePath(renamePath);
 				at.setcId(c.getClId());				
 			}
-		}
+			
+        }
+        
+        
         
 		int result = cService.updateClient(c);
 		UpdateClient uc = new UpdateClient(c.getClId(), "user01", reason);
@@ -242,12 +250,13 @@ public class ClientController {
 		
 		
 		if(result>0 && result2>0) {
-			mv.addObject("currentPage", currentPage);
-			return "redirect:clist.do";
+			String msg = "거래처가 성공적으로 수정되었습니다.";
+			ra.addFlashAttribute("msg", msg);
+			mv.addObject("currentPage", currentPage).setViewName("redirect:clist.do");
 		}else {
 			throw new ClientException("거래처 수정에 실패하였습니다.");
 		}
-		
+		return mv;
 	}
 	
 	public void deleteFile(String fileName, HttpServletRequest request) {
@@ -257,14 +266,12 @@ public class ClientController {
 		File deleteFile = new File(savePath + "/" + fileName);
 		
 		if(deleteFile.exists()) {
-			System.out.println("deleteFile="+deleteFile);
 			deleteFile.delete();
 		}
 	}
 	@RequestMapping("csearch.do")
 	public ModelAndView clientSearch(Search search, ModelAndView mv, @RequestParam(value="page", required=false) Integer page) {
 			
-		
 		int currentPage = page != null ? page : 1;
 		
 		int listCount = cService.selectSearchListCount(search);
@@ -277,6 +284,10 @@ public class ClientController {
 		mv.addObject("search", search);
 		mv.addObject("pi", pi);
 		mv.addObject("listCount", listCount);
+		
+		String msg = listCount + "개의 결과가 검색되었습니다.";
+		mv.addObject("msg", msg);
+		
 		mv.setViewName("client/clientListView");
 		
 		return mv;

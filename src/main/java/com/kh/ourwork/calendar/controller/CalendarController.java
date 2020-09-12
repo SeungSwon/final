@@ -201,9 +201,7 @@ public class CalendarController {
 	// 삭제
 	@RequestMapping("deletecal.do")
 	public String deleteCal(int sId) {
-		
-		System.out.println("sId="+sId);
-		
+			
 		int result = calService.deleteCal(sId);
 		
 		if(result>0) {
@@ -216,6 +214,8 @@ public class CalendarController {
 	
 	@RequestMapping("deleteteamcal.do")
 	public String deleteTeamCal(int sId) {
+		System.out.println("sId="+sId);
+
 		int result = calService.deleteTeamCal(sId);
 		
 		if(result>0) {

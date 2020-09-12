@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.ourwork.common.PageInfo;
 import com.kh.ourwork.common.Pagination;
@@ -40,10 +41,10 @@ public class NoteController {
 		}else {
 			throw new NoteException("받은 쪽지함 조회에 실패하였습니다.");
 		}
-		
 		return mv;
 	}
-
+	
+	
 	@RequestMapping("ntIndetail.do")
 	public ModelAndView noteInboxDetail(ModelAndView mv, int ntId, @RequestParam("page") Integer page) {
 		int currentPage = page != null ? page : 1;
@@ -146,7 +147,7 @@ public class NoteController {
 	}
 	
 	@RequestMapping("replysend.do")
-	public ModelAndView replySend(String addReceiver, String ntContent, Integer page, ModelAndView mv, HttpSession session) {
+	public String replySend(String addReceiver, String ntContent, Integer page, HttpSession session, RedirectAttributes ra) {
 		
 		int currentPage = page != null ? page : 1;
 		Employee loginUser = (Employee)session.getAttribute("loginUser");		
@@ -160,15 +161,15 @@ public class NoteController {
 		
 		if(result>0) {
 			String msg = "쪽지가 성공적으로 전송되었습니다.";
-			mv.addObject("msg", msg).addObject("pi", pi).setViewName("redirect:ntInboxList.do");
+			ra.addFlashAttribute("msg", msg).addFlashAttribute("pi", pi);
+			return "redirect:ntInboxList.do";
 		}else {
 			throw new NoteException("쪽지 전송에 실패하였습니다.");
 		}
-		return mv;
-		}
+	}
 	
 	@RequestMapping("ntInDelete.do")
-	public ModelAndView ntInDelete(int ntId, @RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session) {
+	public String ntInDelete(int ntId, @RequestParam(value="page", required=false) Integer page, HttpSession session, RedirectAttributes ra) {
 		int currentPage = page != null ? page : 1;
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
@@ -179,11 +180,11 @@ public class NoteController {
 		int result = ntService.ntInDelete(ntId);
 		
 		if(result>0) {
-			mv.addObject("pi", pi).setViewName("redirect:ntInboxList.do");
+			ra.addFlashAttribute("pi", pi);
+			return "redirect:ntInboxList.do";
 		}else {
 			throw new NoteException("받은 쪽지 삭제에 실패하였습니다.");
 		}
-		return mv;
 	}
 	
 	@RequestMapping("ntOutboxList.do")
@@ -221,7 +222,7 @@ public class NoteController {
 	}
 	
 	@RequestMapping("ntOutDelete.do")
-	public ModelAndView ntOutDelete(int ntId, @RequestParam(value="page",required=false) Integer page, ModelAndView mv, HttpSession session) {
+	public String ntOutDelete(int ntId, @RequestParam(value="page",required=false) Integer page, HttpSession session, RedirectAttributes ra) {
 		int currentPage = page != null ? page : 1;
 		
 		Employee loginUser = (Employee)session.getAttribute("loginUser");		
@@ -232,11 +233,11 @@ public class NoteController {
 		int result = ntService.ntOutDelete(ntId);
 				
 		if(result>0) {
-			mv.addObject("pi", pi).setViewName("redirect:ntOutboxList.do");
+			ra.addFlashAttribute("pi", pi).addFlashAttribute("msg", "쪽지가 성공적으로 삭제되었습니다.");
+			return "redirect:ntOutboxList.do";
 		}else {
 			throw new NoteException("보낸 쪽지 삭제에 실패하였습니다.");
 		}
-		return mv;
 	}
 	
 	@RequestMapping("ntInsearch.do")
@@ -292,37 +293,42 @@ public class NoteController {
 	
 	//----------------------------------
 	@RequestMapping("deleteInSelected.do")
-	public ModelAndView deleteInSelected(@RequestParam(value="check") Integer[] check, ModelAndView mv) {
+	public String deleteInSelected(@RequestParam(value="check") Integer[] check, RedirectAttributes ra) {
 		
-		int result = 0;
+		int count = 0;
 		
 		for(int ntId : check) {
-			result = ntService.ntInDelete(ntId);
-			result++;
+			int result = ntService.ntOutDelete(ntId);
+			count++;
 		}
-
-		String msg = result+"개의 쪽지가 삭제되었습니다.";
-		mv.setViewName("redirect:ntInboxList.do");
-		return mv;
-		
+		if(count>0) {
+			String msg = count + "개의 쪽지가 삭제되었습니다.";
+			ra.addFlashAttribute("msg", msg);
+			return "redirect:ntInboxList.do";
+		}else {
+			throw new NoteException("쪽지 삭제에 실패하였습니다.");
+		}
+				
 	}
 	@RequestMapping("deleteOutSelected.do")
-	public ModelAndView deleteOutSelected(@RequestParam(value="check") Integer[] check, ModelAndView mv) {
+	public String deleteOutSelected(@RequestParam(value="check") Integer[] check, RedirectAttributes ra) {
 		
-		int result = 0;
+		int count = 0;
 		
 		for(int ntId : check) {
-			result = ntService.ntOutDelete(ntId);
-			result++;
+			int result = ntService.ntOutDelete(ntId);
+			count++;
 		}
-		String msg = result+"개의 쪽지가 삭제되었습니다.";
-		mv.setViewName("redirect:ntOutboxList.do");
-		return mv;
-		
+		if(count>0) {
+			String msg = count + "개의 쪽지가 삭제되었습니다.";
+			ra.addFlashAttribute("msg", msg);
+			return "redirect:ntOutboxList.do";
+		}else {
+			throw new NoteException("쪽지 삭제에 실패하였습니다.");
+		}
+				
 	}
-	
-	
-	
+
 	@RequestMapping("returnNote.do")
 	public ModelAndView returnNote(int ntId, ModelAndView mv) {
 		
@@ -336,27 +342,27 @@ public class NoteController {
 	}
 	
 	@RequestMapping("ntInsave.do")
-	public ModelAndView noteInSave(int ntId, ModelAndView mv) {
+	public String noteInSave(int ntId, RedirectAttributes ra) {
 		int result = ntService.noteInSave(ntId);
 		
 		if(result>0) {
-			mv.setViewName("redirect:ntInboxList.do");
+			ra.addFlashAttribute("msg", "쪽지를 보관했습니다.");
+			return "redirect:ntInboxList.do";
 		}else {
 			throw new NoteException("쪽지 보관에 실패하였습니다.");
 		}
-		return mv;
 	}
 	
 	@RequestMapping("ntOutsave.do")
-	public ModelAndView noteOutSave(int ntId, ModelAndView mv) {
+	public String noteOutSave(int ntId, RedirectAttributes ra) {
 		int result = ntService.noteOutSave(ntId);
 		
 		if(result>0) {
-			mv.setViewName("redirect:ntOutboxList.do");
+			ra.addFlashAttribute("msg", "쪽지를 보관했습니다.");
+			return "redirect:ntOutboxList.do";
 		}else {
 			throw new NoteException("쪽지 보관에 실패하였습니다.");
 		}
-		return mv;
 	}
 	
 
@@ -394,7 +400,7 @@ public class NoteController {
 	
 	// 보관한 쪽지 삭제
 	@RequestMapping("ntSaveDelete.do")
-	public ModelAndView ntSaveDelete(int ntId, @RequestParam(value="page", required=false) Integer page, ModelAndView mv, HttpSession session) {
+	public String ntSaveDelete(int ntId, @RequestParam(value="page", required=false) Integer page, HttpSession session, RedirectAttributes ra) {
 		int currentPage = page != null ? page : 1;
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		
@@ -402,7 +408,7 @@ public class NoteController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		Note nt = ntService.selectNote(ntId);
-		
+				
 		int result = 0;
 		if(nt.geteId().equals(loginUser.geteId())) {
 			result = ntService.ntOutDelete(ntId);
@@ -411,52 +417,40 @@ public class NoteController {
 		}
 		
 		if(result > 0) {
-			mv.addObject("pi", pi).setViewName("redirect:ntsaveList.do");
+			String msg = "쪽지가 성공적으로 삭제되었습니다.";
+			ra.addFlashAttribute("pi", pi).addFlashAttribute("msg", msg);
+			return "redirect:ntsaveList.do";
 		}else {
 			throw new NoteException("쪽지 삭제에 실패하였습니다.");
 		}
-		return mv;
 	}
 	@RequestMapping("deleteSaveSelected.do")
-	public ModelAndView deleteSaveSelected(@RequestParam(value="check") Integer[] check, HttpSession session, ModelAndView mv) {
+	public String deleteSaveSelected(@RequestParam(value="check") Integer[] check, HttpSession session, RedirectAttributes ra) {
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
-
-		int result = 0;
+		
+		int count = 0;
+		
 		for(int ntId : check) {
 			Note nt = ntService.selectNote(ntId);
 			
 			if(nt.geteId().equals(loginUser.geteId())) {
-				result = ntService.ntOutDelete(ntId);
+				int result = ntService.ntOutDelete(ntId);
+				count++;
 			}else if(nt.getReceiver().equals(loginUser.geteId())) {
-				result = ntService.ntInDelete(ntId);
+				int result = ntService.ntInDelete(ntId);
+				count++;
 			}
 		}
-		return mv;
+		String msg = count + "개의 쪽지가 성공적으로 삭제되었습니다.";
+		ra.addFlashAttribute("msg", msg);
+		return "redirect:ntsaveList.do";
+		
 
 	}
 	
 	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
