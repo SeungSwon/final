@@ -47,6 +47,9 @@
         textarea{
             resize:none;
         }
+        #person{
+        	font-size: 15px;
+        }
     </style>
 </head>
 	<body>
@@ -64,11 +67,19 @@
 	        </div>
 		<div class="section2">
             <div id="saveboxMessage">
+            	
                 <div id="sender" align="center">
-                    받는 사람 / 보낸 사람 <input type="text" size="40" value="${ nt.receiver }">
+                	<c:if test="${ loginUser.eId eq nt.eId }">
+                    	받는 사람 
+                    	<input type="text" size="40" value="${ nt.receiver }" readonly>
+                    </c:if>
+                    <c:if test="${ loginUser.eId eq nt.receiver }">
+                    	<span>보낸 사람</span>
+                    	<input type="text" size="40" value="${ nt.eId }" readonly>
+                    </c:if>
                 </div>
                 <div id="mContent" align="center">
-                    <textarea cols="55" rows="10" id="contentArea">${ nt.ntContent }</textarea>
+                    <textarea cols="55" rows="10" id="contentArea" readonly>${ nt.ntContent }</textarea>
                     <br>
                     <div id="buttons">
                     	<c:url var="ntSaveDelete" value="ntSaveDelete.do">
@@ -76,7 +87,7 @@
                     		<c:param name="page" value="${ currentPage }"/>
                     	</c:url>
                         <button type="button" id="delete" class="btn btn-secondary btn-sm" onclick="location.href='${ntSaveDelete}'">삭제</button>
-                        <button type="button" id="toList" class="btn btn-secondary btn-sm" onclick="location.href='ntSaveList.do'">목록으로</button>
+                        <button type="button" id="toList" class="btn btn-secondary btn-sm" onclick="location.href='ntsaveList.do'">목록으로</button>
                     </div>
                 </div>
             </div>

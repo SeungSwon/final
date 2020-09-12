@@ -79,7 +79,7 @@
 	<!-- 팀 일정 삭제 -->
 	<update id="deleteTeamCal">
 		UPDATE SCHEDULE
-		SET STATUS='Y'
+		SET STATUS='N'
 		WHERE SID=#{sId}
 	</update>
 	

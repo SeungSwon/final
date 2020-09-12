@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
+<title>거래처 조회</title>
 <head>
     <style>
         .menubar button{
@@ -131,11 +132,16 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script type="text/javascript" src="libs/FileSaver/FileSaver.min.js"></script>
-    <script type="text/javascript" src="libs/js-xlsx/xlsx.core.min.js"></script>
-    
+    <script type="text/javascript" src="libs/js-xlsx/xlsx.core.min.js"></script>    
 </head>
 
 <body>
+	<c:if test="${ msg ne null }">
+		<script type="text/javascript">
+			alert("${msg}");
+			
+		</script>
+	</c:if>
     <c:import url="../common/menubar.jsp"/>
     <div class="section"><br>
     <c:import url="../common/clientmenu.jsp"/>

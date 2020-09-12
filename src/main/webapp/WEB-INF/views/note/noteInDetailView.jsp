@@ -43,6 +43,7 @@
             resize:none;
         }
     </style>
+    
 </head>
 	<body>
 		<c:import url="../common/menubar.jsp"/>
@@ -54,7 +55,7 @@
 	                <button onclick="location.href='ntwriteView.do'">쪽지 쓰기</button>
 	                <button id="selected" onclick="location.href='ntInboxList.do'">받은 쪽지함</button>
 	                <button onclick="location.href='ntOutboxList.do'">보낸 쪽지함</button>
-	                <button>쪽지 보관함</button>
+	                <button onclick="location.href='ntsaveList.do'">쪽지 보관함</button>
 	            </div>
 	        </div>
 		<div class="section2">
@@ -78,8 +79,8 @@
                     		<c:param name="page" value="${ currentPage }"/>
                     	</c:url>
                         <button type="button" id="reply" class="btn btn-secondary btn-sm" onclick="location.href='${ntreply}'">답장</button>
-                        <button type="button" id="save" class="btn btn-secondary btn-sm" onclick="location.href='${ntsave}'">보관</button>                        
-                        <button type="button" id="delete" class="btn btn-secondary btn-sm" onclick="location.href='${ntInDelete}'">삭제</button>
+                        <button type="button" id="save" class="btn btn-secondary btn-sm" onclick="return save();">보관</button>                        
+                        <button type="button" id="delete" class="btn btn-secondary btn-sm" onclick="return deleteNote();">삭제</button>
                         <button type="button" id="toList" class="btn btn-secondary btn-sm" onclick="history.back();">목록으로</button>
                     </div>
                 </div>
@@ -87,16 +88,22 @@
         </div>
         </div>
     <script>
-	   	$("#delete").click(function(){
+	   
+	   	function save(){
+	   		if(confirm("쪽지를 보관하시겠습니까?") == false){
+	   			return false;
+	   		}else{
+	   			location.href='${ntsave}';
+	   		}
+	   	}
+	   	
+	   	function deleteNote(){
 	   		if(confirm("쪽지를 삭제하시겠습니까?") == false){
 	   			return false;
+	   		}else{
+	   			location.href='${ntInDelete}';
 	   		}
-	   	});
-	   	$("#save").click(function(){
-	   		if(confirm("쪽지를 보관함으로 이동하시겠습니까?") == false){
-	   			return false;
-	   		}
-	   	});
+	   	}
 
     </script>	
 </body>

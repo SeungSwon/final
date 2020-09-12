@@ -100,7 +100,6 @@
 	<c:import url="../common/menubar.jsp"/>
 	<div class="section"><br>
         <c:import url="../common/clientmenu.jsp"/>
-
         <div class="section1">
             <div class="menubar">
                 <button>주소록 조회</button>
@@ -111,7 +110,7 @@
         <div class="section2">
             <p class="title">거래처 수정</p>
             
-            <form action="cupdate.do" method="post" enctype="multipart/form-data">
+            <form action="cupdate.do" method="post" enctype="multipart/form-data" onsubmit="return validate();">
             <input type="hidden" name="page" value="${ currentPage }">
 			<input type="hidden" name="clId" value="${ c.clId }">
             <div id="clientTable">
@@ -119,7 +118,7 @@
                     <tbody>
                         <tr>
                             <th>거래처명</th>
-                            <td><input type="text" name="cName" value="${ c.cName }"></td>
+                            <td><input type="text" name="cName" value="${ c.cName }" required></td>
                             <!-- <input type="hidden" name="eId"> -->
                         </tr>
                         <tr>
@@ -137,7 +136,7 @@
                         </tr>
                         <tr>
                             <th>사업자등록번호/주민등록번호</th>
-                            <td><input type="text" name="bNum" value="${ c.bNum }"></td>
+                            <td><input type="text" name="bNum" value="${ c.bNum }" required></td>
                         </tr>
                         
                         <c:forTokens var="addr" items="${ c.cAddress }" delims="," varStatus="status">
@@ -212,7 +211,7 @@
                         </tr>
                         <tr>
                         	<th>수정사유</th>
-                        	<td><input type="text" name="reason"></td>
+                        	<td><input type="text" name="reason" required></td>
                         </tr>
                     </tbody>
                 </table>
@@ -229,12 +228,12 @@
     	$(function() { 
     		$("#postcodify_search_button").postcodifyPopUp(); 
     	});
-		
-    	$("#update").click(function(){
-    		if(confirm("거래처를 수정하시겠습니까?") == false){
-    			return false;
-    		}
-    	});
+    	
+		function validate(){
+			if(confirm("거래처를 수정하시겠습니까?") == false){
+				return false;
+			}
+		}
     </script>
 </body>
 </html>

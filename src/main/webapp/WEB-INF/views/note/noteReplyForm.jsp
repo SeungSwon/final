@@ -71,7 +71,7 @@
 	            <button onclick="location.href='ntwriteView.do'">쪽지 쓰기</button>
 	        	<button id="selected" onclick="location.href='ntInboxList.do'">받은 쪽지함</button>
 	        	<button onclick="location.href='ntOutboxList.do'">보낸 쪽지함</button>
-	           	<button>쪽지 보관함</button>
+	           	<button onclick="location.href='ntsaveList.do'">쪽지 보관함</button>
             </div>
         </div>
         <div class="section2">

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>거래처 상세 조회</title>
 <style>
         .menubar button{
             border: none;
@@ -66,6 +66,8 @@
         }
 </style>
 </head>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
 <body>
 	<c:import url="../common/menubar.jsp"/>
 	<div class="section"><br>
@@ -73,8 +75,8 @@
         <div class="section1">
             <div class="menubar">
                 <button>주소록 조회</button>
-                <button id="selected">거래처 조회</button>
-                <button>거래처 등록</button>
+                <button id="selected" onclick="location.href='clist.do'">거래처 조회</button>
+                <button onclick="location.href='cinsertView.do'">거래처 등록</button>
             </div>
         </div>
         <div class="section2">
@@ -159,7 +161,10 @@
                             <th>사업자등록증</th>
                             <td>
                             	<c:if test="${ !empty at.originName }">
-                            		<a class="pic" href="${ contextPath }/resources/images/clientUploadFiles/${ at.changeName }" download>${ at.originName }</a>
+                            		<button id="thumbBtn" class="btn btn-secondary btn-sm" type="button" onclick="window.open('${contextPath}/resources/images/clientUploadFiles/${ at.changeName }', '미리보기','width=500, height=700, location=no,status=no,scrollbars=yes')">미리보기</button>
+                            		
+                            		<br>
+                            		다운로드 : <a class="pic" href="${ contextPath }/resources/images/clientUploadFiles/${ at.changeName }" download>${ at.originName }</a>
                             	</c:if>               
                             </td>
                         </tr>
@@ -195,8 +200,8 @@
                 	</c:url>
                     <!-- 수정, 삭제 버튼은 관리권한 있는 사람에게만 보임 -->
                     <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${ cupView }'">수정</button>
-                    <button type="button" class="btn btn-secondary btn-sm" id="delete" onclick="location.href='${ cdelete }'">삭제</button>
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${ clist }'">목록으로</button>
+					<button type="button" class="btn btn-secondary btn-sm" id="delete" onclick="return validate();">삭제</button>                    
+					<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${ clist }'">목록으로</button>
                 </div>
                 <br><br>
             </div>
@@ -205,48 +210,13 @@
     </div>
     
     <script>
-	    $("#delete").click(function(){
-			if(confirm("거래처를 삭제하시겠습니까?") == false){
-				return false;
-			}
-		});
-       
-	    $(document).ready(function(){
-	    	var xOffset = 10;
-	    	var yOffset = 30;
-	    	
-	    	$(document).on("mouseover", ".pic", function(){
-	    		var div = $("<div>", {id:"preview"});
-	    		var img = $("<img>", {src: $(this).attr("href")});
-	    		div.append(img);
-	    		$("body").append(div);
-	    		
-	    		
-	    	});
-	    	
-	    	$(document).on("mouseout", ".pic", function(){
-	    		$("#preview").remove();
-	    	});
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    });
+	   function validate(){
+        	if(confirm("거래처를 삭제하시겠습니까?") == false){
+        		return false;
+        	}else{
+        		location.href='${ cdelete }';
+        	}
+        }
     </script>
 </body>
 </html>

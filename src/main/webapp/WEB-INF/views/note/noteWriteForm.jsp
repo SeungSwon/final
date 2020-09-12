@@ -84,7 +84,7 @@
         </div>
         <div class="section2">
             <div id="writeMessage">
-            	<form action="ntsend.do" method="post">
+            	<form action="ntsend.do" method="post" onsubmit="return validate();">
                 <div id="receiver" align="center">
                     받는 사람 <input type="text" size="40" id="addReceiver" name="addReceiver">
                    	<button type="button" class="btn btn-secondary btn-sm" id="addBtn" onclick="window.open('ntreceiverView.do','수신인 추가','width=550, height=720,location=no,status=no,scrollbars=yes')">주소록</button>
@@ -129,7 +129,7 @@
         }
         
         
-        $("#submit").click(function(){
+        function validate(){
         	var textarea = $("#contentArea").val();
         	var num = parseInt(getBytes(textarea));
         	var receiver = $("#addReceiver").val();
@@ -151,7 +151,7 @@
         	
         	return true;
         	window.reload();
-        });
+        }
         
     </script>
 </body>

@@ -293,15 +293,15 @@
 	<select id="selectSaveListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM NOTE
-		WHERE (EID=#{eId} AND SENT_SAVE='Y')
-        OR (RECEIVER=#{eId} AND REC_SAVE='Y')
+		WHERE (EID=#{eId} AND SENT_SAVE='Y' AND SENT_DEL='N')
+        OR (RECEIVER=#{eId} AND REC_SAVE='Y' AND REC_DEL='N')
 	</select>
 	
 	<select id="selectSaveList" resultMap="noteResultSet">
 		SELECT *
 		FROM NOTE
-		WHERE (EID=#{eId} AND SENT_SAVE='Y')
-        OR (RECEIVER=#{eId} AND REC_SAVE='Y')
+		WHERE (EID=#{eId} AND SENT_SAVE='Y' AND SENT_DEL='N')
+        OR (RECEIVER=#{eId} AND REC_SAVE='Y' AND REC_DEL='N')
         ORDER BY NTDATE, RECEIVE_DATE
 	</select>
 </mapper>
